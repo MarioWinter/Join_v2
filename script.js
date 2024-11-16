@@ -39,6 +39,7 @@ async function summaryInit() {
  * Initializes the page by loading users and rendering the login window.
  */
 async function init() {
+  checkIsLogedIn()
   loadUsers();
   renderLogIn();
 }
@@ -170,7 +171,7 @@ function emailExist() {
 }
 
 /**
- * Loads users from remote storage to the local array.
+ * Loads users from remote storage to the local array. LÖSCHEN
  */
 async function loadUsers() {
   try {

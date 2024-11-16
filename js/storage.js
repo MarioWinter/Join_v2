@@ -1,34 +1,76 @@
-const STORAGE_TOKEN = "CIEVHNM0XX863NLG0FAFWLL9NBEWOL7NM5VP7VCZ";
-const STORAGE_URL = "https://remote-storage.developerakademie.org/item";
+let TOKEN = "";
+const API_BASE_URL = "http://127.0.0.1:8000/api/v1";
 
-/**
+function loadTokenFromLocalStorage() {
+	TOKEN = localStorage.getItem("token");
+}
+
+/** setItem
  * Set an item in remote storage.
  * @param {string} key - The key of the item to be stored.
  * @param {any} value - The value of the item to be stored.
  * @returns {Promise<Object>} A Promise that resolves to the response from the server.
  */
-async function setItem(key, value) {
-	const payload = { key, value, token: STORAGE_TOKEN };
-	return fetch(STORAGE_URL, { method: "POST", body: JSON.stringify(payload) }).then((res) => res.json());
+async function setItem(data, endpoint, id) {
+	let url = `${API_BASE_URL}/${endpoint}/${id}/`;
+	return fetch(url, {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+			Authorization: `Token ${TOKEN}`,
+		},
+		body: JSON.stringify(data),
+	})
+		.then((response) => response.json())
+		.catch((error) => console.error("Fehler:", error));
 }
 
-/**
+async function changeItem(data, endpoint, id) {
+	let url = `${API_BASE_URL}/${endpoint}/${id}/`;
+	return fetch(url, {
+		method: "PUT",
+		headers: {
+			"Content-Type": "application/json",
+			Authorization: `Token ${TOKEN}`,
+		},
+		body: JSON.stringify(data),
+	})
+		.then((response) => response.json())
+		.catch((error) => console.error("Fehler:", error));
+}
+
+async function deleteItem(data, endpoint, id) {
+	let url = `${API_BASE_URL}/${endpoint}/${id}/`;
+	return fetch(url, {
+		method: "DELETE",
+		headers: {
+			"Content-Type": "application/json",
+			Authorization: `Token ${TOKEN}`,
+		},
+		body: JSON.stringify(data),
+	})
+		.then((response) => response.json())
+		.catch((error) => console.error("Fehler:", error));
+}
+
+/** getItem
  * Retrieve an item from remote storage.
  * @param {string} key - The key of the item to be retrieved.
  * @returns {Promise<any>} A Promise that resolves to the value of the retrieved item.
  * @throws {string} Throws an error if the data with the specified key is not found.
  */
-async function getItem(key) {
-	const url = `${STORAGE_URL}?key=${key}&token=${STORAGE_TOKEN}`;
-	return fetch(url)
-		.then((res) => res.json())
-		.then((res) => {
-			// Improved code
-			if (res.data) {
-				return res.data.value;
-			}
-			throw `Could not find data with key "${key}".`;
-		});
+async function getItems(endpoint) {
+	let url = `${API_BASE_URL}/${endpoint}/`;
+	return fetch(url, {
+		method: "GET",
+		headers: {
+			"Content-Type": "application/json",
+			Authorization: `Token ${TOKEN}`,
+		},
+	})
+		.then((response) => response.json())
+		.then((data) => console.log(data))
+		.catch((error) => console.error("Fehler:", error));
 }
 
 async function signIn(data) {
@@ -84,6 +126,10 @@ function testLogin() {
 		password: "werte12345",
 	};
 	signIn(data);
+}
+
+function checkIsLogedIn() {
+	if (localStorage.getItem("token")) loadTokenFromLocalStorage();
 }
 
 function testLogOut() {
