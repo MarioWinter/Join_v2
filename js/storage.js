@@ -73,7 +73,7 @@ async function getItems(endpoint) {
 		.catch((error) => console.error("Fehler:", error));
 }
 
-async function signIn(data) {
+async function sendLoginRequest(data) {
 	const url = "http://127.0.0.1:8000/api/auth/login/";
 	fetch(url, {
 		method: "POST",
@@ -120,23 +120,27 @@ async function signUp(data) {
 		.catch((error) => console.error("Fehler:", error));
 }
 
+//new for script.js
 function testLogin() {
 	const data = {
 		username: "jürgenwinter",
 		password: "werte12345",
 	};
-	signIn(data);
+	sendLoginRequest(data);
 }
 
+//new for script.js
 function checkIsLogedIn() {
 	if (localStorage.getItem("token")) loadTokenFromLocalStorage();
 }
 
+//new for script.js
 function testLogOut() {
 	localStorage.clear();
 	window.location.href = "index.html";
 }
 
+//new for script.js
 function testRegistration() {
 	const data = {
 		username: "niklasberting",

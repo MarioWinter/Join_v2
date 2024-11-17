@@ -27,7 +27,6 @@ async function includeHTML() {
  * Initializes summary page by loading users, setting current user, greeting user, loading added tasks, loading user badge, and rendering summary data.
  */
 async function summaryInit() {
-  await loadUsers();
   loadCurrentUser();
   greetUser();
   await loadAddedTasksFromStorage();
@@ -40,12 +39,10 @@ async function summaryInit() {
  */
 async function init() {
   checkIsLogedIn()
-  loadUsers();
   renderLogIn();
 }
 
 async function initSidePages() {
-  await loadUsers();
   loadCurrentUser();
   loadUserBadge();
 }
@@ -173,7 +170,7 @@ function emailExist() {
 /**
  * Loads users from remote storage to the local array. LÖSCHEN
  */
-async function loadUsers() {
+async function loadContacts() {
   try {
     users = JSON.parse(await getItem("users"));
   } catch (e) {
@@ -212,23 +209,20 @@ function resetForm() {
 // Log in //
 
 /**
- * Logs in the user if email and password match.
+ * Logs in the user if username and password match.
  */
 function logIn() {
-  let email = document.getElementById('log_in_email').value;
-  let password = document.getElementById('log_in_password').value;
-  let user = logInValidation(email, password);
-  if (user) {
-    indexOfUser(email);
-    logInSuccedMsg();
-  }
-  else {
-    document.getElementById('log_message').innerText = 'Email or password not found';
-    document.getElementById('log_message').style = 'color: red';
-  }
+  let username = formatUsername(log_in_username.value);
+  let password = log_in_password.value;
+  const data = {
+		username: username,
+		password: password,
+	};
+  sendLoginRequest(data)
+  sendLoginRequest(data) ? logInSuccedMsg() : logInFailMsg()
 }
 
-/**
+/**löschen
  * Finds the index of a user by email and stores it in local storage.
  */
 function indexOfUser(email) {
@@ -236,7 +230,7 @@ function indexOfUser(email) {
   localStorage.setItem('currentUserIndex', userIndex);
 }
 
-/**
+/** löschen
  * Validates user login by checking email and password.
  * @param {string} email - The email entered by the user.
  * @param {string} password - The password entered by the user.
@@ -259,6 +253,17 @@ function logInSuccedMsg() {
     window.location.href = 'summary.html';
   }, 1000);
 }
+
+/**
+ * Displays a failure message for unsuccessful login attempts.
+ * Sets the text content of the login message element to indicate
+ * that the name or password was not found, and changes the text color to red.
+ */
+function logInFailMsg(){
+  log_message.innerText = 'name or password not found';
+  log_message.style = 'color: red';
+}
+
 
 /**
  * Loads the current user index from local storage.
@@ -326,4 +331,8 @@ function showSignUpBtn() {
   if (width < 500) {
     document.getElementById('sing_up_mobile').classList.remove('d-none');
   }
+}
+
+function formatUsername(username) {
+  return username.toLowerCase().replace(/\s+/g, '');
 }

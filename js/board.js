@@ -14,7 +14,7 @@ let filteredTasks = [];
  */
 async function initBoard() {
 	await loadAddedTasksFromStorage();
-	await loadUsers();
+	await loadContacts();
 	loadBoard();
 	loadCurrentUser();
 	loadUserBadge();
