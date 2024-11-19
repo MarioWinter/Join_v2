@@ -1,10 +1,6 @@
 let TOKEN = "";
 const API_BASE_URL = "http://127.0.0.1:8000/api/v1";
 
-function loadTokenFromLocalStorage() {
-	TOKEN = localStorage.getItem("token");
-}
-
 /** setItem
  * Set an item in remote storage.
  * @param {string} key - The key of the item to be stored.
@@ -89,15 +85,15 @@ async function sendLoginRequest(data) {
 			return response.json();
 		})
 		.then((data) => {
-			localStorage.setItem("currentUserIndex", data.id);
+			localStorage.setItem("currentUserIndex", data.user_id);
 			localStorage.setItem("token", data.token);
-			localStorage.setItem("full_name", data.full_name);
 			localStorage.setItem("username", data.username);
+			localStorage.setItem("email", data.email);
 		})
 		.catch((error) => console.error("Fehler:", error));
 }
 
-async function signUp(data) {
+async function sendRegistrationRequest(data) {
 	const url = "http://127.0.0.1:8000/api/auth/registration/";
 	fetch(url, {
 		method: "POST",
@@ -113,40 +109,10 @@ async function signUp(data) {
 			return response.json();
 		})
 		.then((data) => {
-			localStorage.setItem("currentUserIndex", data.id);
-			localStorage.setItem("token", data.token);
-			localStorage.setItem("username", data.username);
+			// localStorage.setItem("currentUserIndex", data.user_id);
+			// localStorage.setItem("token", data.token);
+			// localStorage.setItem("username", data.username);
+			// localStorage.setItem("email", data.email);
 		})
 		.catch((error) => console.error("Fehler:", error));
-}
-
-//new for script.js
-function testLogin() {
-	const data = {
-		username: "jürgenwinter",
-		password: "werte12345",
-	};
-	sendLoginRequest(data);
-}
-
-//new for script.js
-function checkIsLogedIn() {
-	if (localStorage.getItem("token")) loadTokenFromLocalStorage();
-}
-
-//new for script.js
-function testLogOut() {
-	localStorage.clear();
-	window.location.href = "index.html";
-}
-
-//new for script.js
-function testRegistration() {
-	const data = {
-		username: "niklasberting",
-		email: "niklasberting@gmail.com",
-		password: "werte12345",
-		repeated_password: "werte12345",
-	};
-	signUp(data);
 }

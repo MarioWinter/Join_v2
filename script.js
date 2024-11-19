@@ -5,6 +5,23 @@ let today = new Date();
 let hour = today.getHours();
 
 /**
+ * Loads the token from local storage and stores it in the global variable TOKEN.
+ * @global
+ */
+function loadTokenFromLocalStorage() {
+  TOKEN = localStorage.getItem("token");
+}
+
+/**
+* Checks if the user is logged in by looking for a token in local storage.
+* If a token is found, it calls the loadTokenFromLocalStorage function
+* to load the token.
+*/
+function checkIsLogedIn() {
+  if (localStorage.getItem("token")) loadTokenFromLocalStorage();
+}
+
+/**
  * Includes HTML Templates (header/footer) asynchronously.
  * Fetches HTML files specified in elements with attribute 'w3-include-html' and inserts them into those elements.
  */
@@ -73,17 +90,23 @@ function renderSignUp() {
 // Sign up //
 
 /**
- * Registers a user if email doesn't exist in the users array.
+ * Registers a user.
  */
-async function registerUser() {
-  let email = document.getElementById("sign_email").value;
-  ifChecked();
-  if (isEmailExists(email)) {
-    emailExist();
-  } else {
-    userToRemoteStorage();
+async function registerUser() {  
+  const data = {
+		username: sign_name.value,
+		email: sign_email.value,
+		password: sign_password.value,
+		repeated_password: sign_password_confirm.value,
+	};
+  
+  if (ifChecked()) {
+
+  }else{
+    sendRegistrationRequest(data);
     successfulRegistration();
   }
+  //emailExist() Error Handling?
 }
 
 /**
@@ -100,28 +123,6 @@ function ifChecked() {
     registerBtn.disabled = true;
     registerBtn.classList.add('reg-btn'); // Set background color to gray
   }
-}
-
-/**
- * Clears remote storage by resetting the users array.
- */
-async function clearRemoteSTRG() {
-  users = [];
-  await setItem("users", JSON.stringify(users));
-}
-
-/**
- * Adds a user to the users array and stores it in remote storage.
- */
-async function userToRemoteStorage() {
-  users.push({
-    name: sign_name.value,
-    email: sign_email.value,
-    password: sign_password.value,
-    bgcolor: getRandomColor(),
-    Number: '',
-  });
-  await setItem("users", JSON.stringify(users));
 }
 
 /**
@@ -147,15 +148,6 @@ function successfulRegistration() {
   setTimeout(() => {
     renderLogIn();
   }, 1000);
-}
-
-/**
- * Checks if an email already exists in the users array.
- * @param {string} email - The email to check.
- * @returns {boolean} True if the email exists, false otherwise.
- */
-function isEmailExists(email) {
-  return users.some((user) => user.email === email);
 }
 
 /**
@@ -212,14 +204,18 @@ function resetForm() {
  * Logs in the user if username and password match.
  */
 function logIn() {
-  let username = formatUsername(log_in_username.value);
+  let email = log_in_email.value;
   let password = log_in_password.value;
   const data = {
-		username: username,
+		email: email,
 		password: password,
 	};
   sendLoginRequest(data)
   sendLoginRequest(data) ? logInSuccedMsg() : logInFailMsg()
+}
+
+function logOut() {
+	localStorage.clear();
 }
 
 /**löschen
@@ -269,7 +265,11 @@ function logInFailMsg(){
  * Loads the current user index from local storage.
  */
 function loadCurrentUser() {
-  currentUser = localStorage.getItem('currentUserIndex');
+  if (localStorage.getItem('currentUserIndex')){
+    currentUser = localStorage.getItem('currentUserIndex');
+  } else {
+    testLogOut()
+  }
 }
 
 /**
@@ -333,6 +333,36 @@ function showSignUpBtn() {
   }
 }
 
-function formatUsername(username) {
-  return username.toLowerCase().replace(/\s+/g, '');
-}
+// function formatUsername(username) {
+//   return username.toLowerCase().replace(/\s+/g, '');
+// }
+
+
+// function formatName(fullName) {
+//   let nameParts = fullName.trim().split(/\s+/);
+//   let firstName = '';
+//   let lastName = '';
+
+//   if (nameParts.length === 1) {
+//     firstName = nameParts[0];
+//   } else {
+//     lastName = nameParts.pop();
+//     firstName = nameParts.join(' ');
+//   }
+
+//   firstName = capitalizeFirstLetter(firstName);
+//   lastName = capitalizeFirstLetter(lastName);
+
+//   return { 
+//     first_name: firstName, 
+//     last_name: lastName 
+//   };
+// }
+
+
+// function capitalizeFirstLetter(string) {
+//   if (typeof string !== 'string' || string.length === 0) {
+//     return string;
+//   }
+//   return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+// }
