@@ -18,6 +18,9 @@ function loadTokenFromLocalStorage() {
 function checkIsLogedIn() {
 	if (localStorage.getItem("token")) {
 		loadTokenFromLocalStorage();
+		if (window.location.href.includes("index.html")) {
+			window.location.href = "summary.html";
+		}
 	} else if (!window.location.href.includes("index.html")) {
 		window.location.href = "index.html";
 	}
