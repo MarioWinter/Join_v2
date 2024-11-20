@@ -278,6 +278,7 @@ function greetUser() {
 function logInGuest() {
   window.location.href = 'summary.html';
   userIndex = -1;
+  localStorage.setItem('token', 'd6d7a8a491b0a7038adc6c78623dcffd83aef5e6');
   localStorage.setItem('currentUserIndex', userIndex);
   document.getElementById('user_name') = 'Guest User';
 }
