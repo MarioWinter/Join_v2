@@ -1,4 +1,4 @@
-let users = [];
+let username;
 let currentUser;
 
 let today = new Date();
@@ -44,6 +44,7 @@ async function includeHTML() {
  * Initializes summary page by loading users, setting current user, greeting user, loading added tasks, loading user badge, and rendering summary data.
  */
 async function summaryInit() {
+  checkIsLogedIn()
   loadCurrentUser();
   greetUser();
   await loadAddedTasksFromStorage();
@@ -268,7 +269,8 @@ function logInFailMsg() {
  */
 function loadCurrentUser() {
   if (localStorage.getItem('currentUserIndex')){
-    currentUser = localStorage.getItem('currentUserIndex');
+    currentUser = Number(localStorage.getItem('currentUserIndex'));
+    username = localStorage.getItem('username')
   } else {
     logOut()
   }
@@ -281,7 +283,7 @@ function greetUser() {
   let greet = document.getElementById('user_name');
   i = currentUser;
   if (i >= 0) {
-    greet.innerHTML = `${users[i]['name']}`;
+    greet.innerHTML = `${username}`;
   } else {
     greet.innerHTML = `Guest`;
   }

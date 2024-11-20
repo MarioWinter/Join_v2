@@ -57,16 +57,24 @@ async function deleteItem(data, endpoint, id) {
  */
 async function getItems(endpoint) {
 	let url = `${API_BASE_URL}/${endpoint}/`;
-	return fetch(url, {
-		method: "GET",
-		headers: {
-			"Content-Type": "application/json",
-			Authorization: `Token ${TOKEN}`,
-		},
-	})
-		.then((response) => response.json())
-		.then((data) => console.log(data))
-		.catch((error) => console.error("Fehler:", error));
+	try {
+		const response = await fetch(url, {
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Token ${TOKEN}`,
+			},
+		});
+		if (!response.ok) {
+			throw new Error(`HTTP error! status: ${response.status}`);
+		}
+		const data = await response.json();
+
+		return data;
+	} catch (error) {
+		console.error("Fehler:", error);
+		throw error;
+	}
 }
 
 async function sendLoginRequest(data) {

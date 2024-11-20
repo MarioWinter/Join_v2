@@ -35,7 +35,8 @@ async function clearAddedTasksRemoteSTRG() {
  */
 async function loadAddedTasksFromStorage() {
 	try {
-		addedTasks = JSON.parse(await getItem("addedTasks"));
+		addedTasks = await getItems("tasks");
+		console.log("Loaded tasks:", addedTasks); // Optional: Überprüfen Sie die geladenen Aufgaben
 	} catch (e) {
 		console.error("Loading Added Tasks error:", e);
 	}
