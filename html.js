@@ -6,41 +6,29 @@
 function renderHtmlLogIn() {
 	return /*html*/ `
   <div id="log_in_conatiner" class="log-in-container">
-  <h1>Log in</h1>
-  <div class="log-in-underline"></div>
-  <form class="log-in-input-container" onsubmit="logIn(); return false">
-   
-  <div class="log-in-input-box">
-      <input id="log_in_email" required type="text"  placeholder="E-Mail" />
-      <img
-        src="./assets/img/mail.png"
-        alt=""
-        srcset=""
-      />
-    </div>
-    <div class="log-in-msg" id="log_message"></div>
-    <div class="log-in-input-box">
-      <input id="log_in_password" required placeholder="Password"  type="password" /><img
-        src="./assets/img/lock.png"
-        alt=""
-        srcset=""
-      />
-    </div>
-    <div class="log-in-checkbox">
-      <input required
-      id="confirm" type="checkbox"
-        checked
-      /><label  for="confirm"
-        >Remember me</label
-      >
-    </div>
-    <div  class="btn-log-in-container">
-      <button type="button" class="btn-log-in btn-log-mobile" onclick="logIn()">Log in</button>
-      <button type="button" class="btn-log-in-guest btn-log-mobile" onclick="logInGuest()">Guest Log in</button>
-    </div>
-</form>
-</div>
-    `;
+      <h1>Log in</h1>
+      <div class="log-in-underline"></div>
+      <form class="log-in-input-container" onsubmit="logIn(); return false">
+          <div class="log-in-input-box">
+              <input id="log_in_email" required type="email" placeholder="E-Mail" />
+              <img src="./assets/img/mail.png" alt="" srcset="" />
+          </div>
+          <div class="log-in-msg" id="log_message"></div>
+          <div class="log-in-input-box">
+              <input id="log_in_password" required placeholder="Password" type="password" />
+              <img src="./assets/img/lock.png" alt="" srcset="" />
+          </div>
+          <div class="log-in-checkbox">
+              <input required id="confirm" type="checkbox" checked />
+              <label for="confirm">Remember me</label>
+          </div>
+          <div class="btn-log-in-container">
+              <button type="submit" class="btn-log-in btn-log-mobile">Log in</button>
+              <button type="button" class="btn-log-in-guest btn-log-mobile" onclick="logInGuest()">Guest Log in</button>
+          </div>
+      </form>
+  </div>
+  `;
 }
 
 /**
@@ -92,7 +80,7 @@ function renderSignUpHTML() {
               </svg>
             </div>
             <div class="log-in-input-box">
-              <input id="sign_password" onkeyup='checkPass();' required minlength="4" type="password"
+              <input id="sign_password" onkeyup='validatePassword();' required minlength="4" type="password"
                 placeholder="Password" />
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                 <mask id="mask0_100427_6072" style="mask-type: alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="24"
@@ -108,7 +96,7 @@ function renderSignUpHTML() {
             </div>
 
             <div class="log-in-input-box">
-              <input id="sign_password_confirm" onkeyup='checkPass();' required minlength="4" type="password"
+              <input id="sign_password_confirm" onkeyup='validatePassword();' required minlength="4" type="password"
                 placeholder="Confirm Password" />
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                 <mask id="mask0_100427_6072" style="mask-type: alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="24"

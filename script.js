@@ -104,7 +104,6 @@ async function registerUser() {
 
   }else{
     sendRegistrationRequest(data);
-    successfulRegistration();
   }
   //emailExist() Error Handling?
 }
@@ -138,19 +137,7 @@ function getRandomColor() {
   return color;
 }
 
-/**
- * Displays a message indicating successful registration and redirects to login after a short delay.
- */
-function successfulRegistration() {
-  const sing_up_container = document.getElementById('sing_up_container');
-  sing_up_container.innerHTML = '<span class="register-succesful">Registration successful</span>';
-
-  setTimeout(() => {
-    renderLogIn();
-  }, 1000);
-}
-
-/**
+/** Change
  * Displays a message indicating that the email already exists.
  */
 function emailExist() {
@@ -173,7 +160,7 @@ async function loadContacts() {
 /**
  * Checks if the password and confirm password fields match to enable the register button.
  */
-function checkPass() {
+function validatePassword() {
   if (
     document.getElementById("sign_password").value ==
     document.getElementById("sign_password_confirm").value
@@ -211,34 +198,22 @@ function logIn() {
 		password: password,
 	};
   sendLoginRequest(data)
-  sendLoginRequest(data) ? logInSuccedMsg() : logInFailMsg()
 }
 
 function logOut() {
 	localStorage.clear();
 }
 
-/**löschen
- * Finds the index of a user by email and stores it in local storage.
+/**
+ * Displays a message indicating successful registration and redirects to login after a short delay.
  */
-function indexOfUser(email) {
-  let userIndex = users.findIndex(user => user.email === email);
-  localStorage.setItem('currentUserIndex', userIndex);
-}
+function successfulRegistration() {
+	const sing_up_container = document.getElementById("sing_up_container");
+	sing_up_container.innerHTML = '<span class="register-succesful">Registration successful</span>';
 
-/** löschen
- * Validates user login by checking email and password.
- * @param {string} email - The email entered by the user.
- * @param {string} password - The password entered by the user.
- * @returns {object|null} The user object if found, null otherwise.
- */
-function logInValidation(email, password) {
-  let user = users.find(u => u.email == email);
-  if (user && user.password == password) {
-    return user;
-  } else {
-    return null;
-  }
+	setTimeout(() => {
+		renderLogIn();
+	}, 1000);
 }
 
 /**
@@ -255,9 +230,13 @@ function logInSuccedMsg() {
  * Sets the text content of the login message element to indicate
  * that the name or password was not found, and changes the text color to red.
  */
-function logInFailMsg(){
-  log_message.innerText = 'name or password not found';
-  log_message.style = 'color: red';
+// function logInFailMsg(){
+//   log_message.innerText = 'name or password not found';
+//   log_message.style = 'color: red';
+// }
+function logInFailMsg() {
+  log_message.innerText = 'Email or password is not valid';
+  log_message.style.color = 'red';
 }
 
 
@@ -268,7 +247,7 @@ function loadCurrentUser() {
   if (localStorage.getItem('currentUserIndex')){
     currentUser = localStorage.getItem('currentUserIndex');
   } else {
-    testLogOut()
+    logOut()
   }
 }
 
@@ -332,37 +311,3 @@ function showSignUpBtn() {
     document.getElementById('sing_up_mobile').classList.remove('d-none');
   }
 }
-
-// function formatUsername(username) {
-//   return username.toLowerCase().replace(/\s+/g, '');
-// }
-
-
-// function formatName(fullName) {
-//   let nameParts = fullName.trim().split(/\s+/);
-//   let firstName = '';
-//   let lastName = '';
-
-//   if (nameParts.length === 1) {
-//     firstName = nameParts[0];
-//   } else {
-//     lastName = nameParts.pop();
-//     firstName = nameParts.join(' ');
-//   }
-
-//   firstName = capitalizeFirstLetter(firstName);
-//   lastName = capitalizeFirstLetter(lastName);
-
-//   return { 
-//     first_name: firstName, 
-//     last_name: lastName 
-//   };
-// }
-
-
-// function capitalizeFirstLetter(string) {
-//   if (typeof string !== 'string' || string.length === 0) {
-//     return string;
-//   }
-//   return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
-// }

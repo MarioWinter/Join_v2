@@ -80,7 +80,10 @@ async function sendLoginRequest(data) {
 	})
 		.then((response) => {
 			if (!response.ok) {
-				throw new Error(`HTTP-Fehler! Status: ${response.status}`);
+				return response.json().then((errorData) => {
+					logInFailMsg();
+					throw new Error(`Login failed: ${JSON.stringify(errorData)}`);
+				});
 			}
 			return response.json();
 		})
@@ -89,8 +92,12 @@ async function sendLoginRequest(data) {
 			localStorage.setItem("token", data.token);
 			localStorage.setItem("username", data.username);
 			localStorage.setItem("email", data.email);
+			logInSuccedMsg();
 		})
-		.catch((error) => console.error("Fehler:", error));
+		.catch((error) => {
+			console.error("Login failed:", error);
+			logInFailMsg();
+		});
 }
 
 async function sendRegistrationRequest(data) {
@@ -104,15 +111,14 @@ async function sendRegistrationRequest(data) {
 	})
 		.then((response) => {
 			if (!response.ok) {
-				throw new Error(`HTTP-Fehler! Status: ${response.status}`);
+				return response.json().then((errorData) => {
+					throw new Error(`Registration failed: ${JSON.stringify(errorData)}`);
+				});
 			}
 			return response.json();
 		})
 		.then((data) => {
-			// localStorage.setItem("currentUserIndex", data.user_id);
-			// localStorage.setItem("token", data.token);
-			// localStorage.setItem("username", data.username);
-			// localStorage.setItem("email", data.email);
+			successfulRegistration();
 		})
-		.catch((error) => console.error("Fehler:", error));
+		.catch((error) => console.error("Registration failed:", error));
 }
