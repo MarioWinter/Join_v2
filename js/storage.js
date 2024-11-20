@@ -1,5 +1,27 @@
 let TOKEN = "";
 const API_BASE_URL = "http://127.0.0.1:8000/api/v1";
+checkIsLogedIn();
+
+/**
+ * Loads the token from local storage and stores it in the global variable TOKEN.
+ * @global
+ */
+function loadTokenFromLocalStorage() {
+	TOKEN = localStorage.getItem("token");
+}
+
+/**
+ * Checks if the user is logged in by looking for a token in local storage.
+ * If a token is found, it calls the loadTokenFromLocalStorage function
+ * to load the token.
+ */
+function checkIsLogedIn() {
+	if (localStorage.getItem("token")) {
+		loadTokenFromLocalStorage();
+	} else if (!window.location.href.includes("index.html")) {
+		window.location.href = "index.html";
+	}
+}
 
 /** setItem
  * Set an item in remote storage.

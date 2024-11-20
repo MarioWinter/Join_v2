@@ -16,9 +16,9 @@
 		<link rel="stylesheet" href="./css/add-task-slider.css" />
 		<link rel="stylesheet" href="./css/edit-board-slider.css" />
 
+		<script src="./js/storage.js"></script>
 		<script src="./js/board.js"></script>
 		<script src="./js/task-open.js"></script>
-		<script src="./js/storage.js"></script>
 		<script src="./script.js"></script>
 		<script src="./js/sidebar-header.js"></script>
 		<script src="html.js"></script>
@@ -51,7 +51,11 @@
 									</div>
 									<div class="description-main">
 										<div class="description-field">Description</div>
-										<textarea id="enter_description_field" class="enter-description-field" placeholder="Enter a Description"></textarea>
+										<textarea
+											id="enter_description_field"
+											class="enter-description-field"
+											placeholder="Enter a Description"
+										></textarea>
 									</div>
 									<div class="assigned-main">
 										<div class="assigned-field">Assigned to</div>
@@ -138,10 +142,18 @@
 												src="./assets/img/add-task-plus.svg"
 											/>
 											<div id="three_subtask_icons" class="three-subtask-icons d-none">
-												<img id="adding_subtask_icon-c" class="subtask-icons" src="./assets/img/cancel.svg" onclick="closeSubtaskIcons()" /><img
-													src="./assets/img/vector-line.svg"
+												<img
+													id="adding_subtask_icon-c"
+													class="subtask-icons"
+													src="./assets/img/cancel.svg"
+													onclick="closeSubtaskIcons()"
+												/><img src="./assets/img/vector-line.svg" />
+												<img
+													id="adding_subtask_icon-ok"
+													class="subtask-icons"
+													onclick="displaySubtasks()"
+													src="./assets/img/check-dark.svg"
 												/>
-												<img id="adding_subtask_icon-ok" class="subtask-icons" onclick="displaySubtasks()" src="./assets/img/check-dark.svg" />
 											</div>
 										</div>
 										<div id="subtask_display_container" class="subtask-display"></div>
@@ -155,7 +167,15 @@
 									<div id="clear_button" class="clear-container" onclick="clearAllFields()">
 										Clear
 										<svg xmlns="http://www.w3.org/2000/svg" width="24" height="25" viewBox="0 0 24 25" fill="none">
-											<mask id="mask0_71720_5473" style="mask-type: alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="25">
+											<mask
+												id="mask0_71720_5473"
+												style="mask-type: alpha"
+												maskUnits="userSpaceOnUse"
+												x="0"
+												y="0"
+												width="24"
+												height="25"
+											>
 												<rect y="0.96582" width="24" height="24" fill="#D9D9D9" />
 											</mask>
 											<g mask="url(#mask0_71720_5473)">

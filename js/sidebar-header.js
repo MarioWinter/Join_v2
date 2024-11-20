@@ -88,9 +88,13 @@ function loadUserBadge() {
 	let userBadgeContainer = document.getElementById("user_initials");
 	i = currentUser;
 	if (i >= 0) {
-		let userName = users[i]["name"];
-		let userInitials = generateUserBadge(userName);
-		userBadgeContainer.innerHTML = userInitials;
+		if (userBadgeContainer) {
+			// let username = users[i]["name"];
+			let userInitials = generateUserBadge(username);
+			userBadgeContainer.innerHTML = userInitials;
+		} else {
+			console.log("Element not found");
+		}
 	}
 }
 

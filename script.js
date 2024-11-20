@@ -5,23 +5,6 @@ let today = new Date();
 let hour = today.getHours();
 
 /**
- * Loads the token from local storage and stores it in the global variable TOKEN.
- * @global
- */
-function loadTokenFromLocalStorage() {
-  TOKEN = localStorage.getItem("token");
-}
-
-/**
-* Checks if the user is logged in by looking for a token in local storage.
-* If a token is found, it calls the loadTokenFromLocalStorage function
-* to load the token.
-*/
-function checkIsLogedIn() {
-  if (localStorage.getItem("token")) loadTokenFromLocalStorage();
-}
-
-/**
  * Includes HTML Templates (header/footer) asynchronously.
  * Fetches HTML files specified in elements with attribute 'w3-include-html' and inserts them into those elements.
  */
@@ -44,7 +27,7 @@ async function includeHTML() {
  * Initializes summary page by loading users, setting current user, greeting user, loading added tasks, loading user badge, and rendering summary data.
  */
 async function summaryInit() {
-  checkIsLogedIn()
+  await includeHTML();
   loadCurrentUser();
   greetUser();
   await loadAddedTasksFromStorage();
@@ -56,7 +39,6 @@ async function summaryInit() {
  * Initializes the page by loading users and rendering the login window.
  */
 async function init() {
-  checkIsLogedIn()
   renderLogIn();
 }
 
