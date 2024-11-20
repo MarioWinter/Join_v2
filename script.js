@@ -43,6 +43,7 @@ async function init() {
 }
 
 async function initSidePages() {
+  await includeHTML();
   loadCurrentUser();
   loadUserBadge();
 }
