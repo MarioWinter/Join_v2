@@ -208,13 +208,36 @@ function logOut() {
  * Displays a message indicating successful registration and redirects to login after a short delay.
  */
 function successfulRegistration() {
-	const sing_up_container = document.getElementById("sing_up_container");
-	sing_up_container.innerHTML = '<span class="register-succesful">Registration successful</span>';
+	sing_up_container.innerHTML = '<span class="register-msg">Registration successful</span>';
 
 	setTimeout(() => {
 		renderLogIn();
 	}, 1000);
 }
+
+/**
+ * Displays a message indicating that the email is already taken.
+ */
+function emailAlreadyTakenMessage() {
+  sing_up_container.innerHTML = '<span class="register-msg">This email is already taken</span>';
+
+  setTimeout(() => {
+      renderSignUp(); // Annahme: Diese Funktion rendert das Registrierungsformular neu
+  }, 3000);
+}
+
+/**
+* Displays a message indicating that the registration failed.
+*/
+function registrationFailedMessage() {
+  sing_up_container.innerHTML = '<span class="register-msg">Registration failed. Please try again.</span>';
+
+  setTimeout(() => {
+      renderSignUp(); // Annahme: Diese Funktion rendert das Registrierungsformular neu
+  }, 3000);
+}
+
+
 
 /**
  * redirects to the summary page after a short delay.
