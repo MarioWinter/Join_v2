@@ -84,7 +84,7 @@ function initUserSelectField(containerID) {
 	let contactsContainer = document.getElementById(containerID);
 	for (let i = 0; i < contacts.length; i++) {
 		let userName = contacts[i]["name"];
-		let userBadge = generateUserBadge(userName);
+		let userBadge = generateBadge(userName);
 		let badgeColor = contacts[i]["bgcolor"];
 		if (newAssigned.includes(userName)) {
 			contactsContainer.innerHTML += generateTaskAssigmentContactsHTML(userName, badgeColor, userBadge, i);
@@ -125,7 +125,7 @@ function showSelectedContacts(newAssigned) {
 		if (contactIndex !== -1) {
 			let badgeColor = contacts[contactIndex]["bgcolor"];
 			let contactName = contacts[contactIndex]["name"];
-			let userBadge = generateUserBadge(contactName);
+			let userBadge = generateBadge(contactName);
 			let selectedContactHTML = generateSelectedContactHTML(contactName, badgeColor, userBadge, i);
 			selectedContacts.innerHTML += selectedContactHTML;
 		}

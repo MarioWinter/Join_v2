@@ -81,7 +81,7 @@ function activeInfoLink() {
  * 1. Retrieves the user badge container using the ID "user_initials."
  * 2. Checks if the currentUser variable is a valid index.
  * 3. If the index is valid, retrieves the user's name.
- * 4. Generates the user badge using the generateUserBadge function.
+ * 4. Generates the user badge using the generateBadge function.
  * 5. Updates the inner HTML of the user badge container with the generated user badge.
  */
 function loadUserBadge() {
@@ -90,7 +90,7 @@ function loadUserBadge() {
 	if (i >= 0) {
 		if (userBadgeContainer) {
 			// let username = contacts[i]["name"];
-			let userInitials = generateUserBadge(username);
+			let userInitials = generateBadge(username);
 			userBadgeContainer.innerHTML = userInitials;
 		} else {
 			console.log("Element not found");
@@ -112,7 +112,7 @@ function loadUserBadge() {
  * 4. Concatenates the first name initial and last name initial to create the user badge.
  * 5. Returns the generated user badge.
  */
-function generateUserBadge(fullName) {
+function generateBadge(fullName) {
 	let nameParts = fullName.split(" ");
 	let firstNameInitial = nameParts[0] ? nameParts[0].charAt(0).toUpperCase() : "";
 	let lastNameInitial = nameParts[1] ? nameParts[1].charAt(0).toUpperCase() : "";

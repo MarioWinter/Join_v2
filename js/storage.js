@@ -140,30 +140,30 @@ async function sendLoginRequest(data) {
 
 async function sendRegistrationRequest(data) {
 	const url = "http://127.0.0.1:8000/api/auth/registration/";
-	try {
-		const response = await fetch(url, {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify(data),
-		});
+	fetch(url, {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+		},
+		body: JSON.stringify(data),
+	})
+		.then((response) => {
+			if (!response.ok) {
+				if (response.email && response.email[0].includes("already exists")) {
+					emailAlreadyTakenMessage();
+				} else {
+					registrationFailedMessage();
+				}
 
-		const responseData = await response.json();
-
-		if (!response.ok) {
-			if (responseData.email && responseData.email[0].includes("already exists")) {
-				emailAlreadyTakenMessage();
-			} else {
-				registrationFailedMessage();
+				return response.json();
 			}
-			return;
-		}
-
-		successfulRegistration();
-	} catch (error) {
-		registrationFailedMessage();
-	}
+		})
+		.then((data) => {
+			successfulRegistration();
+		})
+		.catch((error) => {
+			registrationFailedMessage();
+		});
 }
 
 // async function sendRegistrationRequest(data) {

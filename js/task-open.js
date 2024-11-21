@@ -84,9 +84,9 @@ function loadAssignedsOpenTask(assigneds, taskID) {
 	let assigned = document.getElementById("assigned_to_contacts_task_open");
 	assigned.innerHTML = "";
 	for (let i = 0; i < assigneds.length; i++) {
-		let badgeColor = getUserColor(assigneds, i);
-		let assignedUserName = assigneds[i];
-		let userBadge = generateUserBadge(assignedUserName);
+		let badgeColor = assigneds[i]["bgcolor"];
+		let assignedUserName = assigneds[i]["name"];
+		let userBadge = generateBadge(assignedUserName);
 		assigned.innerHTML += generateAssigmentHTML(userBadge, badgeColor, assignedUserName, taskID);
 	}
 }
@@ -153,20 +153,5 @@ function changeSubtaskConfirmation(elementID, subtaskNumber, taskID) {
 		subtask["subdone"] = true;
 	} else if (!checkSubtask.checked) {
 		subtask["subdone"] = false;
-	}
-}
-
-/**
- * Gets the specified user color for the user badge
- *
- * @param {string} assigneds - contains the assigned array of the respective task
- * @param {int} index - contains the index number of the required Assigned User
- * @returns
- */
-function getUserColor(assigneds, index) {
-	let assignedName = assigneds[index];
-	let filteredUser = contacts.filter((t) => t["name"] === assignedName);
-	if (filteredUser.length > 0) {
-		return filteredUser[0]["bgcolor"];
 	}
 }

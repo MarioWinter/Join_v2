@@ -15,9 +15,9 @@ let filteredTasks = [];
 async function initBoard() {
 	await loadAddedTasksFromStorage();
 	await loadContacts();
-	loadBoard();
 	loadCurrentUser();
 	loadUserBadge();
+	loadBoard();
 }
 
 /**
@@ -103,7 +103,7 @@ function getTaskVariables(tasks, index) {
 	let description = task["description"];
 	let prio = task["prio"];
 	let category = task["category"];
-	let subtasks = task["subtask"];
+	let subtasks = task["subtasks"];
 	let assigneds = task["assigned"];
 	let duedate = formatDueDate(task["duedate"]);
 	let rawDuedate = task["duedate"];
@@ -195,9 +195,9 @@ function addAssignedsBadgesToCard(assigneds, id) {
 
 /**
  * Retrieves variables for assigned individuals' badges based on the specified array and index.
- * - Get the badge color using the getUserColor function.
+ * - Get the badge color use bgcolor from the array.
  * - Get the assigned user name from the array.
- * - Generate the user badge using the generateUserBadge function.
+ * - Generate the user badge using the generateBadge function.
  * - Calculate the assignedLimit (last index) and addLimit for conditions.
  *
  * @param {Array} assigneds - An array of assigned individuals for the task.
@@ -205,9 +205,9 @@ function addAssignedsBadgesToCard(assigneds, id) {
  * @returns {Array} - An array containing variables in the order: [badgeColor, userBadge, assignedLimit, addLimit].
  */
 function getVariableForAssignedsUserBadge(assigneds, i) {
-	let badgeColor = getUserColor(assigneds, i);
-	let assignedUserName = assigneds[i];
-	let userBadge = generateUserBadge(assignedUserName);
+	let badgeColor = assigneds[i]["bgcolor"];
+	let assignedUserName = assigneds[i]["name"];
+	let userBadge = generateBadge(assignedUserName);
 	let assignedLimit = assigneds.length - 1;
 	let addLimit = 5;
 	return [badgeColor, userBadge, assignedLimit, addLimit];

@@ -209,7 +209,7 @@ function loadAllUsersForContactOnAssignedTo(assigneds, containerID, ID) {
 	let contactsContainer = document.getElementById(containerID);
 	for (let i = 0; i < contacts.length; i++) {
 		let userName = contacts[i]["name"];
-		let userBadge = generateUserBadge(userName);
+		let userBadge = generateBadge(userName);
 		let badgeColor = contacts[i]["bgcolor"];
 		if (assigneds.includes(userName)) {
 			contactsContainer.innerHTML += generateEditTaskAssigmentContactsCheckedHTML(badgeColor, userBadge, userName, i, ID);
@@ -263,16 +263,16 @@ function addContactAsAssigned(id, i, j) {
  * 3. Iterate through the assigned contacts array.
  *    a. Get the badge color for the current assigned contact.
  *    b. Get the assigned contact's name.
- *    c. Generate the user badge HTML using the generateUserBadge function.
+ *    c. Generate the user badge HTML using the generateBadge function.
  *    d. Append the generated assignment badge HTML to the container.
  */
 function loadAssignedOnEditTask(assigneds, containerID) {
 	let selectetContactsContainer = document.getElementById(containerID);
 	selectetContactsContainer.innerHTML = "";
 	for (let i = 0; i < assigneds.length; i++) {
-		let badgeColor = getUserColor(assigneds, i);
-		let assignedName = assigneds[i];
-		let userBadge = generateUserBadge(assignedName);
+		let badgeColor = assigneds[i]["bgcolor"];
+		let assignedName = assigneds[i]["name"];
+		let userBadge = generateBadge(assignedName);
 		selectetContactsContainer.innerHTML += generateAssigmentBadgeEditTaskHTML(userBadge, badgeColor, i);
 	}
 }
@@ -330,7 +330,7 @@ function renderFilterdUsersOnAssignedTo(assigneds, searchTerm, id, contactsConta
 	for (let i = 0; i < contacts.length; i++) {
 		let userName = contacts[i]["name"];
 		if (userName.toLowerCase().includes(searchTerm)) {
-			let userBadge = generateUserBadge(userName);
+			let userBadge = generateBadge(userName);
 			let badgeColor = contacts[i]["bgcolor"];
 			if (assigneds.includes(userName)) {
 				contactsContainer.innerHTML += generateEditTaskAssigmentContactsCheckedHTML(badgeColor, userBadge, userName, i, id);
