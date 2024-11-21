@@ -5,8 +5,8 @@
  * @returns {void}
  */
 function frameSlideIn(id) {
-    document.getElementById(id).classList.remove("slide-out");
-    document.getElementById(id).classList.add("slide-in");
+	document.getElementById(id).classList.remove("slide-out");
+	document.getElementById(id).classList.add("slide-in");
 }
 
 /**
@@ -16,8 +16,8 @@ function frameSlideIn(id) {
  * @returns {void}
  */
 function frameSlideOut(id) {
-    document.getElementById(id).classList.remove("slide-in");
-    document.getElementById(id).classList.add("slide-out");
+	document.getElementById(id).classList.remove("slide-in");
+	document.getElementById(id).classList.add("slide-out");
 }
 
 /**
@@ -27,8 +27,8 @@ function frameSlideOut(id) {
  * @returns {void}
  */
 function addOverlayBg(id) {
-    document.getElementById(id).classList.add("slider-bg");
-    document.getElementById(id).classList.remove("slider-center");
+	document.getElementById(id).classList.add("slider-bg");
+	document.getElementById(id).classList.remove("slider-center");
 }
 
 /**
@@ -38,8 +38,8 @@ function addOverlayBg(id) {
  * @returns {void}
  */
 function removeOverlayBg(id) {
-    document.getElementById(id).classList.remove("slider-bg");
-    document.getElementById(id).classList.add("slider-center");
+	document.getElementById(id).classList.remove("slider-bg");
+	document.getElementById(id).classList.add("slider-center");
 }
 
 /**
@@ -49,7 +49,7 @@ function removeOverlayBg(id) {
  * @returns {void}
  */
 function addFixedBackround(id) {
-    document.getElementById(id).classList.add("pos-fixed");
+	document.getElementById(id).classList.add("pos-fixed");
 }
 
 /**
@@ -59,7 +59,7 @@ function addFixedBackround(id) {
  * @returns {void}
  */
 function removeFixedBackround(id) {
-    document.getElementById(id).classList.remove("pos-fixed");
+	document.getElementById(id).classList.remove("pos-fixed");
 }
 
 /**
@@ -69,20 +69,18 @@ function removeFixedBackround(id) {
  * - Removes the fixed background from the main container using removeFixedBackround function.
  * - Removes the overlay background using removeOverlayBg function.
  * - Delays hiding the task overlay background with a setTimeout function.
- * - Saves the updated addedTasks using setItem function.
  *
  * @param {string} id - The ID of the HTML element representing the task.
  * @returns {Promise<void>} - A promise that resolves when the task is hidden and data is saved.
  */
 async function hideTaskOpen(id) {
-    loadBoard();
-    frameSlideOut(id);
-    removeFixedBackround("main_container_board");
-    show("sub_menu");
-    removeOverlayBg("task_overlay_bg");
+	loadBoard();
+	frameSlideOut(id);
+	removeFixedBackround("main_container_board");
+	show("sub_menu");
+	removeOverlayBg("task_overlay_bg");
 
-    setTimeout(function () {
-        hide("task_overlay_bg");
-    }, 400);
-    await setItem("addedTasks", JSON.stringify(addedTasks));
+	setTimeout(function () {
+		hide("task_overlay_bg");
+	}, 400);
 }
