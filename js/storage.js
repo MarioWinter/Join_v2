@@ -33,8 +33,8 @@ function checkIsLogedIn() {
  * @returns {Promise<Object>} A Promise that resolves to the response from the server.
  */
 async function setItem(data, endpoint) {
-	let url = `${API_BASE_URL}/${endpoint}/`;
-	return fetch(url, {
+	const url = `${API_BASE_URL}/${endpoint}/`;
+	fetch(url, {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
@@ -42,8 +42,13 @@ async function setItem(data, endpoint) {
 		},
 		body: JSON.stringify(data),
 	})
-		.then((response) => response.json())
-		.catch((error) => console.error("Fehler:", error));
+		.then((response) => {
+			if (!response.ok) {
+				throw new Error(`HTTP error! status: ${response.status}`);
+			}
+			return response.json();
+		})
+		.catch((error) => console.error("Error:", error));
 }
 
 async function changeItem(data, endpoint, id) {
@@ -71,7 +76,7 @@ async function deleteItem(data, endpoint, id) {
 		body: JSON.stringify(data),
 	})
 		.then((response) => response.json())
-		.catch((error) => console.error("Fehler:", error));
+		.catch((error) => console.error("error:", error));
 }
 
 /** getItem

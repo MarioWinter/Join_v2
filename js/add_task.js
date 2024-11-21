@@ -352,7 +352,7 @@ async function createTask() {
 		duedate: date_field.value,
 		prio: selectedPriority,
 		category: select_category_field.value,
-		subtasks: [],
+		subtasks: addedSubtasks,
 	};
 	await setItem(addedTasks, "tasks");
 	createTaskMessage();
