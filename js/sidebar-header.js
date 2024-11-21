@@ -89,7 +89,7 @@ function loadUserBadge() {
 	i = currentUser;
 	if (i >= 0) {
 		if (userBadgeContainer) {
-			// let username = users[i]["name"];
+			// let username = contacts[i]["name"];
 			let userInitials = generateUserBadge(username);
 			userBadgeContainer.innerHTML = userInitials;
 		} else {

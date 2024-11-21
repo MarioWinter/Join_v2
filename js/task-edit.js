@@ -26,8 +26,8 @@ function loadTaskEdit(TaskID) {
  * Initializes the edit view for a task.
  * This function performs the following steps:
  *  1. Set the content of the task overlay background using generateEditTaskHTML.
- *  2. Load all users for contact on the assigned-to section of the edit task.
- *  3. Load assigned users on the edit task.
+ *  2. Load all contacts for contact on the assigned-to section of the edit task.
+ *  3. Load assigned contacts on the edit task.
  *  4. Set today's date for the calendar in the edit task.
  *  5. Load priority information on the edit task.
  *  6. Load subtasks for the edit task.
@@ -36,7 +36,7 @@ function loadTaskEdit(TaskID) {
  * @param {string} title - The title of the task.
  * @param {string} description - The description of the task.
  * @param {string} prio - The priority of the task.
- * @param {Array} assigneds - An array of assigned users for the task.
+ * @param {Array} assigneds - An array of assigned contacts for the task.
  * @param {string} duedate - The due date of the task.
  * @returns {void}
  *
@@ -190,27 +190,27 @@ function closeContactOverlay(containerID, selectedContactsID) {
 }
 
 /**
- * Loads all users for contact assignment on the edit task interface.
+ * Loads all contacts for contact assignment on the edit task interface.
  *
  * @param {Array<string>} assigneds - An array of assigned user names.
- * @param {string} containerID - The ID of the container to display the assigned users.
+ * @param {string} containerID - The ID of the container to display the assigned contacts.
  * @param {string} ID - The ID of the task.
  * @returns {void} - No return value.
  *
  * @description
  * This function performs the following steps:
  * 1. Get the container element by ID.
- * 2. Iterate through the users array.
+ * 2. Iterate through the contacts array.
  * 3. For each user, generate a badge with the user's name and badge color.
  * 4. If the user is assigned to the task, generate and append the HTML for a checked badge.
  * 5. If the user is not assigned to the task, generate and append the HTML for an unchecked badge.
  */
 function loadAllUsersForContactOnAssignedTo(assigneds, containerID, ID) {
 	let contactsContainer = document.getElementById(containerID);
-	for (let i = 0; i < users.length; i++) {
-		let userName = users[i]["name"];
+	for (let i = 0; i < contacts.length; i++) {
+		let userName = contacts[i]["name"];
 		let userBadge = generateUserBadge(userName);
-		let badgeColor = users[i]["bgcolor"];
+		let badgeColor = contacts[i]["bgcolor"];
 		if (assigneds.includes(userName)) {
 			contactsContainer.innerHTML += generateEditTaskAssigmentContactsCheckedHTML(badgeColor, userBadge, userName, i, ID);
 		} else {
@@ -223,7 +223,7 @@ function loadAllUsersForContactOnAssignedTo(assigneds, containerID, ID) {
  * Adds a contact to the list of assigned persons or removes them from it.
  *
  * @param {string} id - The ID of the checkbox element.
- * @param {number} i - The index of the user in the users array.
+ * @param {number} i - The index of the user in the contacts array.
  * @param {number} j - The index of the task in the addedTasks array.
  *
  * @description
@@ -237,7 +237,7 @@ function loadAllUsersForContactOnAssignedTo(assigneds, containerID, ID) {
 function addContactAsAssigned(id, i, j) {
 	let checkAssigned = document.getElementById(id);
 	let assigned = [];
-	let userName = users[i]["name"];
+	let userName = contacts[i]["name"];
 	let deleteName = assigned.indexOf(userName);
 	isNewTaskEmpty(newTask) ? (assigned = addedTasks[j]["assigned"]) : (assigned = newTask["assigned"]);
 
@@ -278,7 +278,7 @@ function loadAssignedOnEditTask(assigneds, containerID) {
 }
 
 /**
- * Filters and displays users based on the search term in the "Assigned To" section of the edit task interface.
+ * Filters and displays contacts based on the search term in the "Assigned To" section of the edit task interface.
  *
  * @param {string} inputID - The ID of the input element for the search term.
  * @param {string} searchContainerID - The ID of the container element for displaying search results.
@@ -292,7 +292,7 @@ function loadAssignedOnEditTask(assigneds, containerID) {
  * 3. Convert the search term to lowercase.
  * 4. Get the container element for displaying search results by ID.
  * 5. Clear the container's inner HTML.
- * 6. If the search term is empty, load all users for the "Assigned To" section using loadAllUsersForContactOnAssignedTo.
+ * 6. If the search term is empty, load all contacts for the "Assigned To" section using loadAllUsersForContactOnAssignedTo.
  * 7. If the search term is not empty, filter and display contacts based on the search term using getContect.
  */
 function filterUserOnAssignedTo(inputID, searchContainerID, id) {
@@ -310,28 +310,28 @@ function filterUserOnAssignedTo(inputID, searchContainerID, id) {
 }
 
 /**
- * Renders filtered users based on the search term in the "Assigned To" section of the edit task interface.
+ * Renders filtered contacts based on the search term in the "Assigned To" section of the edit task interface.
  *
  * @param {string[]} assigneds - An array of assigned contacts for the current task.
  * @param {string} searchTerm - The search term used for filtering contacts.
  * @param {string} id - The ID of the task being edited.
- * @param {HTMLElement} contactsContainer - The container element for displaying filtered users.
+ * @param {HTMLElement} contactsContainer - The container element for displaying filtered contacts.
  * @returns {void} - No return value.
  *
  * @description
  * This function performs the following steps:
- * 1. Iterate through the users array.
- * 2. Get the name of each user from the users array.
+ * 1. Iterate through the contacts array.
+ * 2. Get the name of each user from the contacts array.
  * 3. Check if the user's name (converted to lowercase) includes the search term (converted to lowercase).
  * 4. If the condition is met, generate the user badge, get the badge color, and update the container's inner HTML.
  * 5. If the user is already assigned, use generateEditTaskAssigmentContactsCheckedHTML; otherwise, use generateEditTaskAssigmentContactsHTML.
  */
 function renderFilterdUsersOnAssignedTo(assigneds, searchTerm, id, contactsContainer) {
-	for (let i = 0; i < users.length; i++) {
-		let userName = users[i]["name"];
+	for (let i = 0; i < contacts.length; i++) {
+		let userName = contacts[i]["name"];
 		if (userName.toLowerCase().includes(searchTerm)) {
 			let userBadge = generateUserBadge(userName);
-			let badgeColor = users[i]["bgcolor"];
+			let badgeColor = contacts[i]["bgcolor"];
 			if (assigneds.includes(userName)) {
 				contactsContainer.innerHTML += generateEditTaskAssigmentContactsCheckedHTML(badgeColor, userBadge, userName, i, id);
 			} else {
@@ -427,7 +427,15 @@ function loadSubtasksEditTask(subtaskListID, ID) {
 	let subtask = loadSubtask(ID);
 	for (let i = 0; i < subtask.length; i++) {
 		let subtitle = subtask[i]["subtitle"];
-		subtaskContainer.innerHTML += generateSubtaskListItemHTML(subtitle, i, ID, "subtask_listitem_", "subtask_edit_container", "subtask_edit_input", "subtask_lists");
+		subtaskContainer.innerHTML += generateSubtaskListItemHTML(
+			subtitle,
+			i,
+			ID,
+			"subtask_listitem_",
+			"subtask_edit_container",
+			"subtask_edit_input",
+			"subtask_lists"
+		);
 	}
 }
 

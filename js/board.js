@@ -5,7 +5,7 @@ let filteredTasks = [];
 /**
  * Asynchronously initializes the board by performing the following actions:
  * - Loads added tasks using the loadAddedTasksFromStorage function.
- * - Loads users using the loadUsers function.
+ * - Loads contacts using the loadUsers function.
  * - Loads the board using the loadBoard function.
  * - Loads the current user using the loadCurrentUser function.
  * - Loads the user badge using the loadUserBadge function.
@@ -405,17 +405,17 @@ function formatDueDate(dueDate) {
 }
 
 /**
- * Asynchronously clears the remote storage by resetting the 'users' array and updating the storage.
+ * Asynchronously clears the remote storage by resetting the 'contacts' array and updating the storage.
  *
  * Steps:
- * 1. Reset the 'users' array.
- * 2. Update the 'users' array in the storage using the setItem function.
+ * 1. Reset the 'contacts' array.
+ * 2. Update the 'contacts' array in the storage using the setItem function.
  *
  * @returns {Promise<void>} - A promise that resolves when the remote storage is cleared.
  */
 async function clearRemoteStorage() {
-	users = [];
-	await setItem("users", JSON.stringify(users));
+	contacts = [];
+	await setItem("contacts", JSON.stringify(contacts));
 }
 
 /**

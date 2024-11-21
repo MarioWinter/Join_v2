@@ -1,5 +1,6 @@
 let username;
 let currentUser;
+let contacts = [];
 
 let today = new Date();
 let hour = today.getHours();
@@ -24,7 +25,7 @@ async function includeHTML() {
 }
 
 /**
- * Initializes summary page by loading users, setting current user, greeting user, loading added tasks, loading user badge, and rendering summary data.
+ * Initializes summary page by loading contacts, setting current user, greeting user, loading added tasks, loading user badge, and rendering summary data.
  */
 async function summaryInit() {
   await includeHTML();
@@ -36,7 +37,7 @@ async function summaryInit() {
 }
 
 /**
- * Initializes the page by loading users and rendering the login window.
+ * Initializes the page by loading contacts and rendering the login window.
  */
 async function init() {
   renderLogIn();
@@ -131,11 +132,11 @@ function emailExist() {
 }
 
 /**
- * Loads users from remote storage to the local array. LÖSCHEN
+ * Loads contacts from remote storage to the local array. LÖSCHEN
  */
 async function loadContacts() {
   try {
-    users = JSON.parse(await getItem("users"));
+    contacts = await getItems("contacts");
   } catch (e) {
     console.error("Loading error:", e);
   }

@@ -32,8 +32,8 @@ function checkIsLogedIn() {
  * @param {any} value - The value of the item to be stored.
  * @returns {Promise<Object>} A Promise that resolves to the response from the server.
  */
-async function setItem(data, endpoint, id) {
-	let url = `${API_BASE_URL}/${endpoint}/${id}/`;
+async function setItem(data, endpoint) {
+	let url = `${API_BASE_URL}/${endpoint}/`;
 	return fetch(url, {
 		method: "POST",
 		headers: {

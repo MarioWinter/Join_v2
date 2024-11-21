@@ -5,26 +5,15 @@ let newAssigned = [];
  * this function initializes task addition process by loading necessary data and setting up the interface
  */
 async function initAddTask() {
+	await includeHTML();
 	await loadContacts();
-	await loadAddedTasks();
+	await loadAddedTasksFromStorage();
 	loadCurrentUser();
 	loadUserBadge();
 	getDateToday();
 	changePrioColor("Medium");
-	initUserSelectField("et_contact_overlay");
+	//initUserSelectField("et_contact_overlay"); Bearbeiten
 	checkIfSendingIsPossible();
-}
-
-/**
- * this function loads asynchronously added tasks from local storage and updates the global addedTasks variable
- * if loading fails, logs an error to the console
- */
-async function loadAddedTasks() {
-	try {
-		addedTasks = JSON.parse(await getItem("addedTasks"));
-	} catch (e) {
-		console.error("Loading Added Tasks error:", e);
-	}
 }
 
 /**
@@ -93,10 +82,10 @@ function resetContainers() {
  */
 function initUserSelectField(containerID) {
 	let contactsContainer = document.getElementById(containerID);
-	for (let i = 0; i < users.length; i++) {
-		let userName = users[i]["name"];
+	for (let i = 0; i < contacts.length; i++) {
+		let userName = contacts[i]["name"];
 		let userBadge = generateUserBadge(userName);
-		let badgeColor = users[i]["bgcolor"];
+		let badgeColor = contacts[i]["bgcolor"];
 		if (newAssigned.includes(userName)) {
 			contactsContainer.innerHTML += generateTaskAssigmentContactsHTML(userName, badgeColor, userBadge, i);
 		} else {
@@ -108,12 +97,12 @@ function initUserSelectField(containerID) {
 /**
  * this function adds or removes elected contact based on checkbox status
  * @param {string} id - id of checkbox element
- * @param {number} i - index of the user in the users array
+ * @param {number} i - index of the user in the contacts array
  * @param {string} newAssigned - array containing names of newly assigned contacts
  */
 function addElectedContact(id, i, newAssigned) {
 	let checkAssigned = document.getElementById(id);
-	let userName = users[i]["name"];
+	let userName = contacts[i]["name"];
 	let deleteName = newAssigned.indexOf(userName);
 	if (checkAssigned.checked) {
 		newAssigned.push(userName);
@@ -132,9 +121,9 @@ function showSelectedContacts(newAssigned) {
 	selectedContacts.innerHTML = "";
 	for (let i = 0; i < newAssigned.length; i++) {
 		let userName = newAssigned[i];
-		let userIndex = users.findIndex((user) => user.name === userName);
+		let userIndex = contacts.findIndex((user) => user.name === userName);
 		if (userIndex !== -1) {
-			let badgeColor = users[userIndex]["bgcolor"];
+			let badgeColor = contacts[userIndex]["bgcolor"];
 			let userBadge = generateUserBadge(userName);
 			let selectedContactHTML = generateSelectedContactHTML(userName, badgeColor, userBadge, i);
 			selectedContacts.innerHTML += selectedContactHTML;
@@ -353,45 +342,20 @@ function getSelectedPriority() {
  * this function creates new task, assigns a priority and stores it in the JSON data
  */
 async function createTask() {
-	let setNewTask = createNewTaskID();
 	let selectedPriority = getSelectedPriority();
-	await pushToJSON(setNewTask, selectedPriority);
-	await setItem("addedTasks", JSON.stringify(addedTasks));
+	let addedTasks = {
+		bucket: "to-do",
+		title: enter_title_field.value,
+		description: enter_description_field.value,
+		assigned: [],
+		duedate: date_field.value,
+		prio: selectedPriority,
+		category: select_category_field.value,
+		subtask: [],
+	};
+	await setItem(addedTasks, "tasks");
 	createTaskMessage();
 	setTimeout(() => {
 		window.location.href = "board.html";
 	}, 1000);
-}
-
-/**
- * tihs function adds new task to the JSON data
- * @param {string} setNewTask - id of new task
- * @param {string} selectedPriority - priority assigned to the task
- */
-async function pushToJSON(setNewTask, selectedPriority) {
-	addedTasks.push({
-		id: setNewTask,
-		bucket: "to-do",
-		title: enter_title_field.value,
-		description: enter_description_field.value,
-		assigned: newAssigned,
-		duedate: date_field.value,
-		prio: selectedPriority,
-		category: select_category_field.value,
-		subtask: addedSubtasks,
-	});
-}
-
-/**
- * this function generates new task id based on length of existing added task
- * @returns {number} - new task id
- */
-function createNewTaskID() {
-	let newTaskID;
-	if (addedTasks.length !== 0) {
-		newTaskID = addedTasks.length;
-	} else {
-		newTaskID = 0;
-	}
-	return newTaskID;
 }

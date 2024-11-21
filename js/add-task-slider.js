@@ -255,7 +255,7 @@ function loadAddTaskSlider(boardColumnID) {
  * @description
  * This function performs the following steps:
  * 1. Get the assigned contacts for the task from the addedTasks array.
- * 2. Load all users for contact on assigned to using loadAllUsersForContactOnAssignedTo.
+ * 2. Load all contacts for contact on assigned to using loadAllUsersForContactOnAssignedTo.
  */
 function initAddTaskSlider(taskID) {
 	let assigneds = newTask["assigned"];
@@ -298,7 +298,7 @@ function createNewTaskID() {
  * 2. `bucket`: The ID of the board column.
  * 3. `title`: The title of the task (initially empty).
  * 4. `description`: The description of the task (initially empty).
- * 5. `assigned`: An array of assigned users (initially empty).
+ * 5. `assigned`: An array of assigned contacts (initially empty).
  * 6. `duedate`: The due date of the task (initially empty).
  * 7. `prio`: The priority of the task (initially empty).
  * 8. `category`: The category of the task (initially empty).

@@ -80,7 +80,7 @@ async function initContacts() {
 	await loadAddedTasksFromStorage();
 	loadCurrentUser();
 	loadUserBadge();
-	sortContactsAlphabetically(users);
+	sortContactsAlphabetically(contacts);
 	renderDifferentContacts();
 }
 
@@ -93,7 +93,7 @@ function sortContactsAlphabetically(contacts) {
 }
 
 /**
- * this fucntion renders the contact view and sets up edit functionality based on the users login status
+ * this fucntion renders the contact view and sets up edit functionality based on the contacts login status
  * if user is logged in, function renders contacts for the logged-in user, otherwise it renders all contacts
  */
 function renderDifferentContacts() {
@@ -123,7 +123,7 @@ function renderLoggedContacts() {
  * @returns {string} the string represents rendered contacts
  */
 function renderLoggedContactsHTML() {
-	return generateContactsHTML(users);
+	return generateContactsHTML(contacts);
 }
 
 /**
@@ -166,7 +166,7 @@ function setupEditFunctionality() {
  */
 function getCurrentUserContact(index) {
 	if (currentUser >= 0) {
-		return users[index];
+		return contacts[index];
 	} else {
 		return contactsData[index];
 	}
@@ -306,19 +306,19 @@ function getInitials(name) {
  */
 function updateContact(index) {
 	if (currentUser >= 0) {
-		contact = users[index];
+		contact = contacts[index];
 	} else {
 		contact = contactsData[index];
 	}
-	//let contact = currentUser >= 0 ? users[index] : contactsData[index];
+	//let contact = currentUser >= 0 ? contacts[index] : contactsData[index];
 	if (!contact) return;
 	contact.name = document.getElementById("contact_Name").value;
 	contact.email = document.getElementById("contact_Email").value;
 	contact.phone = document.getElementById("contact_Phone").value;
 
 	if (currentUser >= 0) {
-		sortContactsAlphabetically(users);
-		setItem("users", JSON.stringify(users));
+		sortContactsAlphabetically(contacts);
+		setItem("contacts", JSON.stringify(contacts));
 	} else {
 		sortContactsAlphabetically(contactsData);
 	}
@@ -347,16 +347,16 @@ function findInsertIndex(newContactName, contactList) {
 }
 
 /**
- * this functoin adds new user to the list of users
+ * this functoin adds new user to the list of contacts
  */
 function addUser() {
-	users.push({
+	contacts.push({
 		name: contact_Name.value,
 		email: contact_Email.value,
 		phone: contact_Phone.value,
 		bgcolor: getRandomColor(),
 	});
-	setItem("users", JSON.stringify(users));
+	setItem("contacts", JSON.stringify(contacts));
 	renderDifferentContacts();
 }
 
@@ -383,8 +383,8 @@ async function deleteContact(index) {
 		let currentLoggedUser = nameOfCurrentUser();
 		deleteUserInAssignedTo(index);
 		await setItem("addedTasks", JSON.stringify(addedTasks));
-		users.splice(index, 1);
-		await setItem("users", JSON.stringify(users));
+		contacts.splice(index, 1);
+		await setItem("contacts", JSON.stringify(contacts));
 		updateCurrentUser(currentLoggedUser);
 	}
 	let contactDetails = document.getElementById("show_contact_details");
@@ -402,7 +402,7 @@ async function deleteContact(index) {
  */
 function nameOfCurrentUser() {
 	let i = currentUser;
-	let user = users[i].name;
+	let user = contacts[i].name;
 	return user;
 }
 
@@ -412,8 +412,8 @@ function nameOfCurrentUser() {
  */
 function updateCurrentUser(user) {
 	let found = false;
-	for (let i = 0; i < users.length; i++) {
-		if (users[i].name === user) {
+	for (let i = 0; i < contacts.length; i++) {
+		if (contacts[i].name === user) {
 			userIndex = i;
 			localStorage.setItem("currentUserIndex", userIndex);
 			loadCurrentUser();
@@ -428,12 +428,12 @@ function updateCurrentUser(user) {
 
 /**
  * Deletes a user from the "assigned" array in all tasks
- * @param {number} index - The index of the user in the users array to be deleted
+ * @param {number} index - The index of the user in the contacts array to be deleted
  * @description
- * This function removes a user from the "assigned" array in all tasks. It takes the index of the user in the users array and filters out the user's name from the "assigned" array of each task.
+ * This function removes a user from the "assigned" array in all tasks. It takes the index of the user in the contacts array and filters out the user's name from the "assigned" array of each task.
  */
 function deleteUserInAssignedTo(index) {
-	let deletedUser = users[index].name;
+	let deletedUser = contacts[index].name;
 	addedTasks.forEach((task) => {
 		let assignedIndex = task.assigned.indexOf(deletedUser);
 		if (assignedIndex !== -1) {
