@@ -399,11 +399,11 @@ function loadSubtask(taskID) {
 		tasks = addedTasks.filter((t) => t["id"] === taskID);
 		for (let index = 0; index < tasks.length; index++) {
 			let task = tasks[index];
-			let subtask = task["subtask"];
+			let subtask = task["subtasks"];
 			return subtask;
 		}
 	} else {
-		return newTask["subtask"];
+		return newTask["subtasks"];
 	}
 }
 

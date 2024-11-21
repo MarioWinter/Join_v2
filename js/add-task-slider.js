@@ -302,11 +302,10 @@ function createNewTaskID() {
  * 6. `duedate`: The due date of the task (initially empty).
  * 7. `prio`: The priority of the task (initially empty).
  * 8. `category`: The category of the task (initially empty).
- * 9. `subtask`: An array of subtasks (initially empty).
+ * 9. `subtasks`: An array of subtasks (initially empty).
  */
 function createNewTask(boardColumnID, taskID) {
 	newTask = {
-		id: taskID,
 		bucket: boardColumnID,
 		title: "",
 		description: "",
@@ -314,7 +313,7 @@ function createNewTask(boardColumnID, taskID) {
 		duedate: "",
 		prio: "",
 		category: "",
-		subtask: [],
+		subtasks: [],
 	};
 }
 

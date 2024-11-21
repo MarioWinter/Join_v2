@@ -13,7 +13,7 @@ function loadTaskOpen(taskID) {
 		let prio = task["prio"];
 		let duedate = formatDueDate(task["duedate"]);
 		let category = task["category"];
-		let subtasks = task["subtask"];
+		let subtasks = task["subtasks"];
 		let assigneds = task["assigned"];
 		showFrame("task_overlay_bg");
 		addOverlayBg("task_overlay_bg");
