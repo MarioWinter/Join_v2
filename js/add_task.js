@@ -12,7 +12,7 @@ async function initAddTask() {
 	loadUserBadge();
 	getDateToday();
 	changePrioColor("Medium");
-	//initUserSelectField("et_contact_overlay"); Bearbeiten
+	initUserSelectField("et_contact_overlay");
 	checkIfSendingIsPossible();
 }
 
@@ -102,12 +102,12 @@ function initUserSelectField(containerID) {
  */
 function addElectedContact(id, i, newAssigned) {
 	let checkAssigned = document.getElementById(id);
-	let userName = contacts[i]["name"];
-	let deleteName = newAssigned.indexOf(userName);
+	let contactID = contacts[i]["id"];
+	let deleteID = newAssigned.indexOf(contactID);
 	if (checkAssigned.checked) {
-		newAssigned.push(userName);
+		newAssigned.push(contactID);
 	} else if (!checkAssigned.checked) {
-		newAssigned.splice(deleteName, 1);
+		newAssigned.splice(deleteID, 1);
 	}
 	showSelectedContacts(newAssigned, "et_selected_contacts");
 }
@@ -120,12 +120,13 @@ function showSelectedContacts(newAssigned) {
 	let selectedContacts = document.getElementById("et_selected_contacts");
 	selectedContacts.innerHTML = "";
 	for (let i = 0; i < newAssigned.length; i++) {
-		let userName = newAssigned[i];
-		let userIndex = contacts.findIndex((user) => user.name === userName);
-		if (userIndex !== -1) {
-			let badgeColor = contacts[userIndex]["bgcolor"];
-			let userBadge = generateUserBadge(userName);
-			let selectedContactHTML = generateSelectedContactHTML(userName, badgeColor, userBadge, i);
+		let contactID = newAssigned[i];
+		let contactIndex = contacts.findIndex((contact) => contact.id === contactID);
+		if (contactIndex !== -1) {
+			let badgeColor = contacts[contactIndex]["bgcolor"];
+			let contactName = contacts[contactIndex]["name"];
+			let userBadge = generateUserBadge(contactName);
+			let selectedContactHTML = generateSelectedContactHTML(contactName, badgeColor, userBadge, i);
 			selectedContacts.innerHTML += selectedContactHTML;
 		}
 	}
@@ -347,11 +348,11 @@ async function createTask() {
 		bucket: "to-do",
 		title: enter_title_field.value,
 		description: enter_description_field.value,
-		assigned: [],
+		assigned_id: newAssigned,
 		duedate: date_field.value,
 		prio: selectedPriority,
 		category: select_category_field.value,
-		subtask: [],
+		subtasks: [],
 	};
 	await setItem(addedTasks, "tasks");
 	createTaskMessage();
