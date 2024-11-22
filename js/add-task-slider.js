@@ -262,7 +262,7 @@ function initAddTaskSlider(taskID) {
 	loadAllUsersForContactOnAssignedTo(assigneds, "et_contact_overlay", taskID);
 }
 
-/**
+/**LÖSCHEN
  * Creates a new task ID for a newly added task.
  *
  * @returns {number} - The new task ID.

@@ -23,6 +23,24 @@ function loadTaskEdit(TaskID) {
 }
 
 /**
+ * this function creates new task, assigns a priority and stores it in the JSON data
+ */
+async function updateTask(taskID) {
+	let priority = updateTaskPriority();
+	let changedTasks = {
+		bucket: clonedTask["bucket"],
+		title: title_input_ed_task.value,
+		description: description_ed_task.value,
+		assigned_id: newAssigned,
+		duedate: calendar_edit_task.value,
+		prio: priority,
+		category: clonedTask["caegory"],
+		subtasks: clonedTask["subtasks"],
+	};
+	await setItem(changedTasks, "tasks", taskID);
+}
+
+/**
  * Initializes the edit view for a task.
  * This function performs the following steps:
  *  1. Set the content of the task overlay background using generateEditTaskHTML.
@@ -62,15 +80,19 @@ function initEditTask(id, title, description, prio, assigneds, duedate) {
  * @param {string} taskID - The ID of the open task to be updated.
  * @returns {void}
  */
-function updateOpenTask(taskID) {
-	updateOpenTaskTitle(taskID);
-	updateOpenTaskDesc(taskID);
-	updateOpenTaskDueDate(taskID);
-	updateTaskPriority(taskID);
+async function updateOpenTask(taskID) {
+	cloneAddedTask(taskID);
+
 	renderOpenTask(taskID);
+	//await changeItem(addedTasks[taskID]);
 }
 
-/**
+function cloneAddedTask(taskID) {
+	let tasks = addedTasks.filter((t) => t["id"] === taskID);
+	clonedTask = structuredClone(tasks);
+}
+
+/**LÖSCHEN
  * Updates the title of the open task with the specified ID.
  * 1. Get the title value from the input field.
  * 2. Update the title of the open task with the obtained value.
@@ -83,7 +105,7 @@ function updateOpenTaskTitle(taskID) {
 	addedTasks[taskID]["title"] = titleValue;
 }
 
-/**
+/**LÖSCHEN
  * Updates the description of the open task with the specified ID.
  * This function performs the following steps:
  * 1. Get the description value from the input field.
@@ -98,7 +120,7 @@ function updateOpenTaskDesc(taskID) {
 	addedTasks[taskID]["description"] = descValue;
 }
 
-/**
+/**LÖSCHEN
  * Updates the due date of the open task with the specified ID.
  * This function performs the following steps:
  * 1. Get the due date value from the calendar input.
@@ -113,22 +135,10 @@ function updateOpenTaskDueDate(taskID) {
 	addedTasks[taskID]["duedate"] = dueDateValue;
 }
 
-/**
- * Updates the priority of the task with the specified ID.
- * This function performs the following steps:
- * 1. Check if a global priority button ID is set.
- * 2. If set, retrieve the priority value from the corresponding element.
- * 3. Update the priority of the task with the obtained value.
- *
- * @param {string} taskID - The ID of the task to update its priority.
- * @returns {void} - No return value.
- */
-function updateTaskPriority(taskID) {
-	let prio = "";
+function updateTaskPriority() {
 	if (globalPrioButtonID !== "") {
-		prio = document.getElementById(globalPrioButtonID).value;
+		return document.getElementById(globalPrioButtonID).value;
 	}
-	addedTasks[taskID]["prio"] = prio;
 }
 
 /**
@@ -208,13 +218,14 @@ function closeContactOverlay(containerID, selectedContactsID) {
 function loadAllUsersForContactOnAssignedTo(assigneds, containerID, ID) {
 	let contactsContainer = document.getElementById(containerID);
 	for (let i = 0; i < contacts.length; i++) {
-		let userName = contacts[i]["name"];
-		let userBadge = generateBadge(userName);
+		let contactName = contacts[i]["name"];
+		let contactID = contacts[i]["id"];
+		let userBadge = generateBadge(contactName);
 		let badgeColor = contacts[i]["bgcolor"];
-		if (assigneds.includes(userName)) {
-			contactsContainer.innerHTML += generateEditTaskAssigmentContactsCheckedHTML(badgeColor, userBadge, userName, i, ID);
+		if (assigneds[i]["id"] == contactID) {
+			contactsContainer.innerHTML += generateEditTaskAssigmentContactsCheckedHTML(badgeColor, userBadge, contactName, i, ID);
 		} else {
-			contactsContainer.innerHTML += generateEditTaskAssigmentContactsHTML(badgeColor, userBadge, userName, i, ID);
+			contactsContainer.innerHTML += generateEditTaskAssigmentContactsHTML(badgeColor, userBadge, contactName, i, ID);
 		}
 	}
 }
@@ -224,7 +235,7 @@ function loadAllUsersForContactOnAssignedTo(assigneds, containerID, ID) {
  *
  * @param {string} id - The ID of the checkbox element.
  * @param {number} i - The index of the user in the contacts array.
- * @param {number} j - The index of the task in the addedTasks array.
+ * @param {number} j - The ID of the task in the addedTasks array.
  *
  * @description
  * This function performs the following steps:
@@ -236,16 +247,23 @@ function loadAllUsersForContactOnAssignedTo(assigneds, containerID, ID) {
  */
 function addContactAsAssigned(id, i, j) {
 	let checkAssigned = document.getElementById(id);
+	let assigned_id = [];
 	let assigned = [];
 	let userName = contacts[i]["name"];
-	let deleteName = assigned.indexOf(userName);
-	isNewTaskEmpty(newTask) ? (assigned = addedTasks[j]["assigned"]) : (assigned = newTask["assigned"]);
+	let contactID = contacts[i]["id"];
+	if (isNewTaskEmpty(newTask)) {
+		let tasks = addedTasks.filter((t) => t["id"] === j);
+		assigned = tasks[0]["assigned"];
+	} else {
+		assigned = newTask["assigned"];
+	}
 
 	if (checkAssigned.checked) {
-		assigned.push(userName);
+		assigned.push(contactID);
 	} else if (!checkAssigned.checked) {
-		assigned.splice(deleteName, 1);
+		assigned.splice(deleteID, 1);
 	}
+
 	loadAssignedOnEditTask(assigned, "et_selected_contacts");
 }
 
