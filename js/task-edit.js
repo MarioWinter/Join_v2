@@ -61,11 +61,33 @@ async function updateTask() {
  */
 function initEditTask(id, title, description, prio, assigneds, duedate) {
 	document.getElementById("task_overlay_bg").innerHTML = generateEditTaskHTML(id, title, description, duedate);
-	loadAllUsersForContactOnAssignedTo(assigneds, "et_contact_overlay", id);
-	loadAssignedOnEditTask(assigneds, "et_selected_contacts");
+	let contactIDs = filterContactIDForAssignedTo(assigneds);
+	loadAllUsersForContactOnAssignedTo(contactIDs, "et_contact_overlay", id);
+	loadAssignedOnEditTask(contactIDs, "et_selected_contacts");
 	setTodayDateForCalendar("calendar_edit_task");
 	loadPrioOnEditTask(prio);
 	loadSubtasksEditTask("subtask_lists", id);
+}
+
+/**
+ * Extracts contact IDs from an array of assigned contacts.
+ *
+ * @param {Array<Object>} assigneds - An array of assigned contact objects.
+ * @returns {Array<string>} An array of contact IDs.
+ *
+ * @description
+ * This function performs the following steps:
+ * 1. Initializes an empty array to store contact IDs.
+ * 2. Iterates through the array of assigned contacts.
+ * 3. For each contact object, extracts the 'id' property and adds it to the contactIDs array.
+ * 4. Returns the array of contact IDs.
+ */
+function filterContactIDForAssignedTo(assigneds) {
+	let contactIDs = [];
+	assigneds.forEach((contact) => {
+		contactIDs.push(contact.id);
+	});
+	return contactIDs;
 }
 
 /**
@@ -81,14 +103,16 @@ function initEditTask(id, title, description, prio, assigneds, duedate) {
  * @returns {void}
  */
 async function updateOpenTask(taskID) {
-	clonedTask(taskID);
+	copyTask(taskID);
 	updateTask();
 
 	renderOpenTask(taskID);
 	//await changeItem(addedTasks[taskID]);
+	newAssigned = [];
+	clonedTask = [];
 }
 
-function clonedTask(taskID) {
+function copyTask(taskID) {
 	let tasks = addedTasks.filter((t) => t["id"] === taskID);
 	clonedTask = structuredClone(tasks);
 }
@@ -229,10 +253,8 @@ function loadAllUsersForContactOnAssignedTo(assigneds, containerID, ID) {
 		let contactID = contacts[i]["id"];
 		let userBadge = generateBadge(contactName);
 		let badgeColor = contacts[i]["bgcolor"];
-		if (assigneds != 0) {
-			if (assigneds[i]["id"] == contactID) {
-				contactsContainer.innerHTML += generateEditTaskAssigmentContactsCheckedHTML(badgeColor, userBadge, contactName, i, ID);
-			}
+		if (assigneds.includes(contactID)) {
+			contactsContainer.innerHTML += generateEditTaskAssigmentContactsCheckedHTML(badgeColor, userBadge, contactName, i, ID);
 		} else {
 			contactsContainer.innerHTML += generateEditTaskAssigmentContactsHTML(badgeColor, userBadge, contactName, i, ID);
 		}
@@ -266,6 +288,7 @@ function addContactAsAssigned(id, i, newAssigned, containerID) {
 	}
 
 	loadAssignedOnEditTask(newAssigned, containerID);
+	newAssigned = [];
 }
 
 /**

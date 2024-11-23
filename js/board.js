@@ -1,5 +1,5 @@
 let addedTasks = [];
-let clonedTasks = [];
+let clonedTask = [];
 let filteredTasks = [];
 let changedTasks = [];
 
