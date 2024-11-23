@@ -1,6 +1,7 @@
 let addedTasks = [];
 let clonedTasks = [];
 let filteredTasks = [];
+let changedTasks = [];
 
 /**
  * Asynchronously initializes the board by performing the following actions:

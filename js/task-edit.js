@@ -25,19 +25,19 @@ function loadTaskEdit(TaskID) {
 /**
  * this function creates new task, assigns a priority and stores it in the JSON data
  */
-async function updateTask(taskID) {
+async function updateTask() {
 	let priority = updateTaskPriority();
-	let changedTasks = {
-		bucket: clonedTask["bucket"],
+	changedTasks = {
+		bucket: clonedTask[0]["bucket"],
 		title: title_input_ed_task.value,
 		description: description_ed_task.value,
 		assigned_id: newAssigned,
 		duedate: calendar_edit_task.value,
 		prio: priority,
-		category: clonedTask["caegory"],
-		subtasks: clonedTask["subtasks"],
+		category: clonedTask[0]["category"],
+		subtasks: clonedTask[0]["subtasks"],
 	};
-	await setItem(changedTasks, "tasks", taskID);
+	//await setItem(changedTasks, "tasks", taskID);
 }
 
 /**
@@ -81,13 +81,14 @@ function initEditTask(id, title, description, prio, assigneds, duedate) {
  * @returns {void}
  */
 async function updateOpenTask(taskID) {
-	cloneAddedTask(taskID);
+	clonedTask(taskID);
+	updateTask();
 
 	renderOpenTask(taskID);
 	//await changeItem(addedTasks[taskID]);
 }
 
-function cloneAddedTask(taskID) {
+function clonedTask(taskID) {
 	let tasks = addedTasks.filter((t) => t["id"] === taskID);
 	clonedTask = structuredClone(tasks);
 }
