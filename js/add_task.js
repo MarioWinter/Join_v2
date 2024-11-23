@@ -95,12 +95,14 @@ function initUserSelectField(containerID) {
 }
 
 /**
- * this function adds or removes elected contact based on checkbox status
- * @param {string} id - id of checkbox element
- * @param {number} i - index of the user in the contacts array
- * @param {string} newAssigned - array containing names of newly assigned contacts
+ * Adds or removes an elected contact based on checkbox status.
+ *
+ * @param {string} id - ID of the checkbox element.
+ * @param {number} i - Index of the user in the contacts array.
+ * @param {string[]} newAssigned - Array containing IDs of newly assigned contacts.
+ * @param {string} containerID - ID of the container element to display selected contacts.
  */
-function addElectedContact(id, i, newAssigned) {
+function addElectedContact(id, i, newAssigned, containerID) {
 	let checkAssigned = document.getElementById(id);
 	let contactID = contacts[i]["id"];
 	let deleteID = newAssigned.indexOf(contactID);
@@ -109,15 +111,17 @@ function addElectedContact(id, i, newAssigned) {
 	} else if (!checkAssigned.checked) {
 		newAssigned.splice(deleteID, 1);
 	}
-	showSelectedContacts(newAssigned, "et_selected_contacts");
+	showSelectedContacts(newAssigned, containerID);
 }
 
 /**
- * this function displays selected contacts in designated container
- * @param {string} newAssigned - array containing the names of newly assigned contacts
+ * Displays selected contacts in a designated container.
+ *
+ * @param {string[]} newAssigned - Array containing the IDs of newly assigned contacts.
+ * @param {string} containerID - ID of the container element to display selected contacts.
  */
-function showSelectedContacts(newAssigned) {
-	let selectedContacts = document.getElementById("et_selected_contacts");
+function showSelectedContacts(newAssigned, containerID) {
+	let selectedContacts = document.getElementById(containerID);
 	selectedContacts.innerHTML = "";
 	for (let i = 0; i < newAssigned.length; i++) {
 		let contactID = newAssigned[i];
@@ -292,7 +296,7 @@ function clearContainerLeft() {
  */
 function clearSelectedContacts() {
 	newAssigned = [];
-	showSelectedContacts(newAssigned);
+	showSelectedContacts(newAssigned, "et_selected_contacts");
 }
 
 /**

@@ -301,7 +301,7 @@ function generateAssigmentHTML(userBadge, badgeColor, assignedUserName, id) {
  * @param {string} assignedUserName - The name of the assigned user.
  * @param {number} i - The index of the assigned contact.
  * @param {string} ID - The task ID.
- * @returns {string} - The HTML for the assigned contacts in the edit task slider.
+ * @returns {string} HTML string for the assigned contacts in the edit task slider.
  */
 function generateEditTaskAssigmentContactsHTML(badgeColor, userBadge, assignedUserName, i, ID) {
 	return `
@@ -313,7 +313,7 @@ function generateEditTaskAssigmentContactsHTML(badgeColor, userBadge, assignedUs
             </div>
             <span>${assignedUserName} </span>
             <div class="log-in-checkbox">
-                <input onclick="addContactAsAssigned('${ID}_confirm_contact${i}', ${i}, ${ID})" id="${ID}_confirm_contact${i}" type="checkbox" />
+                <input onclick="addContactAsAssigned('${ID}_confirm_contact${i}', ${i}, newAssigned, 'et_selected_contacts')" id="${ID}_confirm_contact${i}" type="checkbox" />
                 <label class="checkbox-edit-task" for="${ID}_confirm_contact${i}"></label>
             </div>
         </div>
@@ -329,7 +329,7 @@ function generateEditTaskAssigmentContactsHTML(badgeColor, userBadge, assignedUs
  * @param {string} assignedUserName - The name of the assigned user.
  * @param {number} i - The index of the assigned contact.
  * @param {string} ID - The task ID.
- * @returns {string} - The HTML for the assigned contacts with a checked state in the edit task slider.
+ * @returns {string} HTML string for the assigned contacts with a checked state in the edit task slider.
  */
 function generateEditTaskAssigmentContactsCheckedHTML(badgeColor, userBadge, assignedUserName, i, ID) {
 	return `
@@ -341,7 +341,7 @@ function generateEditTaskAssigmentContactsCheckedHTML(badgeColor, userBadge, ass
             </div>
             <span>${assignedUserName} </span>
             <div class="log-in-checkbox">
-                <input onclick="addContactAsAssigned('${ID}_confirm_contact${i}', ${i}, ${ID})" id="${ID}_confirm_contact${i}" type="checkbox" checked/>
+                <input onclick="addContactAsAssigned('${ID}_confirm_contact${i}', ${i}, newAssigned, 'et_selected_contacts')" id="${ID}_confirm_contact${i}" type="checkbox" checked/>
                 <label class="checkbox-edit-task" for="${ID}_confirm_contact${i}"></label>
             </div>
         </div>

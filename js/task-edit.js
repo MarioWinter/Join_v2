@@ -203,18 +203,24 @@ function closeContactOverlay(containerID, selectedContactsID) {
 /**
  * Loads all contacts for contact assignment on the edit task interface.
  *
- * @param {Array<string>} assigneds - An array of assigned user names.
- * @param {string} containerID - The ID of the container to display the assigned contacts.
+ * @param {Array<Object>} assigneds - An array of assigned contact objects.
+ * @param {string} containerID - The ID of the container to display the contacts.
  * @param {string} ID - The ID of the task.
- * @returns {void} - No return value.
+ * @returns {void}
  *
  * @description
  * This function performs the following steps:
- * 1. Get the container element by ID.
- * 2. Iterate through the contacts array.
- * 3. For each user, generate a badge with the user's name and badge color.
- * 4. If the user is assigned to the task, generate and append the HTML for a checked badge.
- * 5. If the user is not assigned to the task, generate and append the HTML for an unchecked badge.
+ * 1. Gets the container element by ID.
+ * 2. Iterates through the contacts array.
+ * 3. For each contact:
+ *    a. Retrieves the contact's name, ID, and badge color.
+ *    b. Generates a badge with the contact's name.
+ *    c. If there are assigned contacts (assigneds is not 0):
+ *       - Checks if the current contact is assigned to the task.
+ *       - If assigned, generates and appends HTML for a checked contact.
+ *    d. If there are no assigned contacts:
+ *       - Generates and appends HTML for an unchecked contact.
+ * 4. Appends the generated HTML to the container.
  */
 function loadAllUsersForContactOnAssignedTo(assigneds, containerID, ID) {
 	let contactsContainer = document.getElementById(containerID);
@@ -223,8 +229,10 @@ function loadAllUsersForContactOnAssignedTo(assigneds, containerID, ID) {
 		let contactID = contacts[i]["id"];
 		let userBadge = generateBadge(contactName);
 		let badgeColor = contacts[i]["bgcolor"];
-		if (assigneds[i]["id"] == contactID) {
-			contactsContainer.innerHTML += generateEditTaskAssigmentContactsCheckedHTML(badgeColor, userBadge, contactName, i, ID);
+		if (assigneds != 0) {
+			if (assigneds[i]["id"] == contactID) {
+				contactsContainer.innerHTML += generateEditTaskAssigmentContactsCheckedHTML(badgeColor, userBadge, contactName, i, ID);
+			}
 		} else {
 			contactsContainer.innerHTML += generateEditTaskAssigmentContactsHTML(badgeColor, userBadge, contactName, i, ID);
 		}
@@ -236,63 +244,59 @@ function loadAllUsersForContactOnAssignedTo(assigneds, containerID, ID) {
  *
  * @param {string} id - The ID of the checkbox element.
  * @param {number} i - The index of the user in the contacts array.
- * @param {number} j - The ID of the task in the addedTasks array.
+ * @param {string[]} newAssigned - Array of contact IDs for newly assigned contacts.
+ * @param {string} containerID - ID of the container element to display assigned contacts.
  *
  * @description
  * This function performs the following steps:
  * 1. Checks the status of the checkbox with the given ID.
- * 2. Determines which assigned array to use based on whether newTask is empty.
- * 3. Adds the username to the assigned array if the checkbox is checked.
- * 4. Removes the username from the assigned array if the checkbox is unchecked.
- * 5. Updates the display of assigned contacts.
+ * 2. Retrieves the contact ID from the contacts array using the provided index.
+ * 3. Adds the contact ID to the newAssigned array if the checkbox is checked.
+ * 4. Removes the contact ID from the newAssigned array if the checkbox is unchecked.
+ * 5. Updates the display of assigned contacts using the loadAssignedOnEditTask function.
  */
-function addContactAsAssigned(id, i, j) {
+function addContactAsAssigned(id, i, newAssigned, containerID) {
 	let checkAssigned = document.getElementById(id);
-	let assigned_id = [];
-	let assigned = [];
-	let userName = contacts[i]["name"];
 	let contactID = contacts[i]["id"];
-	if (isNewTaskEmpty(newTask)) {
-		let tasks = addedTasks.filter((t) => t["id"] === j);
-		assigned = tasks[0]["assigned"];
-	} else {
-		assigned = newTask["assigned"];
-	}
-
+	let deleteID = newAssigned.indexOf(contactID);
 	if (checkAssigned.checked) {
-		assigned.push(contactID);
+		newAssigned.push(contactID);
 	} else if (!checkAssigned.checked) {
-		assigned.splice(deleteID, 1);
+		newAssigned.splice(deleteID, 1);
 	}
 
-	loadAssignedOnEditTask(assigned, "et_selected_contacts");
+	loadAssignedOnEditTask(newAssigned, containerID);
 }
 
 /**
  * Loads the assigned contacts on the edit task interface.
  *
- * @param {string[]} assigneds - The array of assigned contact names.
+ * @param {string[]} assigned - The array of assigned contact IDs.
  * @param {string} containerID - The ID of the container element.
- * @returns {void} - No return value.
+ * @returns {void}
  *
  * @description
  * This function performs the following steps:
- * 1. Get the container element by ID.
- * 2. Clear the container's inner HTML.
- * 3. Iterate through the assigned contacts array.
- *    a. Get the badge color for the current assigned contact.
- *    b. Get the assigned contact's name.
- *    c. Generate the user badge HTML using the generateBadge function.
- *    d. Append the generated assignment badge HTML to the container.
+ * 1. Gets the container element by ID.
+ * 2. Clears the container's inner HTML.
+ * 3. Iterates through the assigned contact IDs array.
+ *    a. Finds the corresponding contact in the contacts array.
+ *    b. If found, retrieves the badge color and contact name.
+ *    c. Generates the user badge HTML using the generateBadge function.
+ *    d. Generates and appends the assignment badge HTML to the container.
  */
-function loadAssignedOnEditTask(assigneds, containerID) {
+function loadAssignedOnEditTask(assigned, containerID) {
 	let selectetContactsContainer = document.getElementById(containerID);
 	selectetContactsContainer.innerHTML = "";
-	for (let i = 0; i < assigneds.length; i++) {
-		let badgeColor = assigneds[i]["bgcolor"];
-		let assignedName = assigneds[i]["name"];
-		let userBadge = generateBadge(assignedName);
-		selectetContactsContainer.innerHTML += generateAssigmentBadgeEditTaskHTML(userBadge, badgeColor, i);
+	for (let i = 0; i < assigned.length; i++) {
+		let contactID = assigned[i];
+		let contactIndex = contacts.findIndex((contact) => contact.id === contactID);
+		if (contactIndex !== -1) {
+			let badgeColor = contacts[contactIndex]["bgcolor"];
+			let contactName = contacts[contactIndex]["name"];
+			let userBadge = generateBadge(contactName);
+			selectetContactsContainer.innerHTML += generateAssigmentBadgeEditTaskHTML(userBadge, badgeColor, i);
+		}
 	}
 }
 
