@@ -132,7 +132,7 @@ function emailExist() {
 }
 
 /**
- * Loads contacts from remote storage to the local array. LÖSCHEN
+ * Loads contacts from remote storage to the local array.
  */
 async function loadContacts() {
   try {

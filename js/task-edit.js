@@ -117,55 +117,6 @@ function copyTask(taskID) {
 	clonedTask = structuredClone(tasks);
 }
 
-/**LÖSCHEN
- * Updates the title of the open task with the specified ID.
- * 1. Get the title value from the input field.
- * 2. Update the title of the open task with the obtained value.
- *
- * @param {string} taskID - The ID of the open task to be updated.
- * @returns {void}
- */
-function updateOpenTaskTitle(taskID) {
-	let titleValue = document.getElementById("title_input_ed_task").value;
-	addedTasks[taskID]["title"] = titleValue;
-}
-
-/**LÖSCHEN
- * Updates the description of the open task with the specified ID.
- * This function performs the following steps:
- * 1. Get the description value from the input field.
- * 2. Update the description of the open task with the obtained value.
- *
- * @param {string} taskID - The ID of the open task to be updated.
- * @returns {void} - No return value.
- *
- */
-function updateOpenTaskDesc(taskID) {
-	let descValue = document.getElementById("description_ed_task").value;
-	addedTasks[taskID]["description"] = descValue;
-}
-
-/**LÖSCHEN
- * Updates the due date of the open task with the specified ID.
- * This function performs the following steps:
- * 1. Get the due date value from the calendar input.
- * 2. Update the due date of the open task with the obtained value.
- *
- * @param {string} taskID - The ID of the open task to be updated.
- * @returns {void} - No return value.
- *
- */
-function updateOpenTaskDueDate(taskID) {
-	let dueDateValue = document.getElementById("calendar_edit_task").value;
-	addedTasks[taskID]["duedate"] = dueDateValue;
-}
-
-function updateTaskPriority() {
-	if (globalPrioButtonID !== "") {
-		return document.getElementById(globalPrioButtonID).value;
-	}
-}
-
 /**
  * Loads the priority settings on the edit task interface.
  * This function performs the following steps:
