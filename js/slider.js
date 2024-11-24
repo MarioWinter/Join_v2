@@ -74,7 +74,7 @@ function removeFixedBackround(id) {
  * @returns {Promise<void>} - A promise that resolves when the task is hidden and data is saved.
  */
 async function hideTaskOpen(id) {
-	newAssigned = [];
+	assignedID = [];
 	loadBoard();
 	frameSlideOut(id);
 	removeFixedBackround("main_container_board");

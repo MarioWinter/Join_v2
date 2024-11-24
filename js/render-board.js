@@ -313,7 +313,7 @@ function generateEditTaskAssigmentContactsHTML(badgeColor, userBadge, assignedUs
             </div>
             <span>${assignedUserName} </span>
             <div class="log-in-checkbox">
-                <input onclick="addContactAsAssigned('${ID}_confirm_contact${i}', ${i}, newAssigned, 'et_selected_contacts')" id="${ID}_confirm_contact${i}" type="checkbox" />
+                <input onclick="addContactAsAssigned('${ID}_confirm_contact${i}', ${i}, assignedID, ${ID}, 'et_selected_contacts')" id="${ID}_confirm_contact${i}" type="checkbox" />
                 <label class="checkbox-edit-task" for="${ID}_confirm_contact${i}"></label>
             </div>
         </div>
@@ -341,7 +341,7 @@ function generateEditTaskAssigmentContactsCheckedHTML(badgeColor, userBadge, ass
             </div>
             <span>${assignedUserName} </span>
             <div class="log-in-checkbox">
-                <input onclick="addContactAsAssigned('${ID}_confirm_contact${i}', ${i}, newAssigned, 'et_selected_contacts')" id="${ID}_confirm_contact${i}" type="checkbox" checked/>
+                <input onclick="addContactAsAssigned('${ID}_confirm_contact${i}', ${i}, assignedID, ${ID}, 'et_selected_contacts')" id="${ID}_confirm_contact${i}" type="checkbox" checked/>
                 <label class="checkbox-edit-task" for="${ID}_confirm_contact${i}"></label>
             </div>
         </div>

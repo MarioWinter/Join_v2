@@ -286,7 +286,7 @@ function createNewTask(boardColumnID, taskID) {
 		bucket: boardColumnID,
 		title: "",
 		description: "",
-		assigned: newAssigned,
+		assigned: assignedID,
 		duedate: "",
 		prio: "",
 		category: "",

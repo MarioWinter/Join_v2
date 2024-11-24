@@ -1,5 +1,4 @@
 let addedTasks = [];
-let clonedTask = [];
 let filteredTasks = [];
 let changedTasks = [];
 let globalPrioButtonID = "";

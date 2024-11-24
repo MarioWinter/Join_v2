@@ -33,7 +33,7 @@ function generateTaskAssigmentContactsHTML(userName, badgeColor, userBadge, i) {
           </div>
           <span>${userName}</span>
           <div class="checkbox">
-            <input onclick="addElectedContact('_confirm_contact${i}', ${i}, newAssigned, 'et_selected_contacts')" id="_confirm_contact${i}" type="checkbox" />
+            <input onclick="addElectedContact('_confirm_contact${i}', ${i}, assignedID, 'et_selected_contacts')" id="_confirm_contact${i}" type="checkbox" />
             <label class="checkbox-edit-task" for="_confirm_contact${i}"></label>
           </div>
         </div>
@@ -58,7 +58,7 @@ function generateTaskAssigmentContactsCheckedHTML(userName, badgeColor, userBadg
           </div>
           <span>${userName}</span>
           <div class="checkbox">
-            <input onclick="addElectedContact('_confirm_contact${i}', ${i}, newAssigned, 'et_selected_contacts')" id="_confirm_contact${i}" type="checkbox" checked/>
+            <input onclick="addElectedContact('_confirm_contact${i}', ${i}, assignedID, 'et_selected_contacts')" id="_confirm_contact${i}" type="checkbox" checked/>
             <label class="checkbox-edit-task" for="_confirm_contact${i}"></label>
           </div>
         </div>

@@ -39,16 +39,14 @@ function loadTaskEdit(TaskID) {
  *
  */
 async function updateTask(taskID) {
-	let priority = updateTaskPriority(taskID);
+	let tasks = addedTasks.filter((t) => t["id"] === taskID);
 	changedTasks = {
-		bucket: clonedTask[0]["bucket"],
 		title: title_input_ed_task.value,
 		description: description_ed_task.value,
-		assigned_id: newAssigned,
+		assigned_id: assignedID,
 		duedate: calendar_edit_task.value,
-		prio: priority,
-		category: clonedTask[0]["category"],
-		subtasks: clonedTask[0]["subtasks"],
+		prio: tasks["prio"],
+		subtasks: tasks["subtasks"],
 	};
 }
 
@@ -73,9 +71,9 @@ async function updateTask(taskID) {
  */
 function initEditTask(id, title, description, prio, assigneds, duedate) {
 	document.getElementById("task_overlay_bg").innerHTML = generateEditTaskHTML(id, title, description, duedate);
-	newAssigned = filterContactIDForAssignedTo(assigneds);
-	loadAllUsersForContactOnAssignedTo(newAssigned, "et_contact_overlay", id);
-	loadAssignedOnEditTask(newAssigned, "et_selected_contacts");
+	assignedID = filterContactIDForAssignedTo(assigneds);
+	loadAllUsersForContactOnAssignedTo(assignedID, "et_contact_overlay", id);
+	loadAssignedOnEditTask(assignedID, "et_selected_contacts");
 	setTodayDateForCalendar("calendar_edit_task");
 	loadPrioOnEditTask(prio);
 	loadSubtasksEditTask("subtask_lists", id);
@@ -103,6 +101,24 @@ function filterContactIDForAssignedTo(assigneds) {
 }
 
 /**
+ * Extracts the names of assigned contacts from an array of contact objects.
+ *
+ * @param {Array<Object>} assigneds - An array of assigned contact objects.
+ * @returns {Array<string>} An array containing the names of the assigned contacts.
+ *
+ * @description
+ * This function iterates through the array of assigned contacts and extracts
+ * the name of each contact. It creates a new array that contains only the names.
+ */
+function filterContactNameForAssignedTo(assigneds) {
+	let contactName = [];
+	assigneds.forEach((contact) => {
+		contactName.push(contact.name);
+	});
+	return contactName;
+}
+
+/**
  * Updates the open task with the specified ID.
  * This function performs the following steps:
  *  1. Update the title of the open task.
@@ -115,35 +131,13 @@ function filterContactIDForAssignedTo(assigneds) {
  * @returns {void}
  */
 async function updateOpenTask(taskID) {
-	copyTask(taskID);
+	updateTaskPriority(taskID);
 	updateTask(taskID);
 	await updatedAddedTaskToStorage(taskID);
 	await loadAddedTasksFromStorage();
 	renderOpenTask(taskID);
-	newAssigned = [];
-	clonedTask = [];
+	assignedID = [];
 	changedTasks = [];
-}
-
-/**
- * Creates a deep copy of a task with the specified ID.
- *
- * @param {string} taskID - The ID of the task to be copied.
- * @returns {void}
- *
- * @description
- * This function performs the following steps:
- * 1. Filters the `addedTasks` array to find the task with the matching ID.
- * 2. Creates a deep clone of the found task(s) using structuredClone.
- * 3. Assigns the cloned task(s) to the global variable `clonedTask`.
- *
- * @global
- * @var {Array<Object>} addedTasks - The array containing all tasks.
- * @var {Array<Object>} clonedTask - The global variable to store the cloned task(s).
- */
-function copyTask(taskID) {
-	let tasks = addedTasks.filter((t) => t["id"] === taskID);
-	clonedTask = structuredClone(tasks);
 }
 
 /**
@@ -161,6 +155,7 @@ function updateTaskPriority(taskID) {
 	if (globalPrioButtonID !== "") {
 		prio = document.getElementById(globalPrioButtonID).value;
 	}
+	let tasks = addedTasks.filter((t) => t["id"] === taskID);
 	//addedTasks[taskID]["prio"] = prio;
 	return prio;
 }
@@ -213,6 +208,14 @@ function openContactOverlay(containerID, selectedContactsID) {
 	}
 }
 
+/**
+ * Closes the contact overlay and updates the UI accordingly.
+ *
+ * @param {string} containerID - The ID of the contact overlay container to be hidden.
+ * @param {string} selectedContactsID - The ID of the selected contacts container to be shown.
+ * @returns {void}
+ *
+ */
 function closeContactOverlay(containerID, selectedContactsID) {
 	if (!isCantactOpen) {
 		hide(containerID);
@@ -261,33 +264,48 @@ function loadAllUsersForContactOnAssignedTo(assigneds, containerID, ID) {
 }
 
 /**
- * Adds a contact to the list of assigned persons or removes them from it.
+ * Adds or removes a contact from the assigned list for a task.
  *
  * @param {string} id - The ID of the checkbox element.
- * @param {number} i - The index of the user in the contacts array.
- * @param {string[]} newAssigned - Array of contact IDs for newly assigned contacts.
- * @param {string} containerID - ID of the container element to display assigned contacts.
+ * @param {number} i - The index of the contact in the contacts array.
+ * @param {Array<string>} assignedID - Array of assigned contact IDs.
+ * @param {string} taskID - The ID of the task being edited.
+ * @param {string} containerID - The ID of the container element to update.
+ * @returns {void}
  *
  * @description
  * This function performs the following steps:
- * 1. Checks the status of the checkbox with the given ID.
- * 2. Retrieves the contact ID from the contacts array using the provided index.
- * 3. Adds the contact ID to the newAssigned array if the checkbox is checked.
- * 4. Removes the contact ID from the newAssigned array if the checkbox is unchecked.
- * 5. Updates the display of assigned contacts using the loadAssignedOnEditTask function.
+ * 1. Retrieves the checkbox element and contact information.
+ * 2. Determines the correct assigned array based on whether it's a new or existing task.
+ * 3. If the checkbox is checked, adds the contact to the assigned lists.
+ * 4. If the checkbox is unchecked, removes the contact from the assigned lists.
+ * 5. Updates the UI to reflect the changes in assigned contacts.
+ * 6. Resets the assignedID array.
+ *
+ * @global
+ * @var {Array<Object>} contacts - Array of all contacts.
+ * @var {Object} newTask - Object representing a new task being created.
+ * @var {Array<Object>} addedTasks - Array of all existing tasks.
+ *
+ * @see loadAssignedOnEditTask
+ * @see isNewTaskEmpty
  */
-function addContactAsAssigned(id, i, newAssigned, containerID) {
+function addContactAsAssigned(id, i, assignedID, taskID, containerID) {
 	let checkAssigned = document.getElementById(id);
 	let contactID = contacts[i]["id"];
-	let deleteID = newAssigned.indexOf(contactID);
+	let contact = contacts[i];
+	let assigned = [];
+	let deleteID = assignedID.indexOf(contactID);
+	isNewTaskEmpty(newTask) ? (assigned = addedTasks.filter((task) => task.id === taskID)[0]?.assigned || []) : (assigned = newTask["assigned"]);
 	if (checkAssigned.checked) {
-		newAssigned.push(contactID);
+		assignedID.push(contactID);
+		assigned.push(contact);
 	} else if (!checkAssigned.checked) {
-		newAssigned.splice(deleteID, 1);
+		assignedID.splice(deleteID, 1);
+		assigned.splice(deleteID, 1);
 	}
-
-	loadAssignedOnEditTask(newAssigned, containerID);
-	newAssigned = [];
+	loadAssignedOnEditTask(assignedID, containerID);
+	assignedID = [];
 }
 
 /**
@@ -327,7 +345,7 @@ function loadAssignedOnEditTask(assigned, containerID) {
  *
  * @param {string} inputID - The ID of the input element for the search term.
  * @param {string} searchContainerID - The ID of the container element for displaying search results.
- * @param {string} id - The ID of the task being edited.
+ * @param {string} taskID - The ID of the task being edited.
  * @returns {void} - No return value.
  *
  * @description
@@ -340,17 +358,19 @@ function loadAssignedOnEditTask(assigned, containerID) {
  * 6. If the search term is empty, load all contacts for the "Assigned To" section using loadAllUsersForContactOnAssignedTo.
  * 7. If the search term is not empty, filter and display contacts based on the search term using getContect.
  */
-function filterUserOnAssignedTo(inputID, searchContainerID, id) {
+function filterUserOnAssignedTo(inputID, searchContainerID, taskID) {
 	let searchTerm = document.getElementById(inputID).value;
 	let assigneds = [];
-	isNewTaskEmpty(newTask) ? (assigneds = addedTasks[id]["assigned"]) : (assigneds = newTask["assigned"]);
+	isNewTaskEmpty(newTask) ? (assigneds = addedTasks.filter((task) => task.id === taskID)[0]?.assigned || []) : (assigneds = newTask["assigned"]);
 	searchTerm = searchTerm.toLowerCase();
 	let contactsContainer = document.getElementById(searchContainerID);
 	contactsContainer.innerHTML = "";
+	assignedID = filterContactIDForAssignedTo(assigneds);
+	assigneds = filterContactNameForAssignedTo(assigneds);
 	if (searchTerm == "") {
-		loadAllUsersForContactOnAssignedTo(assigneds, searchContainerID, id);
+		loadAllUsersForContactOnAssignedTo(assignedID, searchContainerID, taskID);
 	} else {
-		renderFilterdUsersOnAssignedTo(assigneds, searchTerm, id, contactsContainer);
+		renderFilterdUsersOnAssignedTo(assignedID, searchTerm, taskID, contactsContainer);
 	}
 }
 
@@ -371,16 +391,17 @@ function filterUserOnAssignedTo(inputID, searchContainerID, id) {
  * 4. If the condition is met, generate the user badge, get the badge color, and update the container's inner HTML.
  * 5. If the user is already assigned, use generateEditTaskAssigmentContactsCheckedHTML; otherwise, use generateEditTaskAssigmentContactsHTML.
  */
-function renderFilterdUsersOnAssignedTo(assigneds, searchTerm, id, contactsContainer) {
+function renderFilterdUsersOnAssignedTo(assignedID, searchTerm, id, contactsContainer) {
 	for (let i = 0; i < contacts.length; i++) {
-		let userName = contacts[i]["name"];
-		if (userName.toLowerCase().includes(searchTerm)) {
-			let userBadge = generateBadge(userName);
+		let contactName = contacts[i]["name"];
+		if (contactName.toLowerCase().includes(searchTerm)) {
+			let badge = generateBadge(contactName);
 			let badgeColor = contacts[i]["bgcolor"];
-			if (assigneds.includes(userName)) {
-				contactsContainer.innerHTML += generateEditTaskAssigmentContactsCheckedHTML(badgeColor, userBadge, userName, i, id);
+			let contactID = contacts[i]["id"];
+			if (assignedID.includes(contactID)) {
+				contactsContainer.innerHTML += generateEditTaskAssigmentContactsCheckedHTML(badgeColor, badge, contactName, i, id);
 			} else {
-				contactsContainer.innerHTML += generateEditTaskAssigmentContactsHTML(badgeColor, userBadge, userName, i, id);
+				contactsContainer.innerHTML += generateEditTaskAssigmentContactsHTML(badgeColor, badge, contactName, i, id);
 			}
 		}
 	}

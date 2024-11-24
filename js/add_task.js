@@ -83,7 +83,7 @@ function initUserSelectField(containerID) {
 		let userName = contacts[i]["name"];
 		let userBadge = generateBadge(userName);
 		let badgeColor = contacts[i]["bgcolor"];
-		if (newAssigned.includes(userName)) {
+		if (assignedID.includes(userName)) {
 			contactsContainer.innerHTML += generateTaskAssigmentContactsHTML(userName, badgeColor, userBadge, i);
 		} else {
 			contactsContainer.innerHTML += generateTaskAssigmentContactsHTML(userName, badgeColor, userBadge, i);
@@ -96,32 +96,32 @@ function initUserSelectField(containerID) {
  *
  * @param {string} id - ID of the checkbox element.
  * @param {number} i - Index of the user in the contacts array.
- * @param {string[]} newAssigned - Array containing IDs of newly assigned contacts.
+ * @param {string[]} assignedID - Array containing IDs of newly assigned contacts.
  * @param {string} containerID - ID of the container element to display selected contacts.
  */
-function addElectedContact(id, i, newAssigned, containerID) {
+function addElectedContact(id, i, assignedID, containerID) {
 	let checkAssigned = document.getElementById(id);
 	let contactID = contacts[i]["id"];
-	let deleteID = newAssigned.indexOf(contactID);
+	let deleteID = assignedID.indexOf(contactID);
 	if (checkAssigned.checked) {
-		newAssigned.push(contactID);
+		assignedID.push(contactID);
 	} else if (!checkAssigned.checked) {
-		newAssigned.splice(deleteID, 1);
+		assignedID.splice(deleteID, 1);
 	}
-	showSelectedContacts(newAssigned, containerID);
+	showSelectedContacts(assignedID, containerID);
 }
 
 /**
  * Displays selected contacts in a designated container.
  *
- * @param {string[]} newAssigned - Array containing the IDs of newly assigned contacts.
+ * @param {string[]} assignedID - Array containing the IDs of newly assigned contacts.
  * @param {string} containerID - ID of the container element to display selected contacts.
  */
-function showSelectedContacts(newAssigned, containerID) {
+function showSelectedContacts(assignedID, containerID) {
 	let selectedContacts = document.getElementById(containerID);
 	selectedContacts.innerHTML = "";
-	for (let i = 0; i < newAssigned.length; i++) {
-		let contactID = newAssigned[i];
+	for (let i = 0; i < assignedID.length; i++) {
+		let contactID = assignedID[i];
 		let contactIndex = contacts.findIndex((contact) => contact.id === contactID);
 		if (contactIndex !== -1) {
 			let badgeColor = contacts[contactIndex]["bgcolor"];
@@ -289,11 +289,11 @@ function clearContainerLeft() {
 }
 
 /**
- * this function is clearing selected contacts by resetting newAssigned array and updating the display
+ * this function is clearing selected contacts by resetting assignedID array and updating the display
  */
 function clearSelectedContacts() {
-	newAssigned = [];
-	showSelectedContacts(newAssigned, "et_selected_contacts");
+	assignedID = [];
+	showSelectedContacts(assignedID, "et_selected_contacts");
 }
 
 /**
@@ -349,7 +349,7 @@ async function createTask() {
 		bucket: "to-do",
 		title: enter_title_field.value,
 		description: enter_description_field.value,
-		assigned_id: newAssigned,
+		assigned_id: assignedID,
 		duedate: date_field.value,
 		prio: selectedPriority,
 		category: select_category_field.value,
