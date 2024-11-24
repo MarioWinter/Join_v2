@@ -65,6 +65,20 @@ async function changeItem(data, endpoint, id) {
 		.catch((error) => console.error("Fehler:", error));
 }
 
+async function patchItem(data, endpoint, id) {
+	let url = `${API_BASE_URL}/${endpoint}/${id}/`;
+	return fetch(url, {
+		method: "PATCH",
+		headers: {
+			"Content-Type": "application/json",
+			Authorization: `Token ${TOKEN}`,
+		},
+		body: JSON.stringify(data),
+	})
+		.then((response) => response.json())
+		.catch((error) => console.error("Fehler:", error));
+}
+
 async function deleteItem(data, endpoint, id) {
 	let url = `${API_BASE_URL}/${endpoint}/${id}/`;
 	return fetch(url, {
@@ -208,5 +222,13 @@ async function updatedAddedTaskToStorage(taskID) {
 		await changeItem(changedTasks, "tasks", taskID);
 	} catch (e) {
 		console.error("Update Added Tasks error:", e);
+	}
+}
+
+async function updatedSubtaskToStorage(taskID, changedSubtask) {
+	try {
+		await patchItem(changedSubtask, "tasks", taskID);
+	} catch (e) {
+		console.error("Patch Added Tasks error:", e);
 	}
 }

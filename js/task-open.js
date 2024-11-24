@@ -140,18 +140,42 @@ function clearElement(id) {
 }
 
 /**
- * changes the status of the subtask whether it is finished or still open
+ * Asynchronously updates the completion status of a subtask and saves the changes.
  *
- * @param {string} elementID - contains all HTML attributes of the checkbox input field
- * @param {int} subtaskNumber - contains the subtask number
- * @param {int} taskID - transfers the task ID
+ * @async
+ * @param {string} elementID - The ID of the checkbox element for the subtask.
+ * @param {number} subtaskNumber - The index of the subtask within the task's subtasks array.
+ * @param {string} taskID - The ID of the task containing the subtask.
+ * @returns {Promise<void>}
+ *
  */
-function changeSubtaskConfirmation(elementID, subtaskNumber, taskID) {
+async function changeSubtaskConfirmation(elementID, subtaskNumber, taskID) {
 	let checkSubtask = document.getElementById(elementID);
-	let subtask = addedTasks[taskID].subtask[subtaskNumber];
+	let tasks = addedTasks.filter((t) => t["id"] === taskID);
+	let subtask = tasks[0].subtasks[subtaskNumber];
 	if (checkSubtask.checked) {
 		subtask["subdone"] = true;
 	} else if (!checkSubtask.checked) {
 		subtask["subdone"] = false;
 	}
+	let subtasks = tasks[0]["subtasks"];
+	await updatedSubtaskToStorage(taskID, createPatchSubtask(subtasks));
+}
+
+/**
+ * Creates a patch object for updating subtasks.
+ *
+ * @param {Array<Object>} subtasks - The array of subtask objects to be updated.
+ * @returns {Object} An object with a 'subtasks' property containing the provided subtasks array.
+ *
+ * @description
+ * This function creates a simple object structure suitable for a PATCH request
+ * to update the subtasks of a task. It wraps the provided subtasks array
+ * in an object with a 'subtasks' key.
+ *
+ */
+function createPatchSubtask(subtasks) {
+	return {
+		subtasks: subtasks,
+	};
 }
