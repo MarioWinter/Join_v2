@@ -1,6 +1,3 @@
-let addedSubtasks = [];
-let newAssigned = [];
-
 /**
  * this function initializes task addition process by loading necessary data and setting up the interface
  */

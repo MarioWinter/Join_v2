@@ -188,3 +188,25 @@ async function sendRegistrationRequest(data) {
 // 		})
 // 		.catch((error) => console.error("Registration failed:", error));
 // }
+
+/**
+ * Asynchronously loads added tasks from storage.
+ *
+ * @returns {Promise<void>} - A promise that resolves when added tasks are loaded.
+ */
+async function loadAddedTasksFromStorage() {
+	try {
+		addedTasks = await getItems("tasks");
+		console.log("Loaded tasks:", addedTasks);
+	} catch (e) {
+		console.error("Loading Added Tasks error:", e);
+	}
+}
+
+async function updatedAddedTaskToStorage(taskID) {
+	try {
+		await changeItem(changedTasks, "tasks", taskID);
+	} catch (e) {
+		console.error("Update Added Tasks error:", e);
+	}
+}

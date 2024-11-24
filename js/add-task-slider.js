@@ -1,7 +1,6 @@
 let isClicked = false;
 let fillColor = "";
 let isActive = false;
-let globalPrioButtonID = "";
 let newTask = {};
 
 /**
@@ -260,28 +259,6 @@ function loadAddTaskSlider(boardColumnID) {
 function initAddTaskSlider(taskID) {
 	let assigneds = newTask["assigned"];
 	loadAllUsersForContactOnAssignedTo(assigneds, "et_contact_overlay", taskID);
-}
-
-/**LÖSCHEN
- * Creates a new task ID for a newly added task.
- *
- * @returns {number} - The new task ID.
- *
- * @description
- * This function performs the following steps:
- * 1. Check if there are existing tasks in the addedTasks array.
- * 2. If tasks exist, set the new task ID to the length of the addedTasks array.
- * 3. If no tasks exist, set the new task ID to 0.
- * 4. Return the new task ID.
- */
-function createNewTaskID() {
-	let newTaskID;
-	if (addedTasks.length !== 0) {
-		newTaskID = addedTasks.length;
-	} else {
-		newTaskID = 0;
-	}
-	return newTaskID;
 }
 
 /**

@@ -23,10 +23,23 @@ function loadTaskEdit(TaskID) {
 }
 
 /**
- * this function creates new task, assigns a priority and stores it in the JSON data
+ * Updates a task with the specified ID using the values from the edit form.
+ *
+ * @async
+ * @param {string} taskID - The ID of the task to be updated.
+ * @returns {Promise<void>}
+ *
+ * @description
+ * This function performs the following steps:
+ * 1. Updates the task priority using the updateTaskPriority function.
+ * 2. Creates a new object 'changedTasks' with updated task properties:
+ *    - Keeps the original bucket and category.
+ *    - Updates title, description, assigned IDs, due date, and priority.
+ *    - Retains the original subtasks.
+ *
  */
-async function updateTask() {
-	let priority = updateTaskPriority();
+async function updateTask(taskID) {
+	let priority = updateTaskPriority(taskID);
 	changedTasks = {
 		bucket: clonedTask[0]["bucket"],
 		title: title_input_ed_task.value,
@@ -37,7 +50,6 @@ async function updateTask() {
 		category: clonedTask[0]["category"],
 		subtasks: clonedTask[0]["subtasks"],
 	};
-	//await setItem(changedTasks, "tasks", taskID);
 }
 
 /**
@@ -104,17 +116,53 @@ function filterContactIDForAssignedTo(assigneds) {
  */
 async function updateOpenTask(taskID) {
 	copyTask(taskID);
-	updateTask();
-
+	updateTask(taskID);
+	await updatedAddedTaskToStorage(taskID);
+	await loadAddedTasksFromStorage();
 	renderOpenTask(taskID);
-	//await changeItem(addedTasks[taskID]);
 	newAssigned = [];
 	clonedTask = [];
+	changedTasks = [];
 }
 
+/**
+ * Creates a deep copy of a task with the specified ID.
+ *
+ * @param {string} taskID - The ID of the task to be copied.
+ * @returns {void}
+ *
+ * @description
+ * This function performs the following steps:
+ * 1. Filters the `addedTasks` array to find the task with the matching ID.
+ * 2. Creates a deep clone of the found task(s) using structuredClone.
+ * 3. Assigns the cloned task(s) to the global variable `clonedTask`.
+ *
+ * @global
+ * @var {Array<Object>} addedTasks - The array containing all tasks.
+ * @var {Array<Object>} clonedTask - The global variable to store the cloned task(s).
+ */
 function copyTask(taskID) {
 	let tasks = addedTasks.filter((t) => t["id"] === taskID);
 	clonedTask = structuredClone(tasks);
+}
+
+/**
+ * Updates the priority of the task with the specified ID.
+ * This function performs the following steps:
+ * 1. Check if a global priority button ID is set.
+ * 2. If set, retrieve the priority value from the corresponding element.
+ * 3. Update the priority of the task with the obtained value.
+ *
+ * @param {string} taskID - The ID of the task to update its priority.
+ * @returns {void} - No return value.
+ */
+function updateTaskPriority(taskID) {
+	let prio = "";
+	if (globalPrioButtonID !== "") {
+		prio = document.getElementById(globalPrioButtonID).value;
+	}
+	//addedTasks[taskID]["prio"] = prio;
+	return prio;
 }
 
 /**

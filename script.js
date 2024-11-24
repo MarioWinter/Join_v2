@@ -1,6 +1,8 @@
 let username;
 let currentUser;
 let contacts = [];
+let addedSubtasks = [];
+let newAssigned = [];
 
 let today = new Date();
 let hour = today.getHours();

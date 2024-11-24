@@ -2,6 +2,7 @@ let addedTasks = [];
 let clonedTask = [];
 let filteredTasks = [];
 let changedTasks = [];
+let globalPrioButtonID = "";
 
 /**
  * Asynchronously initializes the board by performing the following actions:
@@ -27,20 +28,6 @@ async function initBoard() {
 async function clearAddedTasksRemoteSTRG() {
 	addedTasks = [];
 	await setItem("addedTasks", JSON.stringify(addedTasks));
-}
-
-/**
- * Asynchronously loads added tasks from storage.
- *
- * @returns {Promise<void>} - A promise that resolves when added tasks are loaded.
- */
-async function loadAddedTasksFromStorage() {
-	try {
-		addedTasks = await getItems("tasks");
-		console.log("Loaded tasks:", addedTasks); // Optional: Überprüfen Sie die geladenen Aufgaben
-	} catch (e) {
-		console.error("Loading Added Tasks error:", e);
-	}
 }
 
 /**
@@ -328,7 +315,7 @@ function showFrame(id) {
 	show(id);
 }
 
-/**
+/**UPDATEN
  * Asynchronously deletes a task by performing the following actions:
  * - Filters out the task with the specified ID from the addedTasks array.
  * - Updates the addedTasks array with the filtered tasks.
@@ -347,7 +334,7 @@ async function deleteTask(TaskID) {
 }
 
 /**
- * Updates the task IDs in the addedTasks array.
+ * Updates the task IDs in the addedTasks array.LÖSCHEN
  *
  * @returns {void} - No return value.
  *
