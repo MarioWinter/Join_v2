@@ -73,9 +73,9 @@ async function updateTask(taskID) {
  */
 function initEditTask(id, title, description, prio, assigneds, duedate) {
 	document.getElementById("task_overlay_bg").innerHTML = generateEditTaskHTML(id, title, description, duedate);
-	let contactIDs = filterContactIDForAssignedTo(assigneds);
-	loadAllUsersForContactOnAssignedTo(contactIDs, "et_contact_overlay", id);
-	loadAssignedOnEditTask(contactIDs, "et_selected_contacts");
+	newAssigned = filterContactIDForAssignedTo(assigneds);
+	loadAllUsersForContactOnAssignedTo(newAssigned, "et_contact_overlay", id);
+	loadAssignedOnEditTask(newAssigned, "et_selected_contacts");
 	setTodayDateForCalendar("calendar_edit_task");
 	loadPrioOnEditTask(prio);
 	loadSubtasksEditTask("subtask_lists", id);
@@ -226,7 +226,7 @@ function closeContactOverlay(containerID, selectedContactsID) {
 /**
  * Loads all contacts for contact assignment on the edit task interface.
  *
- * @param {Array<Object>} assigneds - An array of assigned contact objects.
+ * @param {Array<Object>} assigneds - An array of assigned contact IDs.
  * @param {string} containerID - The ID of the container to display the contacts.
  * @param {string} ID - The ID of the task.
  * @returns {void}
