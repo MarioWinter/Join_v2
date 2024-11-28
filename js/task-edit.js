@@ -248,7 +248,7 @@ function closeContactOverlay(containerID, selectedContactsID) {
  *       - Generates and appends HTML for an unchecked contact.
  * 4. Appends the generated HTML to the container.
  */
-function loadAllUsersForContactOnAssignedTo(assigneds, containerID, ID) {
+function loadAllUsersForContactOnAssignedTo(assigneds, containerID, ID = 0) {
 	let contactsContainer = document.getElementById(containerID);
 	for (let i = 0; i < contacts.length; i++) {
 		let contactName = contacts[i]["name"];

@@ -180,29 +180,6 @@ async function sendRegistrationRequest(data) {
 		});
 }
 
-// async function sendRegistrationRequest(data) {
-// 	const url = "http://127.0.0.1:8000/api/auth/registration/";
-// 	fetch(url, {
-// 		method: "POST",
-// 		headers: {
-// 			"Content-Type": "application/json",
-// 		},
-// 		body: JSON.stringify(data),
-// 	})
-// 		.then((response) => {
-// 			if (!response.ok) {
-// 				return response.json().then((errorData) => {
-// 					throw new Error(`Registration failed: ${JSON.stringify(errorData)}`);
-// 				});
-// 			}
-// 			return response.json();
-// 		})
-// 		.then((data) => {
-// 			successfulRegistration();
-// 		})
-// 		.catch((error) => console.error("Registration failed:", error));
-// }
-
 /**
  * Asynchronously loads added tasks from storage.
  *
@@ -217,14 +194,30 @@ async function loadAddedTasksFromStorage() {
 	}
 }
 
+/**
+ * Asynchronously updates a specific task in storage.
+ *
+ * @async
+ * @param {string} taskID - The ID of the task to be updated.
+ * @returns {Promise<void>}
+ *
+ */
 async function updatedAddedTaskToStorage(taskID) {
 	try {
-		await changeItem(changedTasks, "tasks", taskID);
+		await patchItem(changedTasks, "tasks", taskID);
 	} catch (e) {
 		console.error("Update Added Tasks error:", e);
 	}
 }
 
+/**
+ * Asynchronously updates the subtasks of a specific task in storage.
+ *
+ * @async
+ * @param {string} taskID - The ID of the task whose subtasks are being updated.
+ * @param {Object} changedSubtask - An object containing the updated subtask information.
+ * @returns {Promise<void>}
+ */
 async function updatedSubtaskToStorage(taskID, changedSubtask) {
 	try {
 		await patchItem(changedSubtask, "tasks", taskID);

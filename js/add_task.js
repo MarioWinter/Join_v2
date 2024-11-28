@@ -176,12 +176,12 @@ function closeSubtaskIcons() {
  * and changing visibility of subtask icons. displaying subtask and clearing the input field
  */
 function handleSubtaskActions() {
-	let subtaskInput = document.getElementById("add_new_subtask_field");
-	let input = document.getElementById("add_new_subtask_field");
-	let subtask = subtaskInput.value.trim();
+	// let subtaskInput = document.getElementById("add_new_subtask_field");
+	// let input = document.getElementById("add_new_subtask_field");
+	// let subtask = subtaskInput.value.trim();
 	changingSubtaskIcons();
 	displaySubtasks();
-	input.value = "";
+	// input.value = "";
 }
 
 /**

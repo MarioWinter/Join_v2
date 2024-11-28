@@ -233,19 +233,19 @@ function setTodayDateForCalendar(id) {
  */
 function loadAddTaskSlider(boardColumnID) {
 	let taskOverlay = document.getElementById("task_overlay_bg");
-	let taskID = createNewTaskID();
 	taskOverlay.innerHTML = "";
-	createNewTask(boardColumnID, taskID);
+	//createNewTask(boardColumnID);
 	showFrame("task_overlay_bg");
 	addOverlayBg("task_overlay_bg");
-	taskOverlay.innerHTML = generateAddTaskSliderHTML(taskID);
-	setTodayDateForCalendar("calendar_edit_task");
-	initAddTaskSlider(taskID);
+	taskOverlay.innerHTML = generateAddTaskSliderHTML(boardColumnID);
+	setTodayDateForCalendar("date_field");
+	loadAllUsersForContactOnAssignedTo(assignedID, "et_contact_overlay");
+	//initAddTaskSlider(taskID);
 	frameSlideIn("task_open_overlay_frame");
 	loadPrioOnEditTask("Medium");
 }
 
-/**
+/**LÖSCHEN
  * Initializes the add task slider with the specified task ID.
  *
  * @param {string} taskID - The ID of the task being added.
@@ -257,15 +257,13 @@ function loadAddTaskSlider(boardColumnID) {
  * 2. Load all contacts for contact on assigned to using loadAllUsersForContactOnAssignedTo.
  */
 function initAddTaskSlider(taskID) {
-	let assigneds = newTask["assigned"];
-	loadAllUsersForContactOnAssignedTo(assigneds, "et_contact_overlay", taskID);
+	loadAllUsersForContactOnAssignedTo(assignedID, "et_contact_overlay", taskID);
 }
 
-/**
+/**LÖSCHEN
  * Creates a new task with the specified board and task IDs.
  *
  * @param {number} boardColumnID - The ID of the board column to which the task is assigned.
- * @param {number} taskID - The ID of the new task.
  *
  * @returns {Object} - The newly created task object.
  *
@@ -281,7 +279,7 @@ function initAddTaskSlider(taskID) {
  * 8. `category`: The category of the task (initially empty).
  * 9. `subtasks`: An array of subtasks (initially empty).
  */
-function createNewTask(boardColumnID, taskID) {
+function createNewTask(boardColumnID) {
 	newTask = {
 		bucket: boardColumnID,
 		title: "",
@@ -435,4 +433,47 @@ function updateNewTask(taskID) {
 function updateTaskCategory(taskID) {
 	let categoryValue = document.getElementById("select_category").value;
 	addedTasks[taskID]["category"] = categoryValue;
+}
+
+function updateOpenTaskTitle(taskID) {
+	let titleValue = document.getElementById("title_input_ed_task").value;
+	addedTasks[taskID]["title"] = titleValue;
+}
+
+function updateOpenTaskDesc(taskID) {
+	let descValue = document.getElementById("description_ed_task").value;
+	addedTasks[taskID]["description"] = descValue;
+}
+
+function updateOpenTaskDueDate(taskID) {
+	let dueDateValue = document.getElementById("calendar_edit_task").value;
+	addedTasks[taskID]["duedate"] = dueDateValue;
+}
+
+function createSubtasks() {
+	let subtask = document.getElementById("add_new_subtask_field").value.trim();
+	if (subtask !== "") {
+		addedSubtasks.push({ subdone: false, subtitle: subtask });
+		renderAddedSubtasksHTML();
+		subtask.value = "";
+	}
+}
+
+function renderAddedSubtasksHTML() {
+	let subtaskContainer = document.getElementById("subtask_lists");
+	subtaskContainer.innerHTML = "";
+	for (let i = 0; i < addedSubtasks.length; i++) {
+		let subtitle = addedSubtasks[i].subtitle;
+		subtaskContainer.innerHTML += generateSubtaskListItemHTML(
+			subtitle,
+			i,
+			0,
+			"subtask_listitem_",
+			"subtask_edit_container",
+			"subtask_edit_input",
+			"subtask_lists"
+		);
+	}
+	// subtaskContainer.classList.remove("d-none");
+	// closeSubtaskIcons();
 }

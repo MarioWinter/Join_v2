@@ -1,5 +1,5 @@
-function generateAddTaskSliderHTML(id) {
-	return `
+function generateAddTaskSliderHTML(boardColumnID, id = 0) {
+	return /*HTML*/ `
 <div id="task_open_overlay_frame" class="slider-frame" onclick="doNotForward(event); closeContactOverlay('et_contact_overlay', 'et_selected_contacts')">
     <div class="add-task-head">
         <h1>Add Task</h1>
@@ -27,7 +27,7 @@ function generateAddTaskSliderHTML(id) {
                 <div class="span-style-slider">Title <span class="required-star-slider">*</span>
                 </div>
 
-                <input required="" placeholder="Enter a title" id="title_input_ed_task" type="text"
+                <input required="" placeholder="Enter a title" id="enter_title_field" type="text"
                     autocomplete="off" class="input-frame-ed-task">
                 <div class="error-message-slider d-none" id="title_error_slider">This field is required</div>
             </div>
@@ -35,7 +35,7 @@ function generateAddTaskSliderHTML(id) {
             <div class="slider-description">
                 <span class="span-style-slider">Description</span>
                 <textarea required="" placeholder="Enter a Description" name=""
-                    class="description-textarea" cols="20" rows="10" id="description_ed_task"></textarea>
+                    class="description-textarea" cols="20" rows="10" id="enter_description_field"></textarea>
                 <div></div>
             </div>
             <!-- Assigned To Add Task -->
@@ -73,7 +73,7 @@ function generateAddTaskSliderHTML(id) {
                 <div class="span-style-slider">Due date
                     <span class="required-star-slider">*</span>
                 </div>
-                <input required type="date" id="calendar_edit_task">
+                <input class="date-input-slider" required type="date" id="date_field">
                 <div class="error-message-slider d-none" id="date_error_slider">This field is required</div>
             </div>
             <!-- Prio Add Task -->
@@ -139,7 +139,7 @@ function generateAddTaskSliderHTML(id) {
             <div class="category-container">
                 <div class="span-style-slider">Category <span class="required-star-slider">*</span>
                 </div>
-                <select required name="Select contacts to assign" id="select_category">
+                <select required name="Select contacts to assign" id="select_category_field">
                     <option value="" disabled="" selected="" hidden="">Select task
                         category
                     </option>
@@ -149,11 +149,11 @@ function generateAddTaskSliderHTML(id) {
                 <div class="error-message-slider d-none" id="category_error_slider">This field is required</div>
             </div>
 
-            <!-- Subtask Edit Task -->
+            <!-- Subtask-->
             <div id="subtask_container_slider" class="subtask-container-slider">
                 <div class="subhead-ed-task">Subtasks</div>
                 <div class="subtask-input-container">
-                    <input id="subtask_input" class="subtask-input-slider" type="text" placeholder="Add new subtask"
+                    <input id="add_new_subtask_field" class="subtask-input-slider" type="text" placeholder="Add new subtask"
                         autocomplete="off">
                     <img id="add_subtask" class="add-subtask-slider" src="./assets/img/add-plus-icon.svg"
                         alt="Add Subtasks" onclick="showSubtaskInput('add_subtask', 'check_subtask_icons')">
@@ -166,7 +166,7 @@ function generateAddTaskSliderHTML(id) {
                             <path d="M1.14453 0V24" stroke="#D1D1D1" />
                         </svg>
                         <img class="subtask-button-slider" src="./assets/img/add-check-icon.svg"
-                            alt="Check Substask" onclick="addSubtask(${id}, 'subtask_lists')">
+                            alt="Check Substask" onclick="createSubtasks()">
 
                     </div>
                 </div>
@@ -196,7 +196,7 @@ function generateAddTaskSliderHTML(id) {
                         stroke-linejoin="round"></path>
                 </svg>
             </button>
-            <button onclick="submitForm(${id})" type="button" id="create_btn">
+            <button onclick="submitForm(${id}, ${boardColumnID})" type="button" id="create_btn">
                 Create Task <img src="./assets/img/add-check-icon-white.svg" alt="Add Subtask">
             </button>
         </div>

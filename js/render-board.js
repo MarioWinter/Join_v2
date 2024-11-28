@@ -395,7 +395,7 @@ function generateSubtasksCheckedHTML(subtitle, i, ID) {
  * @param {string} subtaskList - The ID of the subtask list container.
  * @returns {string} - The HTML for the subtask list item in the task frame.
  */
-function generateSubtaskListItemHTML(subtitle, i, ID, subtaskListItemID, subtaskEditContainerID, subtaskEditInputID, subtaskList) {
+function generateSubtaskListItemHTML(subtitle, i, ID = 0, subtaskListItemID, subtaskEditContainerID, subtaskEditInputID, subtaskList) {
 	let subtaskListItem = `${ID}${subtaskListItemID}${i}`;
 	let subtaskEditContainer = `${ID}${subtaskEditContainerID}${i}`;
 	let subtaskEditInput = `${ID}${subtaskEditInputID}${i}`;

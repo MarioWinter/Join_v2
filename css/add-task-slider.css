@@ -312,7 +312,7 @@
 	gap: 0.8rem;
 }
 
-#date_input_slider {
+.date-input-slider {
 	padding: 0 1.6rem;
 	height: 4.8rem;
 	border: 0.1rem solid var(--secondary-grey-sidebar);
