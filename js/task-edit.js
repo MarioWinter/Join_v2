@@ -130,7 +130,6 @@ function filterContactNameForAssignedTo(assigneds) {
 async function updateOpenTask(taskID) {
 	let task = filterTask(taskID);
 	updateTaskPriority(task);
-	debugger;
 	updateTask(task);
 
 	await updatedAddedTaskToStorage(taskID);
@@ -349,7 +348,7 @@ function loadAssignedOnEditTask(assigned, containerID) {
 	}
 }
 
-/**
+/**ANPASSEN
  * Filters and displays contacts based on the search term in the "Assigned To" section of the edit task interface.
  *
  * @param {string} inputID - The ID of the input element for the search term.
@@ -369,8 +368,8 @@ function loadAssignedOnEditTask(assigned, containerID) {
  */
 function filterUserOnAssignedTo(inputID, searchContainerID, taskID) {
 	let searchTerm = document.getElementById(inputID).value;
-	let assigneds = [];
-	isNewTaskEmpty(newTask) ? (assigneds = addedTasks.filter((task) => task.id === taskID)[0]?.assigned || []) : (assigneds = newTask["assigned"]);
+	let assigneds = addedTasks.filter((task) => task.id === taskID)[0]?.assigned || [];
+	//isNewTaskEmpty(newTask) ? (assigneds = addedTasks.filter((task) => task.id === taskID)[0]?.assigned || []) : (assigneds = newTask["assigned"]);
 	searchTerm = searchTerm.toLowerCase();
 	let contactsContainer = document.getElementById(searchContainerID);
 	contactsContainer.innerHTML = "";
