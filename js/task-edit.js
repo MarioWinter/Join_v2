@@ -304,7 +304,8 @@ function addContactAsAssigned(id, i, assignedID, taskID, containerID) {
 	let contact = contacts[i];
 	let assigned = [];
 	let deleteID = assignedID.indexOf(contactID);
-	isNewTaskEmpty(newTask) ? (assigned = addedTasks.filter((task) => task.id === taskID)[0]?.assigned || []) : (assigned = newTask["assigned"]);
+	assigned = addedTasks.filter((task) => task.id === taskID)[0]?.assigned || [];
+	//isNewTaskEmpty(newTask) ? (assigned = addedTasks.filter((task) => task.id === taskID)[0]?.assigned || []) : (assigned = newTask["assigned"]);
 	if (checkAssigned.checked) {
 		assignedID.push(contactID);
 		assigned.push(contact);
@@ -348,38 +349,64 @@ function loadAssignedOnEditTask(assigned, containerID) {
 	}
 }
 
-/**ANPASSEN
+/**
  * Filters and displays contacts based on the search term in the "Assigned To" section of the edit task interface.
  *
  * @param {string} inputID - The ID of the input element for the search term.
  * @param {string} searchContainerID - The ID of the container element for displaying search results.
- * @param {string} taskID - The ID of the task being edited.
+ * @param {number} taskID - The ID of the task being edited.
  * @returns {void} - No return value.
  *
  * @description
  * This function performs the following steps:
- * 1. Get the search term from the input element by ID.
- * 2. Get the assigned contacts for the current task by ID.
- * 3. Convert the search term to lowercase.
- * 4. Get the container element for displaying search results by ID.
- * 5. Clear the container's inner HTML.
- * 6. If the search term is empty, load all contacts for the "Assigned To" section using loadAllUsersForContactOnAssignedTo.
- * 7. If the search term is not empty, filter and display contacts based on the search term using getContect.
+ * 1. Retrieves the search term from the input element by ID.
+ * 2. Gets the assigned contacts for the current task by ID.
+ * 3. Converts the search term to lowercase.
+ * 4. Retrieves the container element for displaying search results by ID.
+ * 5. Clears the container's inner HTML.
+ * 6. If the search term is empty, loads all contacts for the "Assigned To" section using `loadAllUsersForContactOnAssignedTo`.
+ * 7. If the search term is not empty, filters and displays contacts based on the search term using `renderFilterdUsersOnAssignedTo`.
  */
 function filterUserOnAssignedTo(inputID, searchContainerID, taskID) {
 	let searchTerm = document.getElementById(inputID).value;
-	let assigneds = addedTasks.filter((task) => task.id === taskID)[0]?.assigned || [];
-	//isNewTaskEmpty(newTask) ? (assigneds = addedTasks.filter((task) => task.id === taskID)[0]?.assigned || []) : (assigneds = newTask["assigned"]);
-	searchTerm = searchTerm.toLowerCase();
+	let assigneds = useExistingTaskOrCreateNew(taskID);
 	let contactsContainer = document.getElementById(searchContainerID);
+	searchTerm = searchTerm.toLowerCase();
 	contactsContainer.innerHTML = "";
-	assignedID = filterContactIDForAssignedTo(assigneds);
+	assignedID = checkAssignedIDAndFilter(assigneds, taskID);
 	assigneds = filterContactNameForAssignedTo(assigneds);
 	if (searchTerm == "") {
 		loadAllUsersForContactOnAssignedTo(assignedID, searchContainerID, taskID);
 	} else {
 		renderFilterdUsersOnAssignedTo(assignedID, searchTerm, taskID, contactsContainer);
 	}
+}
+
+/**
+ * Checks the assigned IDs and filters them based on the task ID.
+ *
+ * @param {Array} assigneds - The array of assigned IDs to filter.
+ * @param {number} taskID - The ID of the task to check against.
+ * @returns {Array} The filtered or original array of assigned IDs.
+ */
+function checkAssignedIDAndFilter(assigneds, taskID) {
+	if (taskID === -1 && assignedID.length > 0) {
+		return assignedID;
+	} else {
+		return filterContactIDForAssignedTo(assigneds);
+	}
+}
+
+/**
+ * Retrieves the assigned IDs for a task. If the task ID is valid, it returns the assigned IDs of the existing task; otherwise, it returns an empty array.
+ *
+ * @param {number} taskID - The ID of the task to retrieve assigned IDs for.
+ * @returns {Array} An array of assigned IDs.
+ */
+function useExistingTaskOrCreateNew(taskID) {
+	let assigneds = [];
+	if (taskID != -1) assigneds = addedTasks.filter((task) => task.id === taskID)[0]?.assigned || [];
+	return assigneds;
 }
 
 /**
