@@ -23,30 +23,27 @@ function loadTaskEdit(TaskID) {
 }
 
 /**
- * Updates a task with the specified ID using the values from the edit form.
+ * Updates a task with the specified properties using the values from the edit form.
  *
  * @async
- * @param {string} taskID - The ID of the task to be updated.
+ * @param {Object} task - The task object to be updated.
  * @returns {Promise<void>}
  *
  * @description
  * This function performs the following steps:
- * 1. Updates the task priority using the updateTaskPriority function.
- * 2. Creates a new object 'changedTasks' with updated task properties:
- *    - Keeps the original bucket and category.
+ * 1. Creates a new object 'changedTasks' with updated task properties:
  *    - Updates title, description, assigned IDs, due date, and priority.
- *    - Retains the original subtasks.
+ *    - Retains the original subtasks and other unchanged properties.
  *
  */
-async function updateTask(taskID) {
-	let tasks = addedTasks.filter((t) => t["id"] === taskID);
+async function updateTask(task) {
 	changedTasks = {
 		title: title_input_ed_task.value,
 		description: description_ed_task.value,
 		assigned_id: assignedID,
 		duedate: calendar_edit_task.value,
-		prio: tasks["prio"],
-		subtasks: tasks["subtasks"],
+		prio: task["prio"],
+		subtasks: task["subtasks"],
 	};
 }
 
@@ -132,8 +129,10 @@ function filterContactNameForAssignedTo(assigneds) {
  */
 async function updateOpenTask(taskID) {
 	let task = filterTask(taskID);
-	updateTaskPriority(taskID);
-	updateTask(taskID);
+	updateTaskPriority(task);
+	debugger;
+	updateTask(task);
+
 	await updatedAddedTaskToStorage(taskID);
 	await loadAddedTasksFromStorage();
 	renderOpenTask(taskID);
@@ -151,14 +150,12 @@ async function updateOpenTask(taskID) {
  * @param {string} taskID - The ID of the task to update its priority.
  * @returns {void} - No return value.
  */
-function updateTaskPriority(taskID) {
+function updateTaskPriority(task) {
 	let prio = "";
 	if (globalPrioButtonID !== "") {
 		prio = document.getElementById(globalPrioButtonID).value;
 	}
-	let tasks = addedTasks.filter((t) => t["id"] === taskID);
-	tasks[0].prio = prio;
-	return prio;
+	task.prio = prio;
 }
 
 /**

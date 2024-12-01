@@ -407,11 +407,12 @@ function checkRequiredFields(titleInput, dueDateInput, categoryInput, taskID) {
  * 4. Sets a timeout to hide the confirmation message after a delay.
  */
 function updateNewTask(taskID) {
+	let task = filterTask(taskID);
 	show("task_added_to_board");
 	updateOpenTaskTitle(taskID);
 	updateOpenTaskDesc(taskID);
 	updateOpenTaskDueDate(taskID);
-	updateTaskPriority(taskID);
+	updateTaskPriority(task);
 	updateTaskCategory(taskID);
 	hideTaskOpen("task_open_overlay_frame");
 	setTimeout(function () {
