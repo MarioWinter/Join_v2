@@ -131,6 +131,7 @@ function filterContactNameForAssignedTo(assigneds) {
  * @returns {void}
  */
 async function updateOpenTask(taskID) {
+	let task = filterTask(taskID);
 	updateTaskPriority(taskID);
 	updateTask(taskID);
 	await updatedAddedTaskToStorage(taskID);
@@ -156,8 +157,19 @@ function updateTaskPriority(taskID) {
 		prio = document.getElementById(globalPrioButtonID).value;
 	}
 	let tasks = addedTasks.filter((t) => t["id"] === taskID);
-	//addedTasks[taskID]["prio"] = prio;
+	tasks[0].prio = prio;
 	return prio;
+}
+
+/**
+ * Filters a task from the list of added tasks based on the task ID.
+ *
+ * @param {number} taskID - The ID of the task to filter.
+ * @returns {object|null} The filtered task or null if no task with the given ID is found.
+ */
+function filterTask(taskID) {
+	let task = addedTasks.filter((t) => t["id"] === taskID);
+	return task[0];
 }
 
 /**

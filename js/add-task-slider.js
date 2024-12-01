@@ -292,7 +292,7 @@ function createNewTask(boardColumnID) {
 	};
 }
 
-/**
+/**LÖSCHEN
  * Checks if a new task object is empty.
  *
  * @param {Object} obj - The task object to be checked.
@@ -308,7 +308,7 @@ function isNewTaskEmpty(obj) {
 	return Object.keys(obj).length === 0;
 }
 
-/**
+/**ANPASSEN
  * Deletes a new task from the addedTasks array.
  *
  * @param {number} taskID - The ID of the task to delete.
@@ -354,7 +354,7 @@ function getRequiredFields(taskID) {
 	checkRequiredFields(titleInput, dueDateInput, categoryInput, taskID);
 }
 
-/**
+/**ANPASSEN
  * Checks if the required fields are filled for the specified task and takes appropriate actions.
  *
  * @param {string} titleInput - The value of the title input for the task.
@@ -393,7 +393,7 @@ function checkRequiredFields(titleInput, dueDateInput, categoryInput, taskID) {
 	}
 }
 
-/**
+/**ANPASSEN
  * Updates the properties of a new task and hides the add task overlay frame.
  *
  * @param {number} taskID - The ID of the task to update.
@@ -434,7 +434,7 @@ function updateTaskCategory(taskID) {
 	let categoryValue = document.getElementById("select_category").value;
 	addedTasks[taskID]["category"] = categoryValue;
 }
-
+// LÖSCHEN
 function updateOpenTaskTitle(taskID) {
 	let titleValue = document.getElementById("title_input_ed_task").value;
 	addedTasks[taskID]["title"] = titleValue;

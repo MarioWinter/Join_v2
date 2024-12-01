@@ -343,10 +343,10 @@ function getSelectedPriority() {
 /**
  * this function creates new task, assigns a priority and stores it in the JSON data
  */
-async function createTask() {
+async function createTask(bucket = "to-do") {
 	let selectedPriority = getSelectedPriority();
 	let addedTasks = {
-		bucket: "to-do",
+		bucket: bucket,
 		title: enter_title_field.value,
 		description: enter_description_field.value,
 		assigned_id: assignedID,
