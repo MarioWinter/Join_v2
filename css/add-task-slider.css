@@ -320,7 +320,7 @@
 	font-size: 2rem;
 	font-family: Inter;
 	cursor: pointer;
-	color: lightgrey;
+	color: var(--secondary-grey-sidebar);
 }
 
 .calendar-task:focus {
@@ -366,7 +366,7 @@
 	gap: 0.8rem;
 }
 
-#select_category {
+.select-category {
 	display: flex;
 	font-size: 2rem;
 	width: 44rem;
@@ -384,11 +384,11 @@
 	cursor: pointer;
 }
 
-#select_category:active {
+.select-category:active {
 	background-image: url(../assets/img/arrow_drop_up.svg);
 }
 
-#select_category:hover {
+.select-category:hover {
 	border: 0.1rem solid var(--secondary-grey-sidebar);
 }
 

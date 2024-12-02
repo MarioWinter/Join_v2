@@ -139,7 +139,7 @@ function generateAddTaskSliderHTML(boardColumnID, id = 0) {
             <div class="category-container">
                 <div class="span-style-slider">Category <span class="required-star-slider">*</span>
                 </div>
-                <select required name="Select contacts to assign" id="select_category_field">
+                <select class="select-category" required name="Select contacts to assign" id="select_category_field">
                     <option value="" disabled="" selected="" hidden="">Select task
                         category
                     </option>
