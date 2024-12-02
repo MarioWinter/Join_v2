@@ -312,11 +312,20 @@
 	gap: 0.8rem;
 }
 
-.date-input-slider {
+.calendar-task {
+	border: 0.1rem solid var(--light-grey-placeholder);
+	border-radius: 1rem;
 	padding: 0 1.6rem;
 	height: 4.8rem;
-	border: 0.1rem solid var(--secondary-grey-sidebar);
-	border-radius: 1rem;
+	font-size: 2rem;
+	font-family: Inter;
+	cursor: pointer;
+	color: lightgrey;
+}
+
+.calendar-task:focus {
+	border: 0.1rem solid var(--hover-blue);
+	outline: none;
 }
 
 .prio-slider {

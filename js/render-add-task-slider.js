@@ -73,7 +73,7 @@ function generateAddTaskSliderHTML(boardColumnID, id = 0) {
                 <div class="span-style-slider">Due date
                     <span class="required-star-slider">*</span>
                 </div>
-                <input class="date-input-slider" required type="date" id="date_field">
+                <input class="calendar-task" required type="date" id="date_field" placeholder="tt.mm.jjjj">
                 <div class="error-message-slider d-none" id="date_error_slider">This field is required</div>
             </div>
             <!-- Prio Add Task -->

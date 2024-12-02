@@ -314,7 +314,7 @@ function showFrame(id) {
 	show(id);
 }
 
-/**UPDATEN
+/**ANPASSEN
  * Asynchronously deletes a task by performing the following actions:
  * - Filters out the task with the specified ID from the addedTasks array.
  * - Updates the addedTasks array with the filtered tasks.
@@ -332,7 +332,7 @@ async function deleteTask(TaskID) {
 	loadBoard();
 }
 
-/**
+/**LÖSCHEN
  * Updates the task IDs in the addedTasks array.LÖSCHEN
  *
  * @returns {void} - No return value.
