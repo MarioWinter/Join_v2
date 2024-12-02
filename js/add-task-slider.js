@@ -211,7 +211,7 @@ function setTodayDateForCalendar(id) {
 	document.getElementById(id).setAttribute("min", today);
 }
 
-/**
+/**ANPASSEN
  * Loads and displays the add task slider on the task overlay background.
  *
  * @param {string} boardColumnID - The ID of the board column to which the task will be added.
@@ -308,7 +308,7 @@ function isNewTaskEmpty(obj) {
 	return Object.keys(obj).length === 0;
 }
 
-/**ANPASSEN
+/**LÖSCHEN
  * Deletes a new task from the addedTasks array.
  *
  * @param {number} taskID - The ID of the task to delete.
@@ -323,60 +323,42 @@ function deleteNewTask(taskID) {
 }
 
 /**
- * Submits a form for the specified task.
+ * Submits a form for the specified bucket (board column).
  *
- * @param {number} taskID - The ID of the task for which the form is submitted.
- * @returns {void} - No return value.
+ * @param {string} bucket - The identifier of the bucket (board column) for which the form is submitted.
+ * @returns {void}
  *
- * @description
- * This function performs the following steps:
- * 1. Retrieves and processes the required fields for the specified task.
  */
-function submitForm(taskID) {
-	getRequiredFields(taskID);
+function submitForm(bucket) {
+	getRequiredFields(bucket);
 }
 
 /**
- * Retrieves and processes the required fields for the specified task.
+ * Retrieves and processes the required fields for a task in the specified bucket.
  *
- * @param {number} taskID - The ID of the task for which to check required fields.
- * @returns {void} - No return value.
+ * @param {string} bucket - The identifier of the bucket (board column) for which the task is being created or edited.
+ * @returns {void}
  *
- * @description
- * This function performs the following steps:
- * 1. Retrieves the title, due date, and category inputs for the specified task.
- * 2. Calls the checkRequiredFields function with the retrieved inputs and the task ID.
  */
-function getRequiredFields(taskID) {
-	let titleInput = document.getElementById("title_input_ed_task").value;
-	let dueDateInput = document.getElementById("calendar_edit_task").value;
-	let categoryInput = document.getElementById("select_category").value;
-	checkRequiredFields(titleInput, dueDateInput, categoryInput, taskID);
+function getRequiredFields(bucket) {
+	let titleInput = document.getElementById("enter_title_field").value;
+	let dueDateInput = document.getElementById("date_field").value;
+	let categoryInput = document.getElementById("select_category_field").value;
+	checkRequiredFields(titleInput, dueDateInput, categoryInput, bucket);
 }
 
-/**ANPASSEN
- * Checks if the required fields are filled for the specified task and takes appropriate actions.
+/**
+ * Checks if the required fields are filled for a task and takes appropriate actions.
  *
  * @param {string} titleInput - The value of the title input for the task.
  * @param {string} dueDateInput - The value of the due date input for the task.
  * @param {string} categoryInput - The value of the category input for the task.
- * @param {number} taskID - The ID of the task to check and update.
+ * @param {string} bucket - The identifier of the bucket (board column) for the task.
  * @returns {void}
- *
- * @description
- * This function performs the following steps:
- * 1. Checks if the title, due date, and category inputs are filled.
- * 2. If all required fields are filled:
- *    a. Adds the newTask to the addedTasks array.
- *    b. Calls the updateNewTask function with the task ID.
- * 3. If any required field is not filled:
- *    a. Displays corresponding error messages.
- *    b. Adds 'required-border' class to the empty input elements.
  */
-function checkRequiredFields(titleInput, dueDateInput, categoryInput, taskID) {
+function checkRequiredFields(titleInput, dueDateInput, categoryInput, bucket) {
 	if (titleInput !== "" && dueDateInput !== "" && categoryInput !== "") {
-		addedTasks.push(newTask);
-		updateNewTask(taskID);
+		addNewTask(bucket);
 	} else {
 		if (titleInput === "") {
 			show("title_error_slider");
@@ -406,14 +388,14 @@ function checkRequiredFields(titleInput, dueDateInput, categoryInput, taskID) {
  * 3. Hides the add task overlay frame using the hideTaskOpen function.
  * 4. Sets a timeout to hide the confirmation message after a delay.
  */
-function updateNewTask(taskID) {
-	let task = filterTask(taskID);
+function addNewTask(bucket) {
 	show("task_added_to_board");
-	updateOpenTaskTitle(taskID);
-	updateOpenTaskDesc(taskID);
-	updateOpenTaskDueDate(taskID);
-	updateTaskPriority(task);
-	updateTaskCategory(taskID);
+	createTask(bucket);
+	// updateOpenTaskTitle(taskID);
+	// updateOpenTaskDesc(taskID);
+	// updateOpenTaskDueDate(taskID);
+	// updateTaskPriority(task);
+	// updateTaskCategory(taskID);
 	hideTaskOpen("task_open_overlay_frame");
 	setTimeout(function () {
 		hide("task_added_to_board");

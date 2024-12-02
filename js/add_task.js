@@ -341,11 +341,27 @@ function getSelectedPriority() {
 }
 
 /**
- * this function creates new task, assigns a priority and stores it in the JSON data
+ * Adds a new task to a specified bucket and performs related actions.
+ *
+ * @param {string} [bucket="to-do"] - The bucket to which the task should be added. Defaults to "to-do".
+ * @returns {void}
  */
-async function createTask(bucket = "to-do") {
+function addTask(bucket = "to-do") {
+	createTask(bucket);
+	createTaskMessage();
+	forwardingToBoard();
+}
+
+/**
+ * Creates a new task, assigns a priority, and stores it in the JSON data.
+ *
+ * @async
+ * @param {string} [bucket] - The bucket to which the task should be added.
+ * @returns {Promise<void>}
+ */
+async function createTask(bucket) {
 	let selectedPriority = getSelectedPriority();
-	let addedTasks = {
+	let newTasks = {
 		bucket: bucket,
 		title: enter_title_field.value,
 		description: enter_description_field.value,
@@ -355,8 +371,10 @@ async function createTask(bucket = "to-do") {
 		category: select_category_field.value,
 		subtasks: addedSubtasks,
 	};
-	await setItem(addedTasks, "tasks");
-	createTaskMessage();
+	saveNewTaskToStorage(newTasks);
+}
+
+function forwardingToBoard() {
 	setTimeout(() => {
 		window.location.href = "board.html";
 	}, 1000);

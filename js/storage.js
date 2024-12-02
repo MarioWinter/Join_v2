@@ -181,6 +181,21 @@ async function sendRegistrationRequest(data) {
 }
 
 /**
+ * Saves new tasks to storage asynchronously.
+ *
+ * @async
+ * @param {Object|Array} newTasks - The new task(s) to be saved to storage.
+ * @returns {Promise<void>}
+ */
+async function saveNewTaskToStorage(newTasks) {
+	try {
+		await setItem(newTasks, "tasks");
+	} catch (e) {
+		console.error("Error saving new tasks:", e);
+	}
+}
+
+/**
  * Asynchronously loads added tasks from storage.
  *
  * @returns {Promise<void>} - A promise that resolves when added tasks are loaded.

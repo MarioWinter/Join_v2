@@ -1,4 +1,4 @@
-function generateAddTaskSliderHTML(boardColumnID, id = 0) {
+function generateAddTaskSliderHTML(bucket, id = 0) {
 	return /*HTML*/ `
 <div id="task_open_overlay_frame" class="slider-frame" onclick="doNotForward(event); closeContactOverlay('et_contact_overlay', 'et_selected_contacts')">
     <div class="add-task-head">
@@ -196,7 +196,7 @@ function generateAddTaskSliderHTML(boardColumnID, id = 0) {
                         stroke-linejoin="round"></path>
                 </svg>
             </button>
-            <button onclick="submitForm(${id}, ${boardColumnID})" type="button" id="create_btn">
+            <button onclick="submitForm(${bucket})" type="button" id="create_btn">
                 Create Task <img src="./assets/img/add-check-icon-white.svg" alt="Add Subtask">
             </button>
         </div>
