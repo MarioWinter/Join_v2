@@ -314,39 +314,18 @@ function showFrame(id) {
 	show(id);
 }
 
-/**ANPASSEN
- * Asynchronously deletes a task by performing the following actions:
- * - Filters out the task with the specified ID from the addedTasks array.
- * - Updates the addedTasks array with the filtered tasks.
- * - Hides the task open overlay frame using the hideTaskOpen function.
- * - Reloads the board using the loadBoard function.
+/**
+ * Asynchronously deletes a task and updates the board.
  *
+ * @async
  * @param {string} TaskID - The ID of the task to delete.
- * @returns {Promise<void>} - A promise that resolves when the task is deleted and the board is reloaded.
+ * @returns {Promise<void>} A promise that resolves when the task is deleted and the board is reloaded.
  */
 async function deleteTask(TaskID) {
-	let updatedAddedTasks = addedTasks.filter((task) => task.id !== TaskID);
-	addedTasks = updatedAddedTasks;
-	updateTaskID();
+	await deletesTaskInStorage(TaskID);
+	await loadAddedTasksFromStorage();
 	hideTaskOpen("task_open_overlay_frame");
 	loadBoard();
-}
-
-/**LÖSCHEN
- * Updates the task IDs in the addedTasks array.LÖSCHEN
- *
- * @returns {void} - No return value.
- *
- * @description
- * This function performs the following steps:
- * 1. Iterate through the addedTasks array.
- * 2. For each task, update its ID to match its index in the array.
- */
-function updateTaskID() {
-	for (let i = 0; i < addedTasks.length; i++) {
-		let task = addedTasks[i];
-		task["id"] = i;
-	}
 }
 
 /**

@@ -79,7 +79,16 @@ async function patchItem(data, endpoint, id) {
 		.catch((error) => console.error("Fehler:", error));
 }
 
-async function deleteItem(data, endpoint, id) {
+/**
+ * Deletes an item from the specified endpoint using its ID.
+ *
+ * @async
+ * @param {string} endpoint - The API endpoint for the item to be deleted.
+ * @param {number|string} id - The ID of the item to be deleted.
+ * @returns {Promise<Object|null>} A promise that resolves to the JSON response from the server if available, or null if the response is empty.
+ * @throws {Error} Throws an error if the network request fails.
+ */
+async function deleteItem(endpoint, id) {
 	let url = `${API_BASE_URL}/${endpoint}/${id}/`;
 	return fetch(url, {
 		method: "DELETE",
@@ -87,10 +96,20 @@ async function deleteItem(data, endpoint, id) {
 			"Content-Type": "application/json",
 			Authorization: `Token ${TOKEN}`,
 		},
-		body: JSON.stringify(data),
 	})
-		.then((response) => response.json())
-		.catch((error) => console.error("error:", error));
+		.then((response) => {
+			if (!response.ok) {
+				throw new Error(`HTTP error! status: ${response.status}`);
+			}
+			return response.text();
+		})
+		.then((text) => {
+			return text ? JSON.parse(text) : null;
+		})
+		.catch((error) => {
+			console.error("Error:", error);
+			throw error;
+		});
 }
 
 /** getItem
@@ -238,5 +257,13 @@ async function updatedSubtaskToStorage(taskID, changedSubtask) {
 		await patchItem(changedSubtask, "tasks", taskID);
 	} catch (e) {
 		console.error("Patch Added Tasks error:", e);
+	}
+}
+
+async function deletesTaskInStorage(taskID) {
+	try {
+		await deleteItem("tasks", taskID);
+	} catch (e) {
+		console.error("Delete Task Error:", e);
 	}
 }
