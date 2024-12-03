@@ -86,7 +86,7 @@
 
 .input-field-left-top::placeholder,
 .enter-description-field::placeholder {
-	color: #d1d1d1;
+	color: var(--secondary-grey-sidebar);
 }
 
 .description-main {
@@ -156,7 +156,7 @@
 	border: 0.1rem solid #d1d1d1;
 	font-size: 2rem;
 	cursor: pointer;
-	color: lightgrey;
+	color: var(--secondary-grey-sidebar);
 }
 
 .status-container {
@@ -222,7 +222,7 @@
 }
 
 .subtask-entry-field::placeholder {
-	color: #d1d1d1;
+	color: var(--secondary-grey-sidebar);
 }
 
 .subtask-display {
