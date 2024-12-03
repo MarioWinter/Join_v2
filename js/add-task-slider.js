@@ -242,7 +242,8 @@ function loadAddTaskSlider(boardColumnID) {
 	loadAllUsersForContactOnAssignedTo(assignedID, "et_contact_overlay");
 	//initAddTaskSlider(taskID);
 	frameSlideIn("task_open_overlay_frame");
-	loadPrioOnEditTask("Medium");
+	changePrioColor("Medium");
+	//loadPrioOnEditTask("Medium");
 }
 
 /**LÖSCHEN
@@ -391,6 +392,7 @@ function checkRequiredFields(titleInput, dueDateInput, categoryInput, bucket) {
 function addNewTask(bucket) {
 	show("task_added_to_board");
 	createTask(bucket);
+	initBoard();
 	// updateOpenTaskTitle(taskID);
 	// updateOpenTaskDesc(taskID);
 	// updateOpenTaskDueDate(taskID);

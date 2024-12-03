@@ -245,8 +245,14 @@
 	gap: 0.8rem;
 }
 
+.three-subtask-icons {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 0.4rem;
+}
+
 .subtask-icons {
-	height: 22px;
 	cursor: pointer;
 }
 
