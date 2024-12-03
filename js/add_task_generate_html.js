@@ -74,7 +74,7 @@ function generateTaskAssigmentContactsCheckedHTML(userName, badgeColor, userBadg
  */
 function createSubtaskHTML(subtask, index) {
 	return `
-    <div class="added-subtask">• <input id="input_${index}" class="subtask-input" type="text" value="${subtask}" contenteditable="true">
+    <div class="added-subtask">• <input id="input_${index}" class="subtask-input" type="text" value="${subtask}" readonly>
        <div class="added-subtask-icons">
         <img id="subtask_icons_3_${index}" onclick="deleteAddedSubtask('${subtask}')" class="invisible subtask-icon" src="./assets/img/delete-icon.svg">
         <img id="subtask_icons_2_${index}" class="invisible vector-line" src="./assets/img/vector-line.svg">
@@ -83,25 +83,6 @@ function createSubtaskHTML(subtask, index) {
        </div>
       </div>
     `;
-}
-
-/**
- * this function creates the changing/schwitching icons for subtask
- * @param {string} subtask
- * @param {numbe} index
- * @returns
- */
-function createSubtaskHTML(subtask, index) {
-	return `
-  <div class="added-subtask">• <input id="input_${index}" class="subtask-input" type="text" value="${subtask}" contenteditable="true">
-     <div class="added-subtask-icons">
-      <img id="subtask_icons_3_${index}" onclick="deleteAddedSubtask('${subtask}')" class="invisible subtask-icon" src="./assets/img/delete-icon.svg">
-      <img id="subtask_icons_2_${index}" class="invisible vector-line" src="./assets/img/vector-line.svg">
-      <img id="subtask_icons_1_${index}" onclick="editAddedSubtask(${index})" class="invisible subtask-icon" src="./assets/img/pencil-icon.svg">
-      <img id="check_dark_save_${index}" onclick="saveEditedSubtask(${index})" class="invisible subtask-icon d-none" src="./assets/img/check-dark.svg">  
-     </div>
-    </div>
-  `;
 }
 
 /**

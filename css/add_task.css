@@ -302,11 +302,17 @@
 .invisible {
 	opacity: 0;
 	visibility: hidden;
-	transition: opacity 0.3s ease, visibility 0.3s ease;
+	transition: opacity 125ms ease, visibility 125ms ease;
 }
 
-.subtask-display:focus-within .added-subtask:focus-within {
-	border-bottom: 1px solid #29abe2;
+.added-subtask:has(input:not(:read-only)):focus-within {
+	border-bottom: 1px solid var(--hover-blue);
+}
+
+.added-subtask:has(input:not([readonly])):hover {
+	border-bottom: 1px solid var(--hover-blue);
+	background-color: var(--primary-light-grey);
+	border-radius: 0rem;
 }
 
 .required-advise {

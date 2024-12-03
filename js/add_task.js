@@ -171,7 +171,7 @@ function closeSubtaskIcons() {
 	input.value = "";
 }
 
-/**
+/**ANPASSEN
  * this function handles subtask actions by obtaining the value from input field for adding new subtasks trimming input
  * and changing visibility of subtask icons. displaying subtask and clearing the input field
  */
@@ -224,17 +224,22 @@ function saveEditedSubtask(index) {
 		addedSubtasks[index].subtitle = subtask;
 		renderAddedSubtasks();
 	}
+	makeReadonly(`input_${index}`);
 }
 
 /**
- * this function initaites editing subtask adjusting icons and focusing on input
- * @param {number} index - index of the subtask in addedSubtasks array
+ * Initiates editing of a subtask by adjusting icons and focusing on the input field.
+ *
+ * @param {number} index - The index of the subtask in the addedSubtasks array.
+ * @throws {Error} Throws an error if the input field or icons cannot be found.
+ *
  */
 function editAddedSubtask(index) {
 	moveIconsForEditing(index);
 	document.getElementById(`subtask_icons_1_${index}`).classList.add("d-none");
 	document.getElementById(`check_dark_save_${index}`).classList.remove("d-none");
 	let inputField = document.getElementById(`input_${index}`);
+	makeEditable(`input_${index}`);
 	inputField.focus();
 }
 
@@ -374,8 +379,35 @@ async function createTask(bucket) {
 	saveNewTaskToStorage(newTasks);
 }
 
+/**
+ * Redirects the user to the board page after a delay of 1 second.
+ *
+ * @async
+ * @returns {void}
+ */
 function forwardingToBoard() {
 	setTimeout(() => {
 		window.location.href = "board.html";
 	}, 1000);
+}
+
+/**
+ * Makes an input field editable by removing the 'readonly' attribute.
+ *
+ * @param {string} inputId - The ID of the input element to make editable.
+ * @throws {Error} Throws an error if the element with the given ID is not found.
+ */
+function makeEditable(inputId) {
+	document.getElementById(inputId).removeAttribute("readonly");
+}
+
+/**
+ * Makes an input field read-only by setting the 'readonly' attribute.
+ *
+ * @param {string} inputId - The ID of the input element to make read-only.
+ * @throws {Error} Throws an error if the element with the given ID is not found.
+ *
+ */
+function makeReadonly(inputId) {
+	document.getElementById(inputId).setAttribute("readonly", "readonly");
 }
