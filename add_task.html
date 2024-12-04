@@ -29,7 +29,7 @@
 		<script src="./js/add_task_generate_html.js"></script>
 	</head>
 
-	<body onload="initAddTask()">
+	<body onload="initAddTask()" onclick="closeSubtaskIcons()">
 		<div class="w3include-container">
 			<div w3-include-html="assets/templates/sidebar_template.html"></div>
 			<main class="main-add-task-container" onclick="closeContactOverlay('et_contact_overlay', 'et_selected_contacts')">
@@ -128,7 +128,7 @@
 									</div>
 									<div class="subtask-container">
 										<div class="subtask-field">Subtask</div>
-										<div class="adding-new-subtask">
+										<div class="adding-new-subtask" onclick="doNotForward(event)">
 											<input
 												onclick="handleSubtaskActions()"
 												class="subtask-entry-field"
