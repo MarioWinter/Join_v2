@@ -229,16 +229,16 @@ async function loadAddedTasksFromStorage() {
 }
 
 /**
- * Asynchronously updates a specific task in storage.
+ * Asynchronously updates a specific task in storage with changed properties.
  *
  * @async
+ * @param {Object} changedItem - An object containing the properties of the task that have been changed.
  * @param {string} taskID - The ID of the task to be updated.
- * @returns {Promise<void>}
- *
+ * @returns {Promise<void>} A promise that resolves when the task has been successfully updated in storage.
  */
-async function updatedAddedTaskToStorage(taskID) {
+async function updatedAddedTaskToStorage(changedItem, taskID) {
 	try {
-		await patchItem(changedTasks, "tasks", taskID);
+		await patchItem(changedItem, "tasks", taskID);
 	} catch (e) {
 		console.error("Update Added Tasks error:", e);
 	}

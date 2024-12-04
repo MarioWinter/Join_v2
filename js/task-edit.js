@@ -116,23 +116,17 @@ function filterContactNameForAssignedTo(assigneds) {
 }
 
 /**
- * Updates the open task with the specified ID.
- * This function performs the following steps:
- *  1. Update the title of the open task.
- *  2. Update the description of the open task.
- *  3. Update the due date of the open task.
- *  4. Update the priority of the open task.
- *  5. Render the updated open task.
+ * Updates the open task with the specified ID and refreshes the task display.
  *
+ * @async
  * @param {string} taskID - The ID of the open task to be updated.
- * @returns {void}
+ * @returns {Promise<void>} A promise that resolves when the task is updated and the display is refreshed.
  */
 async function updateOpenTask(taskID) {
 	let task = filterTask(taskID);
 	updateTaskPriority(task);
 	updateTask(task);
-
-	await updatedAddedTaskToStorage(taskID);
+	await updatedAddedTaskToStorage(changedTasks, taskID);
 	await loadAddedTasksFromStorage();
 	renderOpenTask(taskID);
 	assignedID = [];

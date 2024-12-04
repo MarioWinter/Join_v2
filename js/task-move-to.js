@@ -1,12 +1,12 @@
 let currentDraggedElement;
 
 document.addEventListener("DOMContentLoaded", function () {
-    document.getElementById("find_task").addEventListener("keyup", function (event) {
-        if (event.key === "Enter") {
-            //searchTask();
-        }
-    });
-    // window.addEventListener("resize", updateHeight);
+	document.getElementById("find_task").addEventListener("keyup", function (event) {
+		if (event.key === "Enter") {
+			//searchTask();
+		}
+	});
+	// window.addEventListener("resize", updateHeight);
 });
 
 /**
@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", function () {
  * @param {int} id - ID from the drag elements
  */
 function startDragging(id) {
-    currentDraggedElement = id;
+	currentDraggedElement = id;
 }
 
 /**
@@ -27,7 +27,7 @@ function startDragging(id) {
  * This function prevents the default behavior of the dragover event, allowing the dropping of dragged elements.
  */
 function allowDrop(ev) {
-    ev.preventDefault();
+	ev.preventDefault();
 }
 
 /**
@@ -35,9 +35,10 @@ function allowDrop(ev) {
  * @param {String} bucket - HTML Id from the drop zone
  */
 async function moveTo(bucket) {
-    addedTasks[currentDraggedElement]["bucket"] = bucket;
-    loadBoard();
-    await setItem("addedTasks", JSON.stringify(addedTasks));
+	tasks = addedTasks.filter((t) => t["id"] == currentDraggedElement);
+	tasks[0][currentDraggedElement]["bucket"] = bucket;
+	await loadBoard();
+	await setItem("addedTasks", JSON.stringify(addedTasks));
 }
 
 /**
@@ -45,7 +46,7 @@ async function moveTo(bucket) {
  * @param {int} id - ID from the drag elements
  */
 function highlight(id) {
-    document.getElementById(id).classList.add("drag-area-highlight");
+	document.getElementById(id).classList.add("drag-area-highlight");
 }
 
 /**
@@ -53,5 +54,5 @@ function highlight(id) {
  * @param {int} id - ID from the drag elements
  */
 function removeHighlight(id) {
-    document.getElementById(id).classList.remove("drag-area-highlight");
+	document.getElementById(id).classList.remove("drag-area-highlight");
 }
