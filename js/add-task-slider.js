@@ -376,28 +376,19 @@ function checkRequiredFields(titleInput, dueDateInput, categoryInput, bucket) {
 	}
 }
 
-/**ANPASSEN
- * Updates the properties of a new task and hides the add task overlay frame.
+/**
+ * Creates a new task, adds it to the specified bucket, and updates the board.
  *
- * @param {number} taskID - The ID of the task to update.
- * @returns {void} - No return value.
+ * @async
+ * @param {string} bucket - The bucket to which the new task should be added.
+ * @returns {Promise<void>} A promise that resolves when the task is added and the board is updated.
  *
- * @description
- * This function performs the following steps:
- * 1. Displays a confirmation message ("task_added_to_board") temporarily.
- * 2. Calls functions to update the title, description, due date, priority, and category of the task.
- * 3. Hides the add task overlay frame using the hideTaskOpen function.
- * 4. Sets a timeout to hide the confirmation message after a delay.
  */
-function addNewTask(bucket) {
+async function addNewTask(bucket) {
 	show("task_added_to_board");
 	createTask(bucket);
-	initBoard();
-	// updateOpenTaskTitle(taskID);
-	// updateOpenTaskDesc(taskID);
-	// updateOpenTaskDueDate(taskID);
-	// updateTaskPriority(task);
-	// updateTaskCategory(taskID);
+	await loadAddedTasksFromStorage();
+	await initBoard();
 	hideTaskOpen("task_open_overlay_frame");
 	setTimeout(function () {
 		hide("task_added_to_board");

@@ -21,7 +21,7 @@ async function initBoard() {
 	loadBoard();
 }
 
-/**
+/**LÖSCHEN
  * hidden function to clear Added Tasks Remote Storage from any information
  */
 async function clearAddedTasksRemoteSTRG() {
