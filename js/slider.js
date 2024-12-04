@@ -75,7 +75,8 @@ function removeFixedBackround(id) {
  */
 async function hideTaskOpen(id) {
 	assignedID = [];
-	loadBoard();
+	addedSubtasks = [];
+	await loadBoard();
 	frameSlideOut(id);
 	removeFixedBackround("main_container_board");
 	show("sub_menu");
