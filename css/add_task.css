@@ -311,7 +311,7 @@
 
 .added-subtask:has(input:not([readonly])):hover {
 	border-bottom: 1px solid var(--hover-blue);
-	background-color: var(--primary-light-grey);
+	background-color: transparent;
 	border-radius: 0rem;
 }
 

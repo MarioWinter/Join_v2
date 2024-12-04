@@ -139,7 +139,7 @@ function generateAddTaskSliderHTML(bucket, id = 0) {
                                 />
                             </div>
                         </div>
-                    <div id="subtask_display_container"></div>
+                    <div id="subtask_display_container" class="subtask-display"></div>
                 </div>
             </div>
         </form>
