@@ -36,9 +36,9 @@ function allowDrop(ev) {
  */
 async function moveTo(bucket) {
 	tasks = addedTasks.filter((t) => t["id"] == currentDraggedElement);
-	tasks[0][currentDraggedElement]["bucket"] = bucket;
-	await loadBoard();
-	await setItem("addedTasks", JSON.stringify(addedTasks));
+	tasks[0]["bucket"] = bucket;
+	loadBoard();
+	await updatedAddedTaskToStorage(tasks[0], currentDraggedElement);
 }
 
 /**
