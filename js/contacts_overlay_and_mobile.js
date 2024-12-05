@@ -95,11 +95,11 @@ async function addNewContact(event) {
 		phone: document.getElementById("contact_Phone").value,
 		bgcolor: getRandomColor(),
 	};
-	let index;
+	let index = 0;
 	if (currentUser >= 0) {
-		index = findInsertIndex(newContact.name, contacts);
-		contacts.splice(index, 0, newContact);
-		await setItem("contacts", JSON.stringify(contacts));
+		let addedContact = await saveNewContactToStorage(newContact);
+		await loadContacts();
+		index = findInsertIndex(addedContact.id, contacts);
 	} else {
 		index = findInsertIndex(newContact.name, contactsData);
 		contactsData.splice(index, 0, newContact);
@@ -115,7 +115,8 @@ function handleNewContact(index) {
 	clearEntrys();
 	cancelOverlay();
 	showSuccessMessage();
-	renderDifferentContacts();
+	sortContactsAlphabetically(contacts);
+	renderAllContacts();
 	showContactDetails(index);
 }
 

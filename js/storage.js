@@ -34,7 +34,7 @@ function checkIsLogedIn() {
  */
 async function setItem(data, endpoint) {
 	const url = `${API_BASE_URL}/${endpoint}/`;
-	fetch(url, {
+	return fetch(url, {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
@@ -209,6 +209,14 @@ async function sendRegistrationRequest(data) {
 async function saveNewTaskToStorage(newTasks) {
 	try {
 		await setItem(newTasks, "tasks");
+	} catch (e) {
+		console.error("Error saving new tasks:", e);
+	}
+}
+
+async function saveNewContactToStorage(addContect) {
+	try {
+		return await setItem(addContect, "contacts");
 	} catch (e) {
 		console.error("Error saving new tasks:", e);
 	}

@@ -81,7 +81,7 @@ async function initContacts() {
 	loadCurrentUser();
 	loadUserBadge();
 	sortContactsAlphabetically(contacts);
-	renderDifferentContacts();
+	renderAllContacts();
 }
 
 /**
@@ -96,7 +96,7 @@ function sortContactsAlphabetically(contacts) {
  * this fucntion renders the contact view and sets up edit functionality based on the contacts login status
  * if user is logged in, function renders contacts for the logged-in user, otherwise it renders all contacts
  */
-function renderDifferentContacts() {
+function renderAllContacts() {
 	let contactsContainer = document.getElementById("contact_container");
 	let contactsHTML;
 	if (currentUser >= 0) {
@@ -126,7 +126,7 @@ function renderLoggedContactsHTML() {
 	return generateContactsHTML(contacts);
 }
 
-/**
+/**JSDOC Anpassen
  * this function generates html for rendering contacts
  * @param {object} contacts - array of contact objects
  * @returns {string} html string represents rendered contacts
@@ -134,15 +134,17 @@ function renderLoggedContactsHTML() {
 function generateContactsHTML(contacts) {
 	let contactsHTML = "";
 	let alphabetLetters = {};
-	contacts.forEach((contact, index) => {
+	let contactID = 0;
+	contacts.forEach((contact) => {
 		let initials = getInitials(contact.name);
+		contactID = contact.id;
 		let firstLetter = initials.charAt(0).toUpperCase();
 		let circleColor = contact.bgcolor || contact.color || getRandomColor();
 		if (!alphabetLetters[firstLetter]) {
 			alphabetLetters[firstLetter] = true;
 			contactsHTML += createAlphabetHTML(firstLetter);
 		}
-		contactsHTML += generateContactHTML(contact, initials, circleColor, index);
+		contactsHTML += generateContactHTML(contact, initials, circleColor, contactID);
 	});
 	return contactsHTML;
 }
@@ -332,21 +334,24 @@ function finalizeContactUpdate() {
 	hideContactDetails();
 	cancelOverlay();
 	clearEntrys();
-	renderDifferentContacts();
+	renderAllContacts();
 }
 
 /**
- * this function finds insert index for new contact in a sorted contact list
- * @param {string} newContactName - name of the new contact
- * @param {object[]} contactList - list of contacts
- * @returns {number} - insert index for the new contact
+ * Finds the insert index for a new contact in a contact list based on its ID.
+ *
+ * @param {number|string} newContactId - The ID of the new contact to be inserted.
+ * @param {Object[]} contactList - The list of existing contacts.
+ * @param {number|string} contactList[].id - The ID of each contact in the list.
+ * @returns {number} The index where the new contact should be inserted.
+ *                   Returns the length of the list if the ID is not found.
  */
-function findInsertIndex(newContactName, contactList) {
-	let index = contactList.findIndex((contact) => newContactName.localeCompare(contact.name) <= 0);
+function findInsertIndex(newContactId, contactList) {
+	let index = contactList.findIndex((contact) => contact.id === newContactId);
 	return index !== -1 ? index : contactList.length;
 }
 
-/**
+/**LÖSCHEN
  * this functoin adds new user to the list of contacts
  */
 function addUser() {
@@ -357,10 +362,10 @@ function addUser() {
 		bgcolor: getRandomColor(),
 	});
 	setItem("contacts", JSON.stringify(contacts));
-	renderDifferentContacts();
+	renderAllContacts();
 }
 
-/**
+/**LÖSCHEN
  * this function adds new contact data to the list of contactsData
  */
 function addContactsData() {
@@ -370,7 +375,7 @@ function addContactsData() {
 		phone: contact_Phone.value,
 		bgcolor: getRandomColor(),
 	});
-	renderDifferentContacts();
+	renderAllContacts();
 }
 
 /**
@@ -391,7 +396,7 @@ async function deleteContact(index) {
 	if (contactDetails.classList.contains("show")) {
 		hideContactDetails();
 	}
-	renderDifferentContacts();
+	renderAllContacts();
 	hideResponsiveEditMenu();
 	loadAddedTasksFromStorage();
 }
