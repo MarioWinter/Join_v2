@@ -562,7 +562,7 @@ function generateEditTaskHTML(id, title, description, duedate) {
 
                         </div>
                         <div class="p-relative">
-                            <div class="contact-overlay d-none" id="et_contact_overlay" onclick="doNotForward(event)">
+                            <div class="edit-task-contact-overlay d-none" id="et_contact_overlay" onclick="doNotForward(event)">
                                 <!-- Contact for render -->
 
                             </div>

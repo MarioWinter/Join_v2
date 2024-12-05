@@ -202,6 +202,16 @@
 	border-radius: 1rem;
 }
 
+.edit-task-contact-overlay {
+	flex-direction: column;
+	gap: 0.3rem;
+	width: 100%;
+	background-color: white;
+	max-height: 18rem;
+	overflow-y: auto;
+	border-radius: 1rem;
+}
+
 .slider-contact-label {
 	border-radius: 1rem;
 }
