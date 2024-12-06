@@ -84,8 +84,11 @@ function showOverlay(isEdit) {
 }
 
 /**
- * this function is for adding a new contact
- * @param {event} event - event object
+ * Adds a new contact to the system.
+ *
+ * @async
+ * @param {Event} event - The event object from the form submission.
+ * @returns {Promise<void>}
  */
 async function addNewContact(event) {
 	event.preventDefault();
@@ -97,14 +100,14 @@ async function addNewContact(event) {
 	};
 	let addedContact = await saveNewContactToStorage(newContact);
 	await loadContacts();
-	let index = findInsertIndex(addedContact.id, contacts);
-
-	handleNewContact(index);
+	handleNewContact(addedContact.id);
 }
 
 /**
- * this help function handles addition of new contact by performing various actions
- * @param {number} index - index of the newly added contact
+ * Handles the post-addition process for a new contact.
+ *
+ * @param {string|number} contactID - The unique identifier of the newly added contact.
+ * @returns {void}
  */
 function handleNewContact(index) {
 	clearEntrys();
