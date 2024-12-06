@@ -109,13 +109,13 @@ async function addNewContact(event) {
  * @param {string|number} contactID - The unique identifier of the newly added contact.
  * @returns {void}
  */
-function handleNewContact(index) {
+function handleNewContact(contactID) {
 	clearEntrys();
 	cancelOverlay();
 	showSuccessMessage();
 	sortContactsAlphabetically(contacts);
 	renderAllContacts();
-	showContactDetails(index);
+	showContactDetails(contactID);
 }
 
 /**

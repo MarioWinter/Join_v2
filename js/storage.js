@@ -285,10 +285,32 @@ async function updatedSubtaskToStorage(taskID, changedSubtask) {
 	}
 }
 
+/**
+ * Asynchronously deletes a task from storage based on its ID.
+ *
+ * @async
+ * @param {string|number} taskID - The unique identifier of the task to be deleted.
+ * @returns {Promise<void>} A promise that resolves when the task has been successfully deleted from storage.
+ */
 async function deletesTaskInStorage(taskID) {
 	try {
 		await deleteItem("tasks", taskID);
 	} catch (e) {
 		console.error("Delete Task Error:", e);
+	}
+}
+
+/**
+ * Asynchronously deletes a contact from storage based on its ID.
+ *
+ * @async
+ * @param {string|number} contactID - The unique identifier of the contact to be deleted.
+ * @returns {Promise<void>} A promise that resolves when the contact has been successfully deleted from storage.
+ */
+async function deletesContactInStorage(contactID) {
+	try {
+		await deleteItem("contacts", contactID);
+	} catch (e) {
+		console.error("Delete Contact Error:", e);
 	}
 }

@@ -293,7 +293,7 @@ function activateContactDetails(contact) {
 	activateContactStyles(contact);
 }
 
-/**
+/**LÖSCHEN
  * this function hides the contact details
  */
 function hideContactDetails() {
@@ -384,72 +384,16 @@ function addContactsData() {
 }
 
 /**
- * Deletes a contact based on the provided index.
- * @param {number} index - The index of the contact to be deleted.
- * @returns {Promise<void>} A Promise that resolves after the contact is deleted.
+ * Deletes a contact based on the provided contact ID and updates the UI.
+ *
+ * @param {string|number} contactID - The unique identifier of the contact to be deleted.
+ * @returns {void}
  */
-async function deleteContact(index) {
-	if (currentUser >= 0) {
-		let currentLoggedUser = nameOfCurrentUser();
-		deleteUserInAssignedTo(index);
-		await setItem("addedTasks", JSON.stringify(addedTasks));
-		contacts.splice(index, 1);
-		await setItem("contacts", JSON.stringify(contacts));
-		updateCurrentUser(currentLoggedUser);
-	}
-	let contactDetails = document.getElementById("show_contact_details");
-	if (contactDetails.classList.contains("show")) {
-		hideContactDetails();
-	}
-	renderAllContacts();
+function deleteContact(contactID) {
+	deletesContactInStorage(contactID);
+	initContacts();
+	closeResponsiveDetails();
 	hideResponsiveEditMenu();
-	loadAddedTasksFromStorage();
-}
-
-/**
- * Retrieves the name of the current user.
- * @returns {string} The name of the current user.
- */
-function nameOfCurrentUser() {
-	let i = currentUser;
-	let user = contacts[i].name;
-	return user;
-}
-
-/**
- * Updates the current user based on the provided user name.
- * @param {string} user - The name of the user to set as the current user.
- */
-function updateCurrentUser(user) {
-	let found = false;
-	for (let i = 0; i < contacts.length; i++) {
-		if (contacts[i].name === user) {
-			userIndex = i;
-			localStorage.setItem("currentUserIndex", userIndex);
-			loadCurrentUser();
-			found = true;
-			break;
-		}
-	}
-	if (!found) {
-		console.error("User not found");
-	}
-}
-
-/**
- * Deletes a user from the "assigned" array in all tasks
- * @param {number} index - The index of the user in the contacts array to be deleted
- * @description
- * This function removes a user from the "assigned" array in all tasks. It takes the index of the user in the contacts array and filters out the user's name from the "assigned" array of each task.
- */
-function deleteUserInAssignedTo(index) {
-	let deletedUser = contacts[index].name;
-	addedTasks.forEach((task) => {
-		let assignedIndex = task.assigned.indexOf(deletedUser);
-		if (assignedIndex !== -1) {
-			task.assigned.splice(assignedIndex, 1);
-		}
-	});
 }
 
 /**
