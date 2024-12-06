@@ -95,15 +95,10 @@ async function addNewContact(event) {
 		phone: document.getElementById("contact_Phone").value,
 		bgcolor: getRandomColor(),
 	};
-	let index = 0;
-	if (currentUser >= 0) {
-		let addedContact = await saveNewContactToStorage(newContact);
-		await loadContacts();
-		index = findInsertIndex(addedContact.id, contacts);
-	} else {
-		index = findInsertIndex(newContact.name, contactsData);
-		contactsData.splice(index, 0, newContact);
-	}
+	let addedContact = await saveNewContactToStorage(newContact);
+	await loadContacts();
+	let index = findInsertIndex(addedContact.id, contacts);
+
 	handleNewContact(index);
 }
 
@@ -121,20 +116,21 @@ function handleNewContact(index) {
 }
 
 /**
- * this function edits selected contact in case of changing name nummer etc
- * @param {number} index - index of the selected contact
+ * Initiates the editing process for a selected contact.
+ *
+ * @param {string|number} contactID - The unique identifier of the contact to be edited.
  */
-function editContacts(index) {
-	let contact = currentUser >= 0 ? contacts[index] : contactsData[index];
+function editContacts(contactID) {
+	let contact = getCurrentUserContact(contactID);
 	if (!contact) return;
-	selectedContactIndex = index;
+	selectedContactID = contactID;
 	let originalCircleColor = contact.bgcolor || contact.color;
 	let initials = getInitials(contact.name);
 	showOverlay(true);
-	updateContactDetails(index, originalCircleColor, initials);
+	updateContactDetails(contactID, originalCircleColor, initials);
 	generateOverlayContactCircle(originalCircleColor, initials);
 	updateContactInputs(contact);
-	setSaveButtonFunction(index);
+	setSaveButtonFunction(contactID);
 	hideResponsiveEditMenu();
 	document.getElementById("handle_resp_menu_container").classList.add("d-none");
 }
@@ -224,17 +220,18 @@ function updateContactInputs(contact) {
 }
 
 /**
- * this function sets the save button function for editing
- * @param {number} index - index of choosen contact being edited
+ * Configures the save button functionality for editing a contact.
+ *
+ * @param {string|number} contactID - The unique identifier of the contact being edited.
  */
-function setSaveButtonFunction(index) {
+function setSaveButtonFunction(contactID) {
 	let overlayCreateButton = document.getElementById("overlay_create_contact_button");
 	overlayCreateButton.innerHTML = "Save <img src='./assets/img/overlay-ok.svg'/>";
 	overlayCreateButton.onclick = function () {
-		updateContact(index);
+		updateContact(contactID);
 		showSuccessMessage();
 		closeOverlay();
-		showContactDetails(index);
+		showContactDetails(contactID);
 	};
 }
 
@@ -246,7 +243,7 @@ function setSaveButtonFunction(index) {
 function setEditButtons(overlayCancelButton, overlayCreateButton) {
 	overlayCancelButton.textContent = "Delete";
 	overlayCancelButton.onclick = function () {
-		deleteContact(selectedContactIndex);
+		deleteContact(selectedContactID);
 		cancelOverlay();
 	};
 	overlayCreateButton.innerHTML = "Save <img src='./assets/img/overlay-ok.svg'/>";

@@ -1,51 +1,59 @@
-let selectedContactIndex = null;
+let selectedContactID = null;
 let colorIndex = 0;
 let isEditing = false;
 
 let contactsData = [
 	{
+		id: 1,
 		name: "Anton Meyer",
 		email: "antom@gmail.com",
 		phone: "0123 45678910",
 		bgcolor: "#6E52FF",
 	},
 	{
+		id: 2,
 		name: "Anja Schulz",
 		email: "schulz@hotmail.com",
 		phone: "0123 45678910",
 		bgcolor: "#FF7A00",
 	},
 	{
+		id: 3,
 		name: "Benedikt Ziegler",
 		email: "benedikt@gmail.com",
 		phone: "0123 45678910",
 		bgcolor: "#9327FF",
 	},
 	{
+		id: 4,
 		name: "David Eisenberg",
 		email: "davidberg@gmail.com",
 		phone: "0123 45678910",
 		bgcolor: "#FC71FF",
 	},
 	{
+		id: 5,
 		name: "Eva Fischer",
 		email: "eva@gmail.com",
 		phone: "0123 45678910",
 		bgcolor: "#FFBB2B",
 	},
 	{
+		id: 6,
 		name: "Emmanuel Mauer",
 		email: "emmanuelma@gmail.com",
 		phone: "0123 45678910",
 		bgcolor: "#1FD7C1",
 	},
 	{
+		id: 7,
 		name: "Marcel Bauer",
 		email: "bauer@gmail.com",
 		phone: "0123 45678910",
 		bgcolor: "#462F8A",
 	},
 	{
+		id: 8,
 		name: "Tatjana Wolf",
 		email: "wolf@gmail.com",
 		phone: "0123 45678910",
@@ -126,10 +134,16 @@ function renderLoggedContactsHTML() {
 	return generateContactsHTML(contacts);
 }
 
-/**JSDOC Anpassen
- * this function generates html for rendering contacts
- * @param {object} contacts - array of contact objects
- * @returns {string} html string represents rendered contacts
+/**
+ * Generates HTML for rendering a list of contacts, grouped by the first letter of their names.
+ *
+ * @param {Object[]} contacts - Array of contact objects.
+ * @param {string} contacts[].name - The name of the contact.
+ * @param {string} contacts[].id - The unique identifier of the contact.
+ * @param {string} [contacts[].bgcolor] - The background color for the contact's initials circle (optional).
+ * @param {string} [contacts[].color] - Fallback color if bgcolor is not provided (optional).
+ * @returns {string} HTML string representing the rendered contacts list.
+ *
  */
 function generateContactsHTML(contacts) {
 	let contactsHTML = "";
@@ -162,16 +176,15 @@ function setupEditFunctionality() {
 }
 
 /**
- * this function gets the contact for the current user based on given index
- * @param {number} index - index of the contact
- * @returns {Object} the contact object for the current user
+ * Retrieves a specific contact from the contacts array based on the given contact ID.
+ *
+ * @param {string|number} contactID - The unique identifier of the contact to retrieve.
+ * @returns {Object|undefined} The contact object if found, or undefined if not found.
+ *
  */
-function getCurrentUserContact(index) {
-	if (currentUser >= 0) {
-		return contacts[index];
-	} else {
-		return contactsData[index];
-	}
+function getCurrentUserContact(contactID) {
+	let currentContact = contacts.find((contact) => contact.id == contactID);
+	return currentContact;
 }
 
 /**
@@ -303,27 +316,19 @@ function getInitials(name) {
 }
 
 /**
- * this function updates contact details after editing
- * @param {number} index - index of the contact being edited
+ * Updates the details of a specific contact and saves the changes.
+ *
+ * @param {string|number} contactID - The unique identifier of the contact to be updated.
+ * @returns {void}
  */
-function updateContact(index) {
-	if (currentUser >= 0) {
-		contact = contacts[index];
-	} else {
-		contact = contactsData[index];
-	}
-	//let contact = currentUser >= 0 ? contacts[index] : contactsData[index];
+function updateContact(contactID) {
+	let contact = getCurrentUserContact(contactID);
 	if (!contact) return;
 	contact.name = document.getElementById("contact_Name").value;
 	contact.email = document.getElementById("contact_Email").value;
 	contact.phone = document.getElementById("contact_Phone").value;
-
-	if (currentUser >= 0) {
-		sortContactsAlphabetically(contacts);
-		setItem("contacts", JSON.stringify(contacts));
-	} else {
-		sortContactsAlphabetically(contactsData);
-	}
+	sortContactsAlphabetically(contacts);
+	updatedContactToStorage(contact, contactID);
 	finalizeContactUpdate();
 }
 

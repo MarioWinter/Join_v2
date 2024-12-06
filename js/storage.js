@@ -253,6 +253,23 @@ async function updatedAddedTaskToStorage(changedItem, taskID) {
 }
 
 /**
+ * Asynchronously updates a specific contact in storage with changed properties.
+ *
+ * @async
+ * @param {Object} changedContact - An object containing the properties of the contact that have been changed.
+ * @param {string|number} contactID - The ID of the contact to be updated.
+ * @returns {Promise<void>} A promise that resolves when the contact has been successfully updated in storage.
+ *
+ */
+async function updatedContactToStorage(changedContact, contactID) {
+	try {
+		await patchItem(changedContact, "contacts", contactID);
+	} catch (e) {
+		console.error("Update Contact error:", e);
+	}
+}
+
+/**
  * Asynchronously updates the subtasks of a specific task in storage.
  *
  * @async
