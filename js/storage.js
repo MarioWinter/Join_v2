@@ -34,21 +34,27 @@ function checkIsLogedIn() {
  */
 async function setItem(data, endpoint) {
 	const url = `${API_BASE_URL}/${endpoint}/`;
-	return fetch(url, {
-		method: "POST",
-		headers: {
-			"Content-Type": "application/json",
-			Authorization: `Token ${TOKEN}`,
-		},
-		body: JSON.stringify(data),
-	})
-		.then((response) => {
-			if (!response.ok) {
-				throw new Error(`HTTP error! status: ${response.status}`);
-			}
-			return response.json();
-		})
-		.catch((error) => console.error("Error:", error));
+
+	try {
+		const response = await fetch(url, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Token ${TOKEN}`,
+			},
+			body: JSON.stringify(data),
+		});
+
+		if (!response.ok) {
+			const errorData = await response.json();
+			throw errorData;
+		}
+
+		return await response.json();
+	} catch (error) {
+		//console.error("API Error:", error.message || error);
+		throw error;
+	}
 }
 
 async function changeItem(data, endpoint, id) {
@@ -152,7 +158,7 @@ async function sendLoginRequest(data) {
 		.then((response) => {
 			if (!response.ok) {
 				return response.json().then((errorData) => {
-					logInFailMsg();
+					//logInFailMsg();
 					throw new Error(`Login failed: ${JSON.stringify(errorData)}`);
 				});
 			}
@@ -217,8 +223,10 @@ async function saveNewTaskToStorage(newTasks) {
 async function saveNewContactToStorage(addContect) {
 	try {
 		return await setItem(addContect, "contacts");
-	} catch (e) {
-		console.error("Error saving new tasks:", e);
+	} catch (error) {
+		if (error.email) errorMsgEmail(error.email[0]);
+		if (error.phone) errorMsgPhone(error.phone[0]);
+		return false;
 	}
 }
 

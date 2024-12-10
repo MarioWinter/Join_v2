@@ -209,7 +209,7 @@ function emailAlreadyTakenMessage() {
   sing_up_container.innerHTML = '<span class="register-msg">This email is already taken</span>';
 
   setTimeout(() => {
-      renderSignUp(); // Annahme: Diese Funktion rendert das Registrierungsformular neu
+      renderSignUp();
   }, 3000);
 }
 
@@ -220,7 +220,7 @@ function registrationFailedMessage() {
   sing_up_container.innerHTML = '<span class="register-msg">Registration failed. Please try again.</span>';
 
   setTimeout(() => {
-      renderSignUp(); // Annahme: Diese Funktion rendert das Registrierungsformular neu
+      renderSignUp();
   }, 3000);
 }
 
@@ -240,10 +240,6 @@ function logInSuccedMsg() {
  * Sets the text content of the login message element to indicate
  * that the name or password was not found, and changes the text color to red.
  */
-// function logInFailMsg(){
-//   log_message.innerText = 'name or password not found';
-//   log_message.style = 'color: red';
-// }
 function logInFailMsg() {
   log_message.innerText = 'Email or password is not valid';
   log_message.style.color = 'red';

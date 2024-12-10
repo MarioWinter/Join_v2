@@ -83,7 +83,7 @@ function showOverlay(isEdit) {
 	document.getElementById("handle_resp_contact_container").classList.add("d-none");
 }
 
-/**
+/**Update jsDoc
  * Adds a new contact to the system.
  *
  * @async
@@ -100,7 +100,7 @@ async function addNewContact(event) {
 	};
 	let addedContact = await saveNewContactToStorage(newContact);
 	await loadContacts();
-	handleNewContact(addedContact.id);
+	if (addedContact != false) handleNewContact(addedContact.id);
 }
 
 /**
@@ -277,4 +277,18 @@ function hideAddNewContact() {
 	let addNewContact = document.getElementById("add_new_contact");
 	addNewContact.classList.remove("show");
 	addNewContact.classList.add("d-none");
+}
+
+function errorMsgEmail(massage) {
+	hide("email_error_msg");
+	email_error_msg.innerHTML = "";
+	email_error_msg.innerHTML = massage;
+	show("email_error_msg");
+}
+
+function errorMsgPhone(massage) {
+	hide("phone_error_msg");
+	phone_error_msg.innerHTML = "";
+	phone_error_msg.innerHTML = massage;
+	show("phone_error_msg");
 }

@@ -106,25 +106,19 @@ function sortContactsAlphabetically(contacts) {
  */
 function renderAllContacts() {
 	let contactsContainer = document.getElementById("contact_container");
-	let contactsHTML;
-	if (currentUser >= 0) {
-		contactsHTML = renderLoggedContactsHTML();
-	} else {
-		contactsHTML = generateContactsHTML(contactsData);
-	}
-	contactsContainer.innerHTML = contactsHTML;
+	contactsContainer.innerHTML = renderLoggedContactsHTML();
 	setupEditFunctionality();
 }
 
-/**
+/**LÖSCHEN?
  * this function renders contacts for a logged-in user and set up edit functionality
  */
-function renderLoggedContacts() {
-	let contactsContainer = document.getElementById("contact_container");
-	let contactsHTML = renderLoggedContactsHTML();
-	contactsContainer.innerHTML = contactsHTML;
-	setupEditFunctionality();
-}
+// function renderLoggedContacts() {
+// 	let contactsContainer = document.getElementById("contact_container");
+// 	let contactsHTML = renderLoggedContactsHTML();
+// 	contactsContainer.innerHTML = contactsHTML;
+// 	setupEditFunctionality();
+// }
 
 /**
  * this generates html for rendering contacts or logged-in contact/user
@@ -367,19 +361,6 @@ function addUser() {
 		bgcolor: getRandomColor(),
 	});
 	setItem("contacts", JSON.stringify(contacts));
-	renderAllContacts();
-}
-
-/**LÖSCHEN
- * this function adds new contact data to the list of contactsData
- */
-function addContactsData() {
-	contactsData.push({
-		name: contact_Name.value,
-		email: contact_Email.value,
-		phone: contact_Phone.value,
-		bgcolor: getRandomColor(),
-	});
 	renderAllContacts();
 }
 

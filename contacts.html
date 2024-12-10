@@ -61,7 +61,7 @@
           </div>
         </div>    
 
-        <form>
+        <form onsubmit="addNewContact(event); return false">
           <div id="add_new_contact" class="overlay-add-contact d-none">
             <div class="overlay-container-left"><img class="add-contact-overlay-icon" src="./assets/img/join-overlay-icon-white.svg"/>
               <div class="overlay-letter-add-contact">Add contact
@@ -79,11 +79,18 @@
                 <div class="overlay-input-data"><input type="text" id="contact_Name" required placeholder="Name"/>
                   <img class="overlay-contact-icons" src="./assets/img/overlay-person.svg"/>
                 </div>
-                <div class="overlay-input-data"><input type="email" id="contact_Email" required placeholder="Email"/>
-                  <img class="overlay-contact-icons" src="./assets/img/overlay-mail.svg"/>
+                <div>
+                  <div class="overlay-input-data"><input type="email" id="contact_Email" required placeholder="Email"/>
+                    <img class="overlay-contact-icons" src="./assets/img/overlay-mail.svg"/>
+                  </div>
+                  <div class="error-message d-none" id="email_error_msg"></div>
+
                 </div>
-                <div class="overlay-input-data"><input type="tel" id="contact_Phone" required placeholder="Phone" pattern="[0-9]*" inputmode="numeric"/>
-                  <img class="overlay-contact-icons" src="./assets/img/overlay-call.svg"/>
+                <div>
+                  <div class="overlay-input-data"><input type="tel" id="contact_Phone" name="phone" required placeholder="Phone"/>
+                    <img class="overlay-contact-icons" src="./assets/img/overlay-call.svg"/>
+                  </div>
+                  <div class="error-message" id="phone_error_msg"></div>
                 </div>
               </div>
               <div class="cancel-and-create-container">
@@ -99,7 +106,7 @@
                   </svg>
                 </div>
 
-                <button id="overlay_create_contact_button" class="overlay-create-contact-button" onclick="addNewContact(event)">Create contact
+                <button type="submit" id="overlay_create_contact_button" class="overlay-create-contact-button">Create contact
 
                   <img src="./assets/img/overlay-ok.svg" />
                 </button>
