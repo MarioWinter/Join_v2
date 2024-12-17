@@ -87,17 +87,18 @@ async function initContacts() {
 	await loadContacts();
 	await loadAddedTasksFromStorage();
 	loadCurrentUser();
+	addUserToContacts(); //OPTION
 	loadUserBadge();
 	sortContactsAlphabetically(contacts);
 	renderAllContacts();
 }
 
 /**
- * this function sorts the contact-array alphabetically by their name
- * @param {object} contacts - an array of objects, each representing contact with "name"
+ * this function sorts the contact-array alphabetically by their username
+ * @param {object} contacts - an array of objects, each representing contact with "username"
  */
 function sortContactsAlphabetically(contacts) {
-	contacts.sort((a, b) => a.name.localeCompare(b.name));
+	contacts.sort((a, b) => a.username.localeCompare(b.username));
 }
 
 /**
@@ -132,7 +133,7 @@ function renderLoggedContactsHTML() {
  * Generates HTML for rendering a list of contacts, grouped by the first letter of their names.
  *
  * @param {Object[]} contacts - Array of contact objects.
- * @param {string} contacts[].name - The name of the contact.
+ * @param {string} contacts[].username - The name of the contact.
  * @param {string} contacts[].id - The unique identifier of the contact.
  * @param {string} [contacts[].bgcolor] - The background color for the contact's initials circle (optional).
  * @param {string} [contacts[].color] - Fallback color if bgcolor is not provided (optional).
@@ -144,7 +145,7 @@ function generateContactsHTML(contacts) {
 	let alphabetLetters = {};
 	let contactID = 0;
 	contacts.forEach((contact) => {
-		let initials = getInitials(contact.name);
+		let initials = getInitials(contact.username);
 		contactID = contact.id;
 		let firstLetter = initials.charAt(0).toUpperCase();
 		let circleColor = contact.bgcolor || contact.color || getRandomColor();
@@ -260,7 +261,7 @@ function activateDetailAndDisplay(selectedIndex, contact) {
 	activateContactDetails(contact);
 	let circleColor = contact.querySelector(".contact-circle > svg > circle").getAttribute("fill");
 	let selectedContact = getCurrentUserContact(selectedIndex);
-	let contactInitials = getInitials(selectedContact.name);
+	let contactInitials = getInitials(selectedContact.username);
 	let contactDetails = document.getElementById("show_contact_details");
 	if (contactDetails) {
 		updateContactDetails(selectedIndex, circleColor, contactInitials);
@@ -318,7 +319,7 @@ function getInitials(name) {
 function updateContact(contactID) {
 	let contact = getCurrentUserContact(contactID);
 	if (!contact) return;
-	contact.name = document.getElementById("contact_Name").value;
+	contact.username = document.getElementById("contact_Name").value;
 	contact.email = document.getElementById("contact_Email").value;
 	contact.phone = document.getElementById("contact_Phone").value;
 	sortContactsAlphabetically(contacts);
@@ -350,18 +351,19 @@ function findInsertIndex(newContactId, contactList) {
 	return index !== -1 ? index : contactList.length;
 }
 
-/**LÖSCHEN
+/**LÖSCHEN?
  * this functoin adds new user to the list of contacts
  */
-function addUser() {
+function addUserToContacts() {
 	contacts.push({
-		name: contact_Name.value,
-		email: contact_Email.value,
-		phone: contact_Phone.value,
+		id: -2,
+		username: localStorage.getItem("username"),
+		email: localStorage.getItem("email"),
+		phone: "",
 		bgcolor: getRandomColor(),
 	});
-	setItem("contacts", JSON.stringify(contacts));
-	renderAllContacts();
+	// setItem("contacts", JSON.stringify(contacts));
+	// renderAllContacts();
 }
 
 /**
@@ -370,8 +372,8 @@ function addUser() {
  * @param {string|number} contactID - The unique identifier of the contact to be deleted.
  * @returns {void}
  */
-function deleteContact(contactID) {
-	deletesContactInStorage(contactID);
+async function deleteContact(contactID) {
+	await deletesContactInStorage(contactID);
 	initContacts();
 	closeResponsiveDetails();
 	hideResponsiveEditMenu();

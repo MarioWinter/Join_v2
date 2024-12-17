@@ -250,7 +250,7 @@ function logInFailMsg() {
  * Loads the current user index from local storage.
  */
 function loadCurrentUser() {
-  if (localStorage.getItem('currentUserIndex')){
+  if (localStorage.getItem('token')){
     currentUser = Number(localStorage.getItem('currentUserIndex'));
     username = localStorage.getItem('username')
   } else {

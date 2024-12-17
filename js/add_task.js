@@ -80,7 +80,7 @@ function resetContainers() {
 function initUserSelectField(containerID) {
 	let contactsContainer = document.getElementById(containerID);
 	for (let i = 0; i < contacts.length; i++) {
-		let userName = contacts[i]["name"];
+		let userName = contacts[i]["username"];
 		let userBadge = generateBadge(userName);
 		let badgeColor = contacts[i]["bgcolor"];
 		if (assignedID.includes(userName)) {
@@ -125,7 +125,7 @@ function showSelectedContacts(assignedID, containerID) {
 		let contactIndex = contacts.findIndex((contact) => contact.id === contactID);
 		if (contactIndex !== -1) {
 			let badgeColor = contacts[contactIndex]["bgcolor"];
-			let contactName = contacts[contactIndex]["name"];
+			let contactName = contacts[contactIndex]["username"];
 			let userBadge = generateBadge(contactName);
 			let selectedContactHTML = generateSelectedContactHTML(contactName, badgeColor, userBadge, i);
 			selectedContacts.innerHTML += selectedContactHTML;

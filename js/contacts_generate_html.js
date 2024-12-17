@@ -6,7 +6,7 @@
  * @returns {string} html string representing the alphabet section
  */
 function createAlphabetHTML(firstLetter) {
-  return `
+	return `
         <div class="alphabet" id="alphabet-${firstLetter}">${firstLetter}</div>  
         <div class="alphabet-vector-line"></div>
       `;
@@ -17,22 +17,22 @@ function createAlphabetHTML(firstLetter) {
  * @param {boolean} isEdit - indicates whether the overlay is for editing
  */
 function updateOverlayContent(isEdit) {
-  let overlayContainerLeft = document.querySelector(".overlay-container-left");
-  if (isEdit) {
-    overlayContainerLeft.innerHTML = `
+	let overlayContainerLeft = document.querySelector(".overlay-container-left");
+	if (isEdit) {
+		overlayContainerLeft.innerHTML = `
           <img class="add-contact-overlay-icon" src="./assets/img/join-overlay-icon-white.svg" />
           <div class="overlay-letter-add-contact">Edit contact</div>
           <div class="overlay-vectorline-horizontal"></div>
         `;
-  } else {
-    overlayContainerLeft.innerHTML = `
+	} else {
+		overlayContainerLeft.innerHTML = `
           <img class="add-contact-overlay-icon" src="./assets/img/join-overlay-icon-white.svg" />
           <div class="overlay-letter-add-contact">Add contact
             <div class="overlay-letters-better">Tasks are better with a team!</div>
             <div class="overlay-vectorline-horizontal"></div>
           </div>
         `;
-  }
+	}
 }
 
 /**
@@ -40,7 +40,7 @@ function updateOverlayContent(isEdit) {
  * @returns {string} html for the overlay contact circle
  */
 function getOverlayContactCircleHTML() {
-  return `<div id="overlay_contact_circle" class="overlay-contact-circle">
+	return `<div id="overlay_contact_circle" class="overlay-contact-circle">
         <img id="contact_gray" class="contact-gray" src="./assets/img/contacts-circle-grey.svg" />
         <img id="contact_person_white" class="contact-person-white" src="./assets/img/person-white.svg"/>
       </div>`;
@@ -52,8 +52,8 @@ function getOverlayContactCircleHTML() {
  * @param {string} initials - initials of the contact
  */
 function generateOverlayContactCircle(color, initials) {
-  let overlayContactCircle = document.getElementById("overlay_contact_circle");
-  overlayContactCircle.innerHTML = `
+	let overlayContactCircle = document.getElementById("overlay_contact_circle");
+	overlayContactCircle.innerHTML = `
         <svg xmlns="http://www.w3.org/2000/svg" width="126" height="126" viewBox="0 0 43 42" fill="none">
           <circle cx="21.5" cy="21" r="20" fill="${color}" stroke="white" stroke-width="2"/>
           <text x="50%" y="50%" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="18" fill="white">${initials}</text>
@@ -70,7 +70,7 @@ function generateOverlayContactCircle(color, initials) {
  * @returns {string} html string representing the individual contact
  */
 function generateContactHTML(contact, initials, circleColor, index) {
-  return `
+	return `
         <div class="contact-container" id="contact-${index}" onclick="showContactDetails(${index})">
           <div class="contact-circle">
             <svg xmlns="http://www.w3.org/2000/svg" width="43" height="42" viewBox="0 0 43 42" fill="none">
@@ -79,7 +79,7 @@ function generateContactHTML(contact, initials, circleColor, index) {
             </svg>
           </div>
           <div class="contact-data">
-            <div class="contact-name">${contact.name}</div>
+            <div class="contact-name">${contact.username}</div>
             <div class="contact-mail">${contact.email}</div>
           </div>
         </div>
@@ -94,8 +94,8 @@ function generateContactHTML(contact, initials, circleColor, index) {
  * @returns {string} html string representing the contact details view
  */
 function createContactDetailsHTML(index, circleColor, contactInitials) {
-  let selectedContact = getCurrentUserContact(index);
-  return `
+	let selectedContact = getCurrentUserContact(index);
+	return `
         <div id="contact_icon_and_name" class="contact-icon-and-name">
           <div id="contact_icon" class="contact-icon" style="background-color: ${circleColor}">
             <div id="contact_initials_container" class="contact-initials-container">
@@ -103,7 +103,7 @@ function createContactDetailsHTML(index, circleColor, contactInitials) {
             </div>
           </div>
           <div id="contact_name_and_edit_container" class="contact-name-and-edit-container">
-            <div id="details_contact_name" class="details-contact-name">${selectedContact.name}</div>               
+            <div id="details_contact_name" class="details-contact-name">${selectedContact.username}</div>               
             <div id="edit_container" class="edit-container">
               <div id="edit_contacts" class="edit-contacts">
                 <div id="edit_icon" class="edit-icon">
@@ -178,5 +178,3 @@ function createContactDetailsHTML(index, circleColor, contactInitials) {
       </div>
       `;
 }
-
-

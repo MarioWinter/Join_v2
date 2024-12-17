@@ -193,7 +193,7 @@ function addAssignedsBadgesToCard(assigneds, id) {
  */
 function getVariableForAssignedsUserBadge(assigneds, i) {
 	let badgeColor = assigneds[i]["bgcolor"];
-	let assignedUserName = assigneds[i]["name"];
+	let assignedUserName = assigneds[i]["username"];
 	let userBadge = generateBadge(assignedUserName);
 	let assignedLimit = assigneds.length - 1;
 	let addLimit = 5;

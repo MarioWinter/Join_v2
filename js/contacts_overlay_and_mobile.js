@@ -93,7 +93,7 @@ function showOverlay(isEdit) {
 async function addNewContact(event) {
 	event.preventDefault();
 	let newContact = {
-		name: document.getElementById("contact_Name").value,
+		username: document.getElementById("contact_Name").value,
 		email: document.getElementById("contact_Email").value,
 		phone: document.getElementById("contact_Phone").value,
 		bgcolor: getRandomColor(),
@@ -145,6 +145,8 @@ function cancelOverlay() {
 	let overlay = document.getElementById("add_new_contact");
 	if (overlay.classList.contains("show")) {
 		closeOverlay();
+		hide("email_error_msg");
+		hide("phone_error_msg");
 	} else {
 		handleOverlay();
 	}

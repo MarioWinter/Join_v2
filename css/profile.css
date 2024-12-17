@@ -1,0 +1,21 @@
+.profile-header {
+	font-size: 2.1rem;
+	font-weight: 700;
+	text-align: left;
+	width: 100%;
+	padding: 1.7rem 3.6rem 1rem 3.6rem;
+}
+
+.profile-vector-line {
+	display: flex;
+	padding: 0.8rem 0rem;
+	/* margin-bottom: 0.8rem; */
+	width: 100%;
+}
+
+.profile-vector-line::before {
+	content: "";
+	height: 0.1rem;
+	background-color: var(--secondary-grey-sidebar);
+	width: 100%;
+}

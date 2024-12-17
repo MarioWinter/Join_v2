@@ -71,7 +71,7 @@ function activeInfoLink() {
 	document.getElementById(urlAsId).classList.add("sidebar-privacy-button-selected");
 }
 
-/**
+/**UPDATE
  * Loads the user badge for the current user and displays it in the specified container.
  *
  * @returns {void} - No return value.
@@ -89,7 +89,6 @@ function loadUserBadge() {
 	i = currentUser;
 	if (i >= 0) {
 		if (userBadgeContainer) {
-			// let username = contacts[i]["name"];
 			let userInitials = generateBadge(username);
 			userBadgeContainer.innerHTML = userInitials;
 		} else {

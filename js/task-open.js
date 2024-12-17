@@ -85,7 +85,7 @@ function loadAssignedsOpenTask(assigneds, taskID) {
 	assigned.innerHTML = "";
 	for (let i = 0; i < assigneds.length; i++) {
 		let badgeColor = assigneds[i]["bgcolor"];
-		let assignedUserName = assigneds[i]["name"];
+		let assignedUserName = assigneds[i]["username"];
 		let userBadge = generateBadge(assignedUserName);
 		assigned.innerHTML += generateAssigmentHTML(userBadge, badgeColor, assignedUserName, taskID);
 	}

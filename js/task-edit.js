@@ -105,12 +105,12 @@ function filterContactIDForAssignedTo(assigneds) {
  *
  * @description
  * This function iterates through the array of assigned contacts and extracts
- * the name of each contact. It creates a new array that contains only the names.
+ * the username of each contact. It creates a new array that contains only the names.
  */
 function filterContactNameForAssignedTo(assigneds) {
 	let contactName = [];
 	assigneds.forEach((contact) => {
-		contactName.push(contact.name);
+		contactName.push(contact.username);
 	});
 	return contactName;
 }
@@ -253,7 +253,7 @@ function closeContactOverlay(containerID, selectedContactsID) {
 function loadAllUsersForContactOnAssignedTo(assigneds, containerID, ID = 0) {
 	let contactsContainer = document.getElementById(containerID);
 	for (let i = 0; i < contacts.length; i++) {
-		let contactName = contacts[i]["name"];
+		let contactName = contacts[i]["username"];
 		let contactID = contacts[i]["id"];
 		let userBadge = generateBadge(contactName);
 		let badgeColor = contacts[i]["bgcolor"];
@@ -324,7 +324,7 @@ function addContactAsAssigned(id, i, assignedID, taskID, containerID) {
  * 2. Clears the container's inner HTML.
  * 3. Iterates through the assigned contact IDs array.
  *    a. Finds the corresponding contact in the contacts array.
- *    b. If found, retrieves the badge color and contact name.
+ *    b. If found, retrieves the badge color and contact username.
  *    c. Generates the user badge HTML using the generateBadge function.
  *    d. Generates and appends the assignment badge HTML to the container.
  */
@@ -336,7 +336,7 @@ function loadAssignedOnEditTask(assigned, containerID) {
 		let contactIndex = contacts.findIndex((contact) => contact.id === contactID);
 		if (contactIndex !== -1) {
 			let badgeColor = contacts[contactIndex]["bgcolor"];
-			let contactName = contacts[contactIndex]["name"];
+			let contactName = contacts[contactIndex]["username"];
 			let userBadge = generateBadge(contactName);
 			selectetContactsContainer.innerHTML += generateAssigmentBadgeEditTaskHTML(userBadge, badgeColor, i);
 		}
@@ -415,14 +415,14 @@ function useExistingTaskOrCreateNew(taskID) {
  * @description
  * This function performs the following steps:
  * 1. Iterate through the contacts array.
- * 2. Get the name of each user from the contacts array.
+ * 2. Get the username of each user from the contacts array.
  * 3. Check if the user's name (converted to lowercase) includes the search term (converted to lowercase).
  * 4. If the condition is met, generate the user badge, get the badge color, and update the container's inner HTML.
  * 5. If the user is already assigned, use generateEditTaskAssigmentContactsCheckedHTML; otherwise, use generateEditTaskAssigmentContactsHTML.
  */
 function renderFilterdUsersOnAssignedTo(assignedID, searchTerm, id, contactsContainer) {
 	for (let i = 0; i < contacts.length; i++) {
-		let contactName = contacts[i]["name"];
+		let contactName = contacts[i]["username"];
 		if (contactName.toLowerCase().includes(searchTerm)) {
 			let badge = generateBadge(contactName);
 			let badgeColor = contacts[i]["bgcolor"];
