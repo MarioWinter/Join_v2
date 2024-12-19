@@ -130,7 +130,7 @@ function editContacts(contactID) {
 	let originalCircleColor = contact.bgcolor || contact.color;
 	let initials = getInitials(contact.name);
 	showOverlay(true);
-	updateContactDetails(contactID, originalCircleColor, initials);
+	updateContactDetails(contactID, originalCircleColor, initials, contact);
 	generateOverlayContactCircle(originalCircleColor, initials);
 	updateContactInputs(contact);
 	setSaveButtonFunction(contactID);

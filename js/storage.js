@@ -245,6 +245,17 @@ async function loadAddedTasksFromStorage() {
 }
 
 /**
+ * Loads contacts from remote storage to the local array.
+ */
+async function loadContacts() {
+	try {
+		contacts = await getItems("combinedlist");
+	} catch (e) {
+		console.error("Loading error:", e);
+	}
+}
+
+/**
  * Asynchronously updates a specific task in storage with changed properties.
  *
  * @async

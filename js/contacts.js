@@ -87,7 +87,7 @@ async function initContacts() {
 	await loadContacts();
 	await loadAddedTasksFromStorage();
 	loadCurrentUser();
-	addUserToContacts(); //OPTION
+	//addUserToContacts(); //OPTION
 	loadUserBadge();
 	sortContactsAlphabetically(contacts);
 	renderAllContacts();
@@ -218,14 +218,22 @@ function deactivateAllContacts() {
 }
 
 /**
- * this function updates contact details with specified contact info
- * @param {object} selectedContact - selected contact as object
- * @param {string} circleColor - color for the contact circle
- * @param {string} contactInitials - initials of the contact
+ * Updates the contact details with the specified contact information.
+ *
+ * @param {number} selectedIndex - The index of the selected contact.
+ * @param {string} circleColor - The color for the contact circle.
+ * @param {string} contactInitials - The initials of the contact.
+ * @param {object} selectedContact - The selected contact as an object.
+ *
+ * @returns {void} This function does not return any value, it updates the DOM directly.
  */
-function updateContactDetails(selectedContact, circleColor, contactInitials) {
+function updateContactDetails(selectedIndex, circleColor, contactInitials, selectedContact) {
 	let contactDetails = document.getElementById("show_contact_details");
-	contactDetails.innerHTML = createContactDetailsHTML(selectedContact, circleColor, contactInitials);
+	if (selectedContact.type === "contact") {
+		contactDetails.innerHTML = createContactDetailsHTML(selectedIndex, circleColor, contactInitials, selectedContact);
+	} else {
+		contactDetails.innerHTML = createProfileDetailsHTML(selectedIndex, circleColor, contactInitials, selectedContact);
+	}
 	contactDetails.classList.remove("d-none");
 	contactDetails.classList.add("show");
 }
@@ -264,7 +272,7 @@ function activateDetailAndDisplay(selectedIndex, contact) {
 	let contactInitials = getInitials(selectedContact.username);
 	let contactDetails = document.getElementById("show_contact_details");
 	if (contactDetails) {
-		updateContactDetails(selectedIndex, circleColor, contactInitials);
+		updateContactDetails(selectedIndex, circleColor, contactInitials, selectedContact);
 		contactDetails.classList.remove("d-none");
 		contactDetails.classList.add("show");
 	}

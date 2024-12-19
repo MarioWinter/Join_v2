@@ -134,17 +134,6 @@ function emailExist() {
 }
 
 /**
- * Loads contacts from remote storage to the local array.
- */
-async function loadContacts() {
-  try {
-    contacts = await getItems("contacts");
-  } catch (e) {
-    console.error("Loading error:", e);
-  }
-}
-
-/**
  * Checks if the password and confirm password fields match to enable the register button.
  */
 function validatePassword() {

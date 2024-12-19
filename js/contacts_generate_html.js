@@ -87,14 +87,15 @@ function generateContactHTML(contact, initials, circleColor, index) {
 }
 
 /**
- * this function generates html for displaying details of a clicked or selected contact
- * @param {number} index - index of the contact
- * @param {string} circleColor - color for the contact circle
- * @param {string} contactInitials - initials of the contact
- * @returns {string} html string representing the contact details view
+ * Generates HTML for displaying the details of a clicked or selected contact.
+ *
+ * @param {number} index - The index of the contact in the list.
+ * @param {string} circleColor - The color of the contact's circle.
+ * @param {string} contactInitials - The initials of the contact.
+ * @param {object} selectedContact - The object containing the contact's details.
+ * @returns {string} The HTML string representing the contact details view.
  */
-function createContactDetailsHTML(index, circleColor, contactInitials) {
-	let selectedContact = getCurrentUserContact(index);
+function createContactDetailsHTML(index, circleColor, contactInitials, selectedContact) {
 	return `
         <div id="contact_icon_and_name" class="contact-icon-and-name">
           <div id="contact_icon" class="contact-icon" style="background-color: ${circleColor}">
@@ -174,6 +175,76 @@ function createContactDetailsHTML(index, circleColor, contactInitials) {
         </svg>                       
       </div>
       <div class="delete-text">Delete</div>
+    </div>
+      </div>
+      `;
+}
+
+/**
+ * Generates HTML for displaying the details of a clicked or selected profile.
+ *
+ * @param {number} index - The index of the contact in the list.
+ * @param {string} circleColor - The color of the contact's circle.
+ * @param {string} contactInitials - The initials of the contact.
+ * @param {object} selectedContact - The object containing the contact's details.
+ * @returns {string} The HTML string representing the contact details view.
+ */
+function createProfileDetailsHTML(index, circleColor, contactInitials, selectedContact) {
+	return `
+        <div id="contact_icon_and_name" class="contact-icon-and-name">
+          <div id="contact_icon" class="contact-icon" style="background-color: ${circleColor}">
+            <div id="contact_initials_container" class="contact-initials-container">
+              <div id="contact_initials" class="contact-initials">${contactInitials}</div>
+            </div>
+          </div>
+          <div id="contact_name_and_edit_container" class="contact-name-and-edit-container">
+            <div id="details_contact_name" class="details-contact-name">${selectedContact.username}</div>               
+            <div id="edit_container" class="edit-container">
+              <div id="edit_contacts" class="edit-contacts">
+                <div id="edit_icon" class="edit-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24" fill="none">
+                    <mask id="mask0_69718_4858" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="25" height="24">
+                      <rect x="0.5" width="24" height="24" fill="#D9D9D9"/>
+                    </mask>
+                    <g mask="url(#mask0_69718_4858)">
+                      <path d="M5.5 19H6.9L15.525 10.375L14.125 8.975L5.5 17.6V19ZM19.8 8.925L15.55 4.725L16.95 3.325C17.3333 2.94167 17.8042 2.75 18.3625 2.75C18.9208 2.75 19.3917 2.94167 19.775 3.325L21.175 4.725C21.5583 5.10833 21.7583 5.57083 21.775 6.1125C21.7917 6.65417 21.6083 7.11667 21.225 7.5L19.8 8.925ZM18.35 10.4L7.75 21H3.5V16.75L14.1 6.15L18.35 10.4Z" fill="#2A3647"/>
+                    </g>
+                  </svg>                        
+                </div>
+                <div id="edit_contact_detail" class="edit-text" onclick="editContacts(${index})">Edit</div>
+              </div>
+
+              </div>
+            </div>                
+          </div>
+        </div>
+        <div class="contact-information">Contact Information</div>
+        <div class="mail-and-phone-container">
+          <div class="mail-text">Email</div>
+          <div id="mail_container" class="mail-container">${selectedContact.email}</div>
+        </div>
+        <div class="phone-container">
+          <div class="phone-text">Phone</div>
+          <div id="contact_phone_number" class="contact-phone-number">${selectedContact.phone}</div>
+        </div>
+
+        <div id="handle_resp_menu_container" class="handle-resp-menu-container"> 
+        <img id="handle_resp_menu_icon" class="resp-menu-icon d-none" src="./assets/img/menu-contact-options.svg" onclick="showResponsiveEditMenu()">         
+      </div>
+      
+      <div id="resp_edit_container" class="resp-edit-container d-none">
+      <div id="edit_contacts" class="edit-contacts">
+      <div id="edit_icon" class="edit-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24" fill="none">
+          <mask id="mask0_69718_4858" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="25" height="24">
+            <rect x="0.5" width="24" height="24" fill="#D9D9D9"/>
+          </mask>
+          <g mask="url(#mask0_69718_4858)">
+            <path d="M5.5 19H6.9L15.525 10.375L14.125 8.975L5.5 17.6V19ZM19.8 8.925L15.55 4.725L16.95 3.325C17.3333 2.94167 17.8042 2.75 18.3625 2.75C18.9208 2.75 19.3917 2.94167 19.775 3.325L21.175 4.725C21.5583 5.10833 21.7583 5.57083 21.775 6.1125C21.7917 6.65417 21.6083 7.11667 21.225 7.5L19.8 8.925ZM18.35 10.4L7.75 21H3.5V16.75L14.1 6.15L18.35 10.4Z" fill="#2A3647"/>
+          </g>
+        </svg>                        
+      </div>
+      <div id="edit_contact_detail" class="edit-text" onclick="editContacts(${index})">Edit</div>
     </div>
       </div>
       `;
