@@ -68,12 +68,16 @@ function showResponsiveEditMenu() {
 // contacts - overlay
 
 /**
- * this function shows the overlay view for editing or adding a new contact
- * @param {boolean} isEdit - indicates whether the overlay is for editing an existing contact
+ * Shows the overlay view for editing or adding a new contact.
+ *
+ * @param {boolean} isEdit - Indicates whether the overlay is for editing an existing contact.
+ * @param {object} selectedContact - The selected contact object, used for editing.
+ *
+ * @returns {void} This function does not return any value, it updates the DOM directly.
  */
-function showOverlay(isEdit) {
+function showOverlay(isEdit, selectedContact) {
 	updateOverlayContent(isEdit);
-	updateOverlayButtons(isEdit);
+	updateOverlayButtons(isEdit, selectedContact);
 	let addNewContact = document.getElementById("add_new_contact");
 	addNewContact.classList.remove("d-none");
 	setTimeout(() => {
@@ -83,12 +87,12 @@ function showOverlay(isEdit) {
 	document.getElementById("handle_resp_contact_container").classList.add("d-none");
 }
 
-/**Update jsDoc
+/**
  * Adds a new contact to the system.
  *
  * @async
  * @param {Event} event - The event object from the form submission.
- * @returns {Promise<void>}
+ * @returns {Promise<void>} A promise that resolves when the contact has been added and the contacts have been reloaded.
  */
 async function addNewContact(event) {
 	event.preventDefault();
@@ -128,8 +132,8 @@ function editContacts(contactID) {
 	if (!contact) return;
 	selectedContactID = contactID;
 	let originalCircleColor = contact.bgcolor || contact.color;
-	let initials = getInitials(contact.name);
-	showOverlay(true);
+	let initials = getInitials(contact.username);
+	showOverlay(true, contact);
 	updateContactDetails(contactID, originalCircleColor, initials, contact);
 	generateOverlayContactCircle(originalCircleColor, initials);
 	updateContactInputs(contact);
@@ -181,13 +185,17 @@ function handleOverlay() {
 }
 
 /**
- * this function updates the buttons in the overlay view based on whether its for editing or adding a new contact
- * @param {boolean} isEdit - indiactes whether the overlay is for editing
+ * Updates the buttons in the overlay view based on whether it is for editing or adding a new contact.
+ *
+ * @param {boolean} isEdit - Indicates whether the overlay is for editing.
+ * @param {string} selectedContact - The type of the selected contact, used to determine the button configuration.
+ *
+ * @returns {void} This function does not return any value, it updates the DOM directly.
  */
-function updateOverlayButtons(isEdit) {
+function updateOverlayButtons(isEdit, selectedContact) {
 	let overlayCancelButton = document.getElementById("overlay_cancel_button");
 	let overlayCreateButton = document.getElementById("overlay_create_contact_button");
-	if (isEdit) {
+	if (isEdit && selectedContact.type === "contact") {
 		setEditButtons(overlayCancelButton, overlayCreateButton);
 	} else {
 		setCreateButtons(overlayCancelButton, overlayCreateButton);
@@ -219,7 +227,7 @@ function updateContactInputs(contact) {
 	let contactNameInput = document.getElementById("contact_Name");
 	let contactEmailInput = document.getElementById("contact_Email");
 	let contactPhoneInput = document.getElementById("contact_Phone");
-	contactNameInput.value = contact.name;
+	contactNameInput.value = contact.username;
 	contactEmailInput.value = contact.email;
 	contactPhoneInput.value = contact.phone;
 }
