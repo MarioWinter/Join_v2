@@ -289,6 +289,21 @@ async function updatedContactToStorage(changedContact, contactID) {
 }
 
 /**
+ * Updates the user's profile in storage.
+ * @async
+ * @param {Object} changedProfile - The updated profile data.
+ * @param {string|number} userID - The ID of the user whose profile is being updated.
+ * @throws {Error} If there's an error during the update process.
+ */
+async function updatedProfileToStorage(changedProfile, userID) {
+	try {
+		await patchItem(changedProfile, "profile", userID);
+	} catch (e) {
+		console.error("Update Profile error:", e);
+	}
+}
+
+/**
  * Asynchronously updates the subtasks of a specific task in storage.
  *
  * @async
