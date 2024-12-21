@@ -240,11 +240,15 @@ function updateContactInputs(contact) {
 function setSaveButtonFunction(contactID) {
 	let overlayCreateButton = document.getElementById("overlay_create_contact_button");
 	overlayCreateButton.innerHTML = "Save <img src='./assets/img/overlay-ok.svg'/>";
-	overlayCreateButton.onclick = function () {
-		updateContact(contactID);
-		showSuccessMessage();
-		closeOverlay();
-		showContactDetails(contactID);
+	overlayCreateButton.onclick = function (event) {
+		if (!validateForm()) {
+			event.preventDefault();
+		} else {
+			updateContact(contactID);
+			showSuccessMessage();
+			closeOverlay();
+			showContactDetails(contactID);
+		}
 	};
 }
 
@@ -259,11 +263,11 @@ function setEditButtons(overlayCancelButton, overlayCreateButton) {
 		deleteContact(selectedContactID);
 		cancelOverlay();
 	};
-	overlayCreateButton.innerHTML = "Save <img src='./assets/img/overlay-ok.svg'/>";
-	overlayCreateButton.onclick = function () {
-		showSuccessMessage();
-		closeResponsiveDetails();
-	};
+	// overlayCreateButton.innerHTML = "Save <img src='./assets/img/overlay-ok.svg'/>";
+	// overlayCreateButton.onclick = function () {
+	// 	showSuccessMessage();
+	// 	closeResponsiveDetails();
+	// };
 }
 
 /**
@@ -289,6 +293,13 @@ function hideAddNewContact() {
 	addNewContact.classList.add("d-none");
 }
 
+function errorMsgUsername(massage) {
+	hide("username_error_msg");
+	username_error_msg.innerHTML = "";
+	username_error_msg.innerHTML = massage;
+	show("username_error_msg");
+}
+
 function errorMsgEmail(massage) {
 	hide("email_error_msg");
 	email_error_msg.innerHTML = "";
@@ -301,4 +312,41 @@ function errorMsgPhone(massage) {
 	phone_error_msg.innerHTML = "";
 	phone_error_msg.innerHTML = massage;
 	show("phone_error_msg");
+}
+
+function validateForm() {
+	hide("username_error_msg");
+	hide("email_error_msg");
+	hide("phone_error_msg");
+	return validateUsername(contact_Name.value) && validateEmail(contact_Email.value) && validateInternationalPhoneNumber(contact_Phone.value);
+}
+
+function validateUsername(username) {
+	const regex = /^[a-zA-Z0-9 ]{2,100}$/;
+	if (regex.test(username)) {
+		return true;
+	} else {
+		errorMsgUsername("Please enter a valid username of at least 2 characters");
+		return false;
+	}
+}
+
+function validateEmail(email) {
+	const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+	if (regex.test(email)) {
+		return true;
+	} else {
+		errorMsgEmail("Please enter a valid email address");
+		return false;
+	}
+}
+
+function validateInternationalPhoneNumber(phone) {
+	const regex = /^\+?(?:[0-9] ?){6,14}[0-9]$/;
+	if (regex.test(phone)) {
+		return true;
+	} else {
+		errorMsgPhone("Enter a valid phone number");
+		return false;
+	}
 }

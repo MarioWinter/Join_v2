@@ -63,7 +63,7 @@
           </div>
         </div>    
 
-        <form onsubmit="addNewContact(event); return false">
+        <form>
           <div id="add_new_contact" class="overlay-add-contact d-none">
             <div class="overlay-container-left"><img class="add-contact-overlay-icon" src="./assets/img/join-overlay-icon-white.svg"/>
               <div class="overlay-letter-add-contact">Add contact
@@ -78,8 +78,11 @@
                 <img class="oyerlay-close-img" id="overlay_close_img" src="./assets/img/cancel.svg" />                  
               </div>
               <div class="overlay-add-contact-container">
-                <div class="overlay-input-data"><input type="text" id="contact_Name" required placeholder="Name"/>
-                  <img class="overlay-contact-icons" src="./assets/img/overlay-person.svg"/>
+                <div>
+                  <div class="overlay-input-data"><input type="text" id="contact_Name" required placeholder="Name"/>
+                    <img class="overlay-contact-icons" src="./assets/img/overlay-person.svg"/>
+                  </div>
+                  <div class="error-message d-none" id="username_error_msg"></div>
                 </div>
                 <div>
                   <div class="overlay-input-data"><input type="email" id="contact_Email" required placeholder="Email"/>
@@ -108,7 +111,7 @@
                   </svg>
                 </div>
 
-                <button type="submit" id="overlay_create_contact_button" class="overlay-create-contact-button">Create contact
+                <button type="submit" id="overlay_create_contact_button" class="overlay-create-contact-button" onclick="addNewContact(event)">Create contact
 
                   <img src="./assets/img/overlay-ok.svg" />
                 </button>

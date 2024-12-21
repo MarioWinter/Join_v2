@@ -87,7 +87,6 @@ async function initContacts() {
 	await loadContacts();
 	await loadAddedTasksFromStorage();
 	loadCurrentUser();
-	//addUserToContacts(); //OPTION
 	loadUserBadge();
 	sortContactsAlphabetically(contacts);
 	renderAllContacts();
@@ -110,16 +109,6 @@ function renderAllContacts() {
 	contactsContainer.innerHTML = renderLoggedContactsHTML();
 	setupEditFunctionality();
 }
-
-/**LÖSCHEN?
- * this function renders contacts for a logged-in user and set up edit functionality
- */
-// function renderLoggedContacts() {
-// 	let contactsContainer = document.getElementById("contact_container");
-// 	let contactsHTML = renderLoggedContactsHTML();
-// 	contactsContainer.innerHTML = contactsHTML;
-// 	setupEditFunctionality();
-// }
 
 /**
  * this generates html for rendering contacts or logged-in contact/user
@@ -327,9 +316,9 @@ function getInitials(name) {
 function updateContact(contactID) {
 	let contact = getCurrentUserContact(contactID);
 	if (!contact) return;
-	contact.username = document.getElementById("contact_Name").value;
-	contact.email = document.getElementById("contact_Email").value;
-	contact.phone = document.getElementById("contact_Phone").value;
+	contact.username = contact_Name.value;
+	contact.email = contact_Email.value;
+	contact.phone = contact_Phone.value;
 	sortContactsAlphabetically(contacts);
 	updatedContactToStorage(contact, contactID);
 	finalizeContactUpdate();
@@ -357,21 +346,6 @@ function finalizeContactUpdate() {
 function findInsertIndex(newContactId, contactList) {
 	let index = contactList.findIndex((contact) => contact.id === newContactId);
 	return index !== -1 ? index : contactList.length;
-}
-
-/**LÖSCHEN?
- * this functoin adds new user to the list of contacts
- */
-function addUserToContacts() {
-	contacts.push({
-		id: -2,
-		username: localStorage.getItem("username"),
-		email: localStorage.getItem("email"),
-		phone: "",
-		bgcolor: getRandomColor(),
-	});
-	// setItem("contacts", JSON.stringify(contacts));
-	// renderAllContacts();
 }
 
 /**
