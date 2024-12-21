@@ -196,7 +196,7 @@ function updateOverlayButtons(isEdit, selectedContact) {
 	let overlayCancelButton = document.getElementById("overlay_cancel_button");
 	let overlayCreateButton = document.getElementById("overlay_create_contact_button");
 	if (isEdit && selectedContact.type === "contact") {
-		setEditButtons(overlayCancelButton, overlayCreateButton);
+		setEditButtons(overlayCancelButton);
 	} else {
 		setCreateButtons(overlayCancelButton, overlayCreateButton);
 	}
@@ -255,19 +255,13 @@ function setSaveButtonFunction(contactID) {
 /**
  * this function sets the functionality for edit buttons in the overlay
  * @param {html element} overlayCancelButton - overlay cancel button
- * @param {html element} overlayCreateButton - overlay create/save button
  */
-function setEditButtons(overlayCancelButton, overlayCreateButton) {
+function setEditButtons(overlayCancelButton) {
 	overlayCancelButton.textContent = "Delete";
 	overlayCancelButton.onclick = function () {
 		deleteContact(selectedContactID);
 		cancelOverlay();
 	};
-	// overlayCreateButton.innerHTML = "Save <img src='./assets/img/overlay-ok.svg'/>";
-	// overlayCreateButton.onclick = function () {
-	// 	showSuccessMessage();
-	// 	closeResponsiveDetails();
-	// };
 }
 
 /**
@@ -293,6 +287,10 @@ function hideAddNewContact() {
 	addNewContact.classList.add("d-none");
 }
 
+/**
+ * Displays an error message for the username field.
+ * @param {string} message - The error message to be displayed.
+ */
 function errorMsgUsername(massage) {
 	hide("username_error_msg");
 	username_error_msg.innerHTML = "";
@@ -300,6 +298,10 @@ function errorMsgUsername(massage) {
 	show("username_error_msg");
 }
 
+/**
+ * Displays an error message for the email field.
+ * @param {string} message - The error message to be displayed.
+ */
 function errorMsgEmail(massage) {
 	hide("email_error_msg");
 	email_error_msg.innerHTML = "";
@@ -307,6 +309,10 @@ function errorMsgEmail(massage) {
 	show("email_error_msg");
 }
 
+/**
+ * Displays an error message for the phone number field.
+ * @param {string} message - The error message to be displayed.
+ */
 function errorMsgPhone(massage) {
 	hide("phone_error_msg");
 	phone_error_msg.innerHTML = "";
@@ -314,6 +320,10 @@ function errorMsgPhone(massage) {
 	show("phone_error_msg");
 }
 
+/**
+ * Validates the entire form by checking the username, email, and phone number fields.
+ * @returns {boolean} True if all fields are valid, false otherwise.
+ */
 function validateForm() {
 	hide("username_error_msg");
 	hide("email_error_msg");
@@ -321,6 +331,11 @@ function validateForm() {
 	return validateUsername(contact_Name.value) && validateEmail(contact_Email.value) && validateInternationalPhoneNumber(contact_Phone.value);
 }
 
+/**
+ * Validates the username field.
+ * @param {string} username - The username to be validated.
+ * @returns {boolean} True if the username is valid, false otherwise.
+ */
 function validateUsername(username) {
 	const regex = /^[a-zA-Z0-9 ]{2,100}$/;
 	if (regex.test(username)) {
@@ -331,6 +346,11 @@ function validateUsername(username) {
 	}
 }
 
+/**
+ * Validates the email field.
+ * @param {string} email - The email address to be validated.
+ * @returns {boolean} True if the email address is valid, false otherwise.
+ */
 function validateEmail(email) {
 	const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 	if (regex.test(email)) {
@@ -341,6 +361,11 @@ function validateEmail(email) {
 	}
 }
 
+/**
+ * Validates the international phone number field.
+ * @param {string} phone - The phone number to be validated.
+ * @returns {boolean} True if the phone number is valid, false otherwise.
+ */
 function validateInternationalPhoneNumber(phone) {
 	const regex = /^\+?(?:[0-9] ?){6,14}[0-9]$/;
 	if (regex.test(phone)) {
