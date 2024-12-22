@@ -2,84 +2,6 @@ let selectedContactID = null;
 let colorIndex = 0;
 let isEditing = false;
 
-let contactsData = [
-	{
-		id: 1,
-		name: "Anton Meyer",
-		email: "antom@gmail.com",
-		phone: "0123 45678910",
-		bgcolor: "#6E52FF",
-	},
-	{
-		id: 2,
-		name: "Anja Schulz",
-		email: "schulz@hotmail.com",
-		phone: "0123 45678910",
-		bgcolor: "#FF7A00",
-	},
-	{
-		id: 3,
-		name: "Benedikt Ziegler",
-		email: "benedikt@gmail.com",
-		phone: "0123 45678910",
-		bgcolor: "#9327FF",
-	},
-	{
-		id: 4,
-		name: "David Eisenberg",
-		email: "davidberg@gmail.com",
-		phone: "0123 45678910",
-		bgcolor: "#FC71FF",
-	},
-	{
-		id: 5,
-		name: "Eva Fischer",
-		email: "eva@gmail.com",
-		phone: "0123 45678910",
-		bgcolor: "#FFBB2B",
-	},
-	{
-		id: 6,
-		name: "Emmanuel Mauer",
-		email: "emmanuelma@gmail.com",
-		phone: "0123 45678910",
-		bgcolor: "#1FD7C1",
-	},
-	{
-		id: 7,
-		name: "Marcel Bauer",
-		email: "bauer@gmail.com",
-		phone: "0123 45678910",
-		bgcolor: "#462F8A",
-	},
-	{
-		id: 8,
-		name: "Tatjana Wolf",
-		email: "wolf@gmail.com",
-		phone: "0123 45678910",
-		bgcolor: "#FF5EB3",
-	},
-];
-
-let contactCircleColors = [
-	"#FF7A00",
-	"#9327FF",
-	"#6E52FF",
-	"#FC71FF",
-	"#FFBB2B",
-	"#1FD7C1",
-	"#462F8A",
-	"#FF4646",
-	"#00BEE8",
-	"#FF5EB3",
-	"#FFA35E",
-	"#FF745E",
-	"#C3FF2B",
-	"#0038FF",
-	"#FFC701",
-	"#FFE62B",
-];
-
 /**
  * this function initailizes the contacts and loads user data
  */
@@ -320,18 +242,30 @@ function updateContact(contactID) {
 	contact.email = contact_Email.value;
 	contact.phone = contact_Phone.value;
 	sortContactsAlphabetically(contacts);
-	updatedContactToStorage(contact, contactID);
+	updatedUserOrContact(contact, contactID);
 	finalizeContactUpdate();
+}
+
+async function updatedUserOrContact(contact, contactID) {
+	if (contact.type === "contact") {
+		await updatedContactToStorage(contact, contactID);
+	} else {
+		await updatedProfileToStorage(contact, contactID);
+	}
 }
 
 /**
  * this function performs additional actions to finalize the contact update
  */
-function finalizeContactUpdate() {
+async function finalizeContactUpdate() {
+	await loadContacts();
+	loadCurrentUser();
+	loadUserBadge();
+	sortContactsAlphabetically(contacts);
+	renderAllContacts();
 	hideContactDetails();
 	cancelOverlay();
 	clearEntrys();
-	renderAllContacts();
 }
 
 /**
