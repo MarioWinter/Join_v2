@@ -71,18 +71,45 @@ async function changeItem(data, endpoint, id) {
 		.catch((error) => console.error("Fehler:", error));
 }
 
+/**
+ * Updates an item in the API and returns the updated data.
+ * @async
+ * @param {Object} data - The data to update.
+ * @param {string} endpoint - The API endpoint.
+ * @param {string|number} id - The ID of the item to update.
+ * @returns {Promise<Object>} The updated data from the API.
+ * @throws {Error} If there's an error during the update process.
+ */
 async function patchItem(data, endpoint, id) {
-	let url = `${API_BASE_URL}/${endpoint}/${id}/`;
-	return fetch(url, {
-		method: "PATCH",
-		headers: {
-			"Content-Type": "application/json",
-			Authorization: `Token ${TOKEN}`,
-		},
-		body: JSON.stringify(data),
-	})
-		.then((response) => response.json())
-		.catch((error) => console.error("Fehler:", error));
+	const url = `${API_BASE_URL}/${endpoint}/${id}/`;
+
+	try {
+		const response = await fetch(url, {
+			method: "PATCH",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Token ${TOKEN}`,
+			},
+			body: JSON.stringify(data),
+		});
+
+		if (!response.ok) {
+			const errorData = await response.json();
+			throw new Error(errorData.message || "Failed to update item");
+		}
+
+		const responseData = await response.json();
+
+		if (responseData.type === "user") {
+			localStorage.setItem("username", responseData.username);
+			localStorage.setItem("email", responseData.email);
+		}
+
+		return responseData;
+	} catch (error) {
+		console.error("Update error:", error.message);
+		throw error;
+	}
 }
 
 /**
@@ -158,7 +185,6 @@ async function sendLoginRequest(data) {
 		.then((response) => {
 			if (!response.ok) {
 				return response.json().then((errorData) => {
-					//logInFailMsg();
 					throw new Error(`Login failed: ${JSON.stringify(errorData)}`);
 				});
 			}
