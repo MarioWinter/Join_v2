@@ -26,11 +26,13 @@ function checkIsLogedIn() {
 	}
 }
 
-/** setItem
- * Set an item in remote storage.
- * @param {string} key - The key of the item to be stored.
- * @param {any} value - The value of the item to be stored.
- * @returns {Promise<Object>} A Promise that resolves to the response from the server.
+/**
+ * Creates a new item in the API.
+ * @async
+ * @param {Object} data - The data of the item to be created.
+ * @param {string} endpoint - The API endpoint where the item should be created.
+ * @returns {Promise<Object>} A Promise that resolves to the created item data from the API.
+ * @throws {Error} If there's an error during the creation process or if the response is not OK.
  */
 async function setItem(data, endpoint) {
 	const url = `${API_BASE_URL}/${endpoint}/`;
@@ -47,28 +49,48 @@ async function setItem(data, endpoint) {
 
 		if (!response.ok) {
 			const errorData = await response.json();
-			throw errorData;
+			throw new Error(errorData.message || `Failed to create item. Status: ${response.status}`);
 		}
 
 		return await response.json();
 	} catch (error) {
-		//console.error("API Error:", error.message || error);
+		console.error("API Error:", error.message || error);
 		throw error;
 	}
 }
 
+/**
+ * Updates an item in the API using the PUT method.
+ * @async
+ * @param {Object} data - The data to update the item with.
+ * @param {string} endpoint - The API endpoint.
+ * @param {string|number} id - The ID of the item to update.
+ * @returns {Promise<Object>} The updated item data from the API.
+ * @throws {Error} If there's an error during the update process.
+ */
 async function changeItem(data, endpoint, id) {
-	let url = `${API_BASE_URL}/${endpoint}/${id}/`;
-	return fetch(url, {
-		method: "PUT",
-		headers: {
-			"Content-Type": "application/json",
-			Authorization: `Token ${TOKEN}`,
-		},
-		body: JSON.stringify(data),
-	})
-		.then((response) => response.json())
-		.catch((error) => console.error("Fehler:", error));
+	const url = `${API_BASE_URL}/${endpoint}/${id}/`;
+
+	try {
+		const response = await fetch(url, {
+			method: "PUT",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Token ${TOKEN}`,
+			},
+			body: JSON.stringify(data),
+		});
+
+		if (!response.ok) {
+			const errorData = await response.json();
+			throw new Error(errorData.message || "Failed to update item");
+		}
+
+		return await response.json();
+	} catch (error) {
+		console.error("Update error:", error.message);
+		throw error;
+	}
 }
 
 /**
@@ -119,40 +141,43 @@ async function patchItem(data, endpoint, id) {
  * @param {string} endpoint - The API endpoint for the item to be deleted.
  * @param {number|string} id - The ID of the item to be deleted.
  * @returns {Promise<Object|null>} A promise that resolves to the JSON response from the server if available, or null if the response is empty.
- * @throws {Error} Throws an error if the network request fails.
+ * @throws {Error} Throws an error if the network request fails or if the response is not OK.
  */
 async function deleteItem(endpoint, id) {
-	let url = `${API_BASE_URL}/${endpoint}/${id}/`;
-	return fetch(url, {
-		method: "DELETE",
-		headers: {
-			"Content-Type": "application/json",
-			Authorization: `Token ${TOKEN}`,
-		},
-	})
-		.then((response) => {
-			if (!response.ok) {
-				throw new Error(`HTTP error! status: ${response.status}`);
-			}
-			return response.text();
-		})
-		.then((text) => {
-			return text ? JSON.parse(text) : null;
-		})
-		.catch((error) => {
-			console.error("Error:", error);
-			throw error;
+	const url = `${API_BASE_URL}/${endpoint}/${id}/`;
+
+	try {
+		const response = await fetch(url, {
+			method: "DELETE",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Token ${TOKEN}`,
+			},
 		});
+
+		if (!response.ok) {
+			throw new Error(`HTTP error! status: ${response.status}`);
+		}
+
+		const text = await response.text();
+		return text ? JSON.parse(text) : null;
+	} catch (error) {
+		console.error("Delete error:", error.message);
+		throw error;
+	}
 }
 
-/** getItem
- * Retrieve an item from remote storage.
- * @param {string} key - The key of the item to be retrieved.
- * @returns {Promise<any>} A Promise that resolves to the value of the retrieved item.
- * @throws {string} Throws an error if the data with the specified key is not found.
+/**
+ * Retrieves items from a specified API endpoint.
+ *
+ * @async
+ * @param {string} endpoint - The API endpoint from which to retrieve items.
+ * @returns {Promise<Object[]>} A Promise that resolves to an array of items retrieved from the endpoint.
+ * @throws {Error} Throws an error if the network request fails or if the response is not OK.
  */
 async function getItems(endpoint) {
-	let url = `${API_BASE_URL}/${endpoint}/`;
+	const url = `${API_BASE_URL}/${endpoint}/`;
+
 	try {
 		const response = await fetch(url, {
 			method: "GET",
@@ -161,74 +186,91 @@ async function getItems(endpoint) {
 				Authorization: `Token ${TOKEN}`,
 			},
 		});
+
 		if (!response.ok) {
 			throw new Error(`HTTP error! status: ${response.status}`);
 		}
-		const data = await response.json();
 
-		return data;
+		return await response.json();
 	} catch (error) {
-		console.error("Fehler:", error);
+		console.error("Fetch error:", error.message);
 		throw error;
 	}
 }
 
+/**
+ * Sends a login request to the server and handles the response.
+ *
+ * @async
+ * @param {Object} data - The login credentials (usually username/email and password).
+ * @throws {Error} Throws an error if the login request fails or if the response is not OK.
+ */
 async function sendLoginRequest(data) {
 	const url = "http://127.0.0.1:8000/api/auth/login/";
-	fetch(url, {
-		method: "POST",
-		headers: {
-			"Content-Type": "application/json",
-		},
-		body: JSON.stringify(data),
-	})
-		.then((response) => {
-			if (!response.ok) {
-				return response.json().then((errorData) => {
-					throw new Error(`Login failed: ${JSON.stringify(errorData)}`);
-				});
-			}
-			return response.json();
-		})
-		.then((data) => {
-			localStorage.setItem("currentUserIndex", data.user_id);
-			localStorage.setItem("token", data.token);
-			localStorage.setItem("username", data.username);
-			localStorage.setItem("email", data.email);
-			logInSuccedMsg();
-		})
-		.catch((error) => {
-			console.error("Login failed:", error);
-			logInFailMsg();
+
+	try {
+		const response = await fetch(url, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(data),
 		});
+
+		if (!response.ok) {
+			const errorData = await response.json();
+			throw new Error(`Login failed: ${JSON.stringify(errorData)}`);
+		}
+
+		const responseData = await response.json();
+
+		localStorage.setItem("currentUserIndex", responseData.user_id);
+		localStorage.setItem("token", responseData.token);
+		localStorage.setItem("username", responseData.username);
+		localStorage.setItem("email", responseData.email);
+
+		logInSuccedMsg();
+	} catch (error) {
+		console.error("Login failed:", error.message);
+		logInFailMsg();
+	}
 }
 
+/**
+ * Sends a registration request to the server and handles the response.
+ *
+ * @async
+ * @param {Object} data - The registration data (usually including username, email, and password).
+ * @throws {Error} Throws an error if the registration request fails or if the response is not OK.
+ */
 async function sendRegistrationRequest(data) {
 	const url = "http://127.0.0.1:8000/api/auth/registration/";
-	fetch(url, {
-		method: "POST",
-		headers: {
-			"Content-Type": "application/json",
-		},
-		body: JSON.stringify(data),
-	})
-		.then((response) => {
-			if (!response.ok) {
-				if (response.email && response.email[0].includes("already exists")) {
-					emailAlreadyTakenMessage();
-				} else {
-					registrationFailedMessage();
-				}
 
-				return response.json();
-			}
-		})
-		.then((data) => {
-			successfulRegistration();
-		})
-		.catch((error) => {
-			registrationFailedMessage();
+	try {
+		const response = await fetch(url, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(data),
 		});
+
+		const responseData = await response.json();
+
+		if (!response.ok) {
+			if (responseData.email && responseData.email[0].includes("already exists")) {
+				emailAlreadyTakenMessage();
+			} else {
+				registrationFailedMessage();
+			}
+			throw new Error(`Registration failed: ${JSON.stringify(responseData)}`);
+		}
+
+		successfulRegistration();
+	} catch (error) {
+		console.error("Registration failed:", error.message);
+		registrationFailedMessage();
+	}
 }
 
 /**
@@ -246,6 +288,13 @@ async function saveNewTaskToStorage(newTasks) {
 	}
 }
 
+/**
+ * Saves a new contact to storage.
+ * @async
+ * @param {Object} addContact - The contact object to be saved.
+ * @returns {Promise<Object|boolean>} The saved contact object if successful, false otherwise.
+ * @throws {Error} If there's an error during the saving process.
+ */
 async function saveNewContactToStorage(addContect) {
 	try {
 		return await setItem(addContect, "contacts");
