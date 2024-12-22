@@ -337,11 +337,11 @@ function validateForm() {
  * @returns {boolean} True if the username is valid, false otherwise.
  */
 function validateUsername(username) {
-	const regex = /^[a-zA-Z0-9 ]{2,100}$/;
+	const regex = /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]{2,100}$/u;
 	if (regex.test(username)) {
 		return true;
 	} else {
-		errorMsgUsername("Please enter a valid username of at least 2 characters");
+		errorMsgUsername("Please enter a valid username with at least 2 characters");
 		return false;
 	}
 }
