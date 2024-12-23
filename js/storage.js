@@ -265,8 +265,9 @@ async function sendRegistrationRequest(data) {
 			}
 			throw new Error(`Registration failed: ${JSON.stringify(responseData)}`);
 		}
-
+		TOKEN = responseData.token;
 		successfulRegistration();
+		return responseData;
 	} catch (error) {
 		console.error("Registration failed:", error.message);
 		registrationFailedMessage();
