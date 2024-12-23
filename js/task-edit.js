@@ -236,19 +236,6 @@ function closeContactOverlay(containerID, selectedContactsID) {
  * @param {string} ID - The ID of the task.
  * @returns {void}
  *
- * @description
- * This function performs the following steps:
- * 1. Gets the container element by ID.
- * 2. Iterates through the contacts array.
- * 3. For each contact:
- *    a. Retrieves the contact's name, ID, and badge color.
- *    b. Generates a badge with the contact's name.
- *    c. If there are assigned contacts (assigneds is not 0):
- *       - Checks if the current contact is assigned to the task.
- *       - If assigned, generates and appends HTML for a checked contact.
- *    d. If there are no assigned contacts:
- *       - Generates and appends HTML for an unchecked contact.
- * 4. Appends the generated HTML to the container.
  */
 function loadAllUsersForContactOnAssignedTo(assigneds, containerID, ID = 0) {
 	let contactsContainer = document.getElementById(containerID);

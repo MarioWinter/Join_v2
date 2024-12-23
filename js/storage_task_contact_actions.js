@@ -34,7 +34,7 @@ async function loadAddedTasksFromStorage() {
  */
 async function loadContacts() {
 	try {
-		contacts = await getItems("combinedlist");
+		contacts = await getItems("contacts");
 	} catch (e) {
 		console.error("Loading error:", e);
 	}

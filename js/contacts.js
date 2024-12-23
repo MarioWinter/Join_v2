@@ -246,11 +246,27 @@ function updateContact(contactID) {
 	finalizeContactUpdate();
 }
 
+/**
+ * Updates a user or contact in storage based on the type.
+ *
+ * @async
+ * @param {Object} contact - The contact or user object to be updated.
+ * @param {string} contactID - The unique identifier of the contact or user.
+ * @param {string} contact.type - The type of the object, either "contact" or "user".
+ * @throws {Error} If there's an issue updating the storage.
+ * @returns {Promise<void>}
+ */
 async function updatedUserOrContact(contact, contactID) {
-	if (contact.type === "contact") {
-		await updatedContactToStorage(contact, contactID);
-	} else {
-		await updatedProfileToStorage(contact, contactID);
+	try {
+		if (contact.type === "contact") {
+			await updatedContactToStorage(contact, contactID);
+		} else {
+			const profileID = contact.user;
+			await updatedProfileToStorage(contact, profileID);
+			await updatedContactToStorage(contact, contactID);
+		}
+	} catch (error) {
+		console.error("Error updating:", error);
 	}
 }
 
