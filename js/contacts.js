@@ -241,7 +241,6 @@ function updateContact(contactID) {
 	contact.username = contact_Name.value;
 	contact.email = contact_Email.value;
 	contact.phone = contact_Phone.value;
-	sortContactsAlphabetically(contacts);
 	updatedUserOrContact(contact, contactID);
 	finalizeContactUpdate();
 }
