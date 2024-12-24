@@ -23,7 +23,6 @@ async function saveNewContactToStorage(addContect) {
 async function loadAddedTasksFromStorage() {
 	try {
 		addedTasks = await getItems("tasks");
-		console.log("Loaded tasks:", addedTasks);
 	} catch (e) {
 		console.error("Loading Added Tasks error:", e);
 	}
