@@ -225,3 +225,8 @@ body {
 	font-size: 1.2rem;
 	margin-top: 0.4rem;
 }
+
+.custom-text {
+	font-size: 2rem;
+	font-family: "Inter";
+}

@@ -90,21 +90,28 @@ function showOverlay(isEdit, selectedContact) {
 /**
  * Adds a new contact to the system.
  *
+ * This function collects contact information from form inputs, validates the form,
+ * saves the new contact to storage, reloads the contacts list, and handles the newly added contact.
+ *
  * @async
  * @param {Event} event - The event object from the form submission.
  * @returns {Promise<void>} A promise that resolves when the contact has been added and the contacts have been reloaded.
+ * @throws {Error} If there's an issue saving the contact or reloading the contacts.
  */
 async function addNewContact(event) {
-	event.preventDefault();
 	let newContact = {
 		username: document.getElementById("contact_Name").value,
 		email: document.getElementById("contact_Email").value,
 		phone: document.getElementById("contact_Phone").value,
 		bgcolor: getRandomColor(),
 	};
-	let addedContact = await saveNewContactToStorage(newContact);
-	await loadContacts();
-	if (addedContact != false) handleNewContact(addedContact.id);
+	if (!validateForm()) {
+		event.preventDefault();
+	} else {
+		let addedContact = await saveNewContactToStorage(newContact);
+		await loadContacts();
+		if (addedContact != false) handleNewContact(addedContact.id);
+	}
 }
 
 /**
