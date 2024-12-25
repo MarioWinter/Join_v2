@@ -171,17 +171,16 @@ function closeSubtaskIcons() {
 	input.value = "";
 }
 
-/**ANPASSEN
- * this function handles subtask actions by obtaining the value from input field for adding new subtasks trimming input
- * and changing visibility of subtask icons. displaying subtask and clearing the input field
+/**
+ * Handles subtask creation and display actions.
+ * This function manages the subtask workflow by changing subtask input icons and displaying new subtasks.
+ * It doesn't return any value.
+ *
+ * @returns {void}
  */
 function handleSubtaskActions() {
-	// let subtaskInput = document.getElementById("add_new_subtask_field");
-	// let input = document.getElementById("add_new_subtask_field");
-	// let subtask = subtaskInput.value.trim();
 	changingSubtaskIcons();
 	displaySubtasks();
-	// input.value = "";
 }
 
 /**

@@ -207,7 +207,7 @@ function activateContactDetails(contact) {
 	activateContactStyles(contact);
 }
 
-/**LÖSCHEN
+/**
  * this function hides the contact details
  */
 function hideContactDetails() {

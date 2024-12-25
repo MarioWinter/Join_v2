@@ -71,18 +71,11 @@ function activeInfoLink() {
 	document.getElementById(urlAsId).classList.add("sidebar-privacy-button-selected");
 }
 
-/**UPDATE
- * Loads the user badge for the current user and displays it in the specified container.
+/**
+ * Loads and displays the user badge for the current user in the specified container.
  *
- * @returns {void} - No return value.
- *
- * @description
- * This function performs the following steps:
- * 1. Retrieves the user badge container using the ID "user_initials."
- * 2. Checks if the currentUser variable is a valid index.
- * 3. If the index is valid, retrieves the user's name.
- * 4. Generates the user badge using the generateBadge function.
- * 5. Updates the inner HTML of the user badge container with the generated user badge.
+ * @returns {void}
+ * @throws {Error} Implicitly, if there's an issue accessing the DOM or generating the badge.
  */
 function loadUserBadge() {
 	let userBadgeContainer = document.getElementById("user_initials");

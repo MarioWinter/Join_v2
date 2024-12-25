@@ -21,14 +21,6 @@ async function initBoard() {
 	loadBoard();
 }
 
-/**LÖSCHEN
- * hidden function to clear Added Tasks Remote Storage from any information
- */
-async function clearAddedTasksRemoteSTRG() {
-	addedTasks = [];
-	await setItem("addedTasks", JSON.stringify(addedTasks));
-}
-
 /**
  * Loads the board by iterating through each bucket, updating the board, and loading the "No Tasks" label.
  *

@@ -42,31 +42,6 @@ function generateTaskAssigmentContactsHTML(userName, badgeColor, userBadge, i) {
 }
 
 /**
- * this function generates html for checked task assignment contact within slider user badge background color and checkbox
- * @param {string} userName - name of task assignment contact
- * @param {string} badgeColor - background color of the contact badge
- * @param {string} userBadge - user badge content
- * @param {number} i - index of task assignment contact
- * @returns {string} - generated html for checked task assignment contact within slider
- */
-function generateTaskAssigmentContactsCheckedHTML(userName, badgeColor, userBadge, i) {
-	return `
-      <label class="slider-contact-label">
-        <div class="current-contact-slider">
-          <div id="_contect_badge${i}" class="contact-badge" style="background-color: ${badgeColor};">
-            <span>${userBadge}</span>
-          </div>
-          <span>${userName}</span>
-          <div class="checkbox">
-            <input onclick="addElectedContact('_confirm_contact${i}', ${i}, assignedID, 'et_selected_contacts')" id="_confirm_contact${i}" type="checkbox" checked/>
-            <label class="checkbox-edit-task" for="_confirm_contact${i}"></label>
-          </div>
-        </div>
-      </label>
-    `;
-}
-
-/**
  * this function creates an html for subtask with editable content and associated icons
  * @param {string} subtask - content of subtask
  * @param {number} index - index of subtask in added subtask array
