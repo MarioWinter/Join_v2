@@ -122,6 +122,10 @@ body {
 	gap: 3.2rem;
 }
 
+.max-width {
+	width: 100%;
+}
+
 .log-in-input-box {
 	display: flex;
 	justify-content: center;
@@ -131,9 +135,13 @@ body {
 	border: solid 2px;
 	padding: 1px;
 	border-color: var(--light-grey-placeholder);
-	margin-top: 1rem;
+	margin-top: 1.7rem;
 	gap: 8px;
 	height: 4.8rem;
+}
+
+.mt-0 {
+	margin-top: 0;
 }
 
 .log-in-input-box input {
@@ -331,7 +339,7 @@ input[type="checkbox"]:checked + label::before {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	margin-top: 3.2rem;
+	margin-top: 1.2rem;
 	margin-left: auto;
 	margin-right: auto;
 }
@@ -343,7 +351,7 @@ input[type="checkbox"]:checked + label::before {
 .sing-up-check-box {
 	display: flex;
 	align-items: center;
-	margin-top: 1.6rem;
+	margin-top: 1.3rem;
 	justify-content: center;
 }
 

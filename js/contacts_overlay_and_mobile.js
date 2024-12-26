@@ -299,10 +299,8 @@ function hideAddNewContact() {
  * @param {string} message - The error message to be displayed.
  */
 function errorMsgUsername(massage) {
-	hide("username_error_msg");
 	username_error_msg.innerHTML = "";
 	username_error_msg.innerHTML = massage;
-	show("username_error_msg");
 }
 
 /**
@@ -310,10 +308,8 @@ function errorMsgUsername(massage) {
  * @param {string} message - The error message to be displayed.
  */
 function errorMsgEmail(massage) {
-	hide("email_error_msg");
 	email_error_msg.innerHTML = "";
 	email_error_msg.innerHTML = massage;
-	show("email_error_msg");
 }
 
 /**
@@ -321,10 +317,8 @@ function errorMsgEmail(massage) {
  * @param {string} message - The error message to be displayed.
  */
 function errorMsgPhone(massage) {
-	hide("phone_error_msg");
 	phone_error_msg.innerHTML = "";
 	phone_error_msg.innerHTML = massage;
-	show("phone_error_msg");
 }
 
 /**
@@ -332,9 +326,9 @@ function errorMsgPhone(massage) {
  * @returns {boolean} True if all fields are valid, false otherwise.
  */
 function validateForm() {
-	hide("username_error_msg");
-	hide("email_error_msg");
-	hide("phone_error_msg");
+	username_error_msg.innerHTML = "";
+	email_error_msg.innerHTML = "";
+	phone_error_msg.innerHTML = "";
 	return validateUsername(contact_Name.value) && validateEmail(contact_Email.value) && validateInternationalPhoneNumber(contact_Phone.value);
 }
 

@@ -224,6 +224,7 @@ body {
 	color: var(--error-field-required);
 	font-size: 1.2rem;
 	margin-top: 0.4rem;
+	height: 1.5rem;
 }
 
 .custom-text {

@@ -80,21 +80,31 @@ function renderSignUp() {
 /**
  * Registers a user.
  */
-async function registerUser() {
-	const data = {
-		username: sign_name.value,
-		email: sign_email.value,
-		password: sign_password.value,
-		repeated_password: sign_password_confirm.value,
-	};
-	if (!ifChecked()) {
-		try {
-			let newUser = await sendRegistrationRequest(data);
-			await saveUserToContacts(newUser);
-		} catch (error) {
-			console.error("Registration process failed:", error);
-		}
+async function registerUser(event) {
+	if (!validateRegistration() && !ifChecked()) {
+		event.preventDefault();
+	} else {
+		const data = {
+			username: sign_name.value,
+			email: sign_email.value,
+			password: sign_password.value,
+			repeated_password: sign_password_confirm.value,
+		};
+		let newUser = await sendRegistrationRequest(data);
+		await saveUserToContacts(newUser);
 	}
+}
+
+/**
+ * Validates the registration form by checking the username and email fields.
+ * Clears any existing error messages before validation.
+ *
+ * @returns {boolean} - Returns true if both username and email are valid, otherwise false.
+ */
+function validateRegistration() {
+	username_error_msg.innerHTML = "";
+	email_error_msg.innerHTML = "";
+	return validateUsername(sign_name.value) && validateEmail(sign_email.value);
 }
 
 /**
@@ -205,7 +215,7 @@ function successfulRegistration() {
 
 	setTimeout(() => {
 		renderLogIn();
-	}, 1000);
+	}, 500);
 }
 
 /**
@@ -216,7 +226,7 @@ function emailAlreadyTakenMessage() {
 
 	setTimeout(() => {
 		renderSignUp();
-	}, 3000);
+	}, 500);
 }
 
 /**
@@ -227,7 +237,7 @@ function registrationFailedMessage() {
 
 	setTimeout(() => {
 		renderSignUp();
-	}, 3000);
+	}, 500);
 }
 
 /**
@@ -236,7 +246,7 @@ function registrationFailedMessage() {
 function logInSuccedMsg() {
 	setTimeout(() => {
 		window.location.href = "summary.html";
-	}, 1000);
+	}, 500);
 }
 
 /**
