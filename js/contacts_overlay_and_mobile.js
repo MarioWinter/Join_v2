@@ -323,13 +323,17 @@ function errorMsgPhone(massage) {
 
 /**
  * Validates the entire form by checking the username, email, and phone number fields.
+ *
+ * This function clears any existing error messages, validates each field, and returns a boolean indicating the overall validity of the form.
+ *
  * @returns {boolean} True if all fields are valid, false otherwise.
  */
 function validateForm() {
-	username_error_msg.innerHTML = "";
-	email_error_msg.innerHTML = "";
-	phone_error_msg.innerHTML = "";
-	return validateUsername(contact_Name.value) && validateEmail(contact_Email.value) && validateInternationalPhoneNumber(contact_Phone.value);
+	username_error_msg.innerHTML = email_error_msg.innerHTML = phone_error_msg.innerHTML = "";
+
+	return [validateUsername(contact_Name.value), validateEmail(contact_Email.value), validateInternationalPhoneNumber(contact_Phone.value)].every(
+		Boolean
+	);
 }
 
 /**

@@ -102,9 +102,8 @@ async function registerUser(event) {
  * @returns {boolean} - Returns true if both username and email are valid, otherwise false.
  */
 function validateRegistration() {
-	username_error_msg.innerHTML = "";
-	email_error_msg.innerHTML = "";
-	return validateUsername(sign_name.value) && validateEmail(sign_email.value);
+	username_error_msg.innerHTML = email_error_msg.innerHTML = "";
+	return [validateUsername(sign_name.value), validateEmail(sign_email.value)].every(Boolean);
 }
 
 /**
