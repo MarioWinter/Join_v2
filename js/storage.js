@@ -228,6 +228,7 @@ async function sendLoginRequest(data) {
 		localStorage.setItem("token", responseData.token);
 		localStorage.setItem("username", responseData.username);
 		localStorage.setItem("email", responseData.email);
+		localStorage.setItem("bgcolor", responseData.bgcolor);
 
 		logInSuccedMsg();
 	} catch (error) {

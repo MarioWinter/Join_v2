@@ -262,11 +262,20 @@ async function updatedUserOrContact(contact, contactID) {
 		} else {
 			const profileID = contact.user;
 			await updatedProfileToStorage(contact, profileID);
+			updateProfileContactBagde(contact);
 			await updatedContactToStorage(contact, contactID);
 		}
 	} catch (error) {
 		console.error("Error updating:", error);
 	}
+}
+
+/**
+ * Updates the background color of a contact's badge.
+ * @param {Object} contact - The contact object to update.
+ */
+function updateProfileContactBagde(contact) {
+	contact.bgcolor = localStorage.getItem("bgcolor");
 }
 
 /**
